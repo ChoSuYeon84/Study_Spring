@@ -27,17 +27,17 @@ table tr td input[name=addr] {width: calc(100% - 14px);}
 	<td><input type="text" name="name"/></td>
 </tr>
 <tr><th>* 아이디</th>
-	<td><input class="chk" type="text" name="id"/><br/>
+	<td><input class="chk" title='아이디' type="text" name="id"/><a id="btn-id" style="margin-left: 5px;" class='btn-fill-s'>아이디중복확인</a><br/>
 		<div class="valid">아이디를 입력하세요(영문소문자, 숫자만 입력 가능)</div>
 	</td>
 </tr>
 <tr><th>* 비밀번호</th>
-	<td><input class="chk" type="password" name="pw"/><br/>
+	<td><input class="chk" title='비밀번호' type="password" name="pw"/><br/>
 		<div class="valid">비밀번호를 입력하세요(영문대/소문자, 숫자를 모두 포함)</div>
 	</td>
 </tr>
 <tr><th>* 비밀번호확인</th>
-	<td><input class="chk" type="password" name="pw_ck"/><br/>
+	<td><input class="chk" title='비밀번호확인' type="password" name="pw_ck"/><br/>
 		<div class="valid">비밀번호를 다시 입력하세요</div>
 	</td>
 </tr>
@@ -47,7 +47,7 @@ table tr td input[name=addr] {width: calc(100% - 14px);}
 	</td>
 </tr>
 <tr><th>* 이메일</th>
-	<td><input class="chk" type="text" name="email"/><br/>
+	<td><input class="chk" title='이메일' type="text" name="email"/><br/>
 		<div class="valid">이메일을 입력하세요</div>
 	</td>
 </tr>
@@ -70,16 +70,96 @@ table tr td input[name=addr] {width: calc(100% - 14px);}
 	</td>
 </tr>
 </table>
-
-
 </form>
-<script src="js/join_check.js"></script>
+<div class="btnSet">
+<a class="btn-fill" onclick="go_join()">회원가입</a>
+<a class="btn-empty" onclick="history.go(-1)">취소</a>
+</div>
+<script src="js/join_check.js?v=<%=new java.util.Date().getTime()%>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js"></script><!-- https://cdnjs.com/ 에서 fontawesome을 쳐서 복사해옴 -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>	<!-- 주소라이브러리를 받아서 온다 -->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> <!--  생년월일 선택을 위해  https://jqueryui.com/ 에서 달력라이브러리 가져옴 -->
 <script type="text/javascript">
+function go_join(){
+	if( $('[name=name]').val() == ''){
+		alert('성명을 입력하세요');
+		$('[name=name]').focus();
+		return;
+	}
+	//필수항목의 유효성을 판단하도록 한다.
+	//중복확인한 경우
+	if( $('[name=id]').hasClass('chked') ){
+		//이미사용중인 경우는 회원가입 불가
+		if($('[name=id]').siblings('div').hasClass('invalid')){
+			alert('회원가입불가\n'+join.id.unusable.desc);
+			$('[name=id]').focus();
+			return;
+		}
+	}else{
+	//중복확인 하지 않은 경우
+		if( !item_check( $('[name=id]') ) ) return;
+		else{
+			alert('회원가입불가\n'+join.id.valid.desc);
+			$('[name=id]').focus();
+			return;
+		}
+	}
+	if( !item_check( $('[name=pw]') ) ) return;
+	if( !item_check( $('[name=pw_ck]') ) ) return;
+	if( !item_check( $('[name=pw=email]') ) ) return;
+
+	$('form'.submit());
+	
+}
+function item_check(item){
+	var data = join.tag_status(item);
+	if( data.code == 'invalid' ){
+		alert('회원가입불가!\n' + data.desc);
+		item.focus();
+		return false;
+	} else return true;
+}
+
+
+$('#btn-id').on('click', function(){
+	id_check();
+});
+function id_check(){
+//	올바른 아이디 입력형태인지 파악하여 유효하지 않다면 중복확인 불필요
+	var $id =  $('[name=id]')
+	if( $id.hasClass( 'chked' )) return;
+	console.log('go check')
+	var data = join.tag_status( $id);
+	if( data.code != 'valid'){
+		alert('아이디 중복확인 불필요\n' + data.desc);
+		$id.focus();
+		return;
+	}
+
+	$.ajax({
+		type: 'post',
+		url: 'id_check',
+		data: { id:$id.val() },
+		success: function(data){
+			data = join.id_usable(data);
+			display_status( $id.siblings('div'), data );
+			$id.addClass('chked');
+		}, error: function(req, text){
+			alert(text+': '+req.status);
+		}
+	});
+	
+}
 $('.chk').on('keyup', function(){
-	validate( $(this));
+	if( $(this).attr('name')=='id'){
+		if( event.keyCode==13){ id_check(); }
+		else {
+			$(this).removeClass('chked');
+			validate( $(this));
+		}
+	}else validate( $(this));
+	
+	
 });
 function validate(t){
 	var data = join.tag_status(t);
@@ -88,6 +168,7 @@ function validate(t){
 }
 function display_status(div, data){
 	div.text( data.desc );
+	div.removeClass();
 	div.addClass( data.code );
 }
 

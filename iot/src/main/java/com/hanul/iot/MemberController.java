@@ -16,6 +16,12 @@ import member.MemberVO;
 public class MemberController {
 	@Autowired private MemberServiceImpl service;
 	
+	//아이디 중복확인 요청
+	@ResponseBody @RequestMapping("/id_check")
+	public boolean id_check(String id) {
+		return service.member_id_check(id);
+	}
+	
 	//회원가입화면 요청
 	@RequestMapping("/member")
 	public String member(HttpSession session) {
