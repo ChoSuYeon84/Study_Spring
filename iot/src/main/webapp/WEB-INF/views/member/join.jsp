@@ -21,7 +21,7 @@ table tr td input[name=addr] {width: calc(100% - 14px);}
 <!-- <div id='content'> -->
 <h3>회원가입</h3>
 <p class="w-pct60 right" style="margin: 0 auto; padding-bottom: 5px; font-size: 13px">*는 필수입력항목입니다.</p>
-<form>
+<form action="join" method="post">
 <table class="w-pct60">
 <tr><th class="w-px160">* 성명</th>
 	<td><input type="text" name="name"/></td>
@@ -106,9 +106,9 @@ function go_join(){
 	}
 	if( !item_check( $('[name=pw]') ) ) return;
 	if( !item_check( $('[name=pw_ck]') ) ) return;
-	if( !item_check( $('[name=pw=email]') ) ) return;
+	if( !item_check( $('[name=email]') ) ) return;
 
-	$('form'.submit());
+	$('form').submit();
 	
 }
 function item_check(item){

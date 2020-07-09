@@ -2,6 +2,7 @@ package com.hanul.iot;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import common.CommonService;
 import member.MemberServiceImpl;
 import member.MemberVO;
 
 @Controller
 public class MemberController {
 	@Autowired private MemberServiceImpl service;
+	@Autowired private CommonService common;
+	
+	//회원가입처리 요청
+	@ResponseBody @RequestMapping(value="/join", produces="text/html; charset=utf-8")	//산출물(produces)에 대한 캐릭터 셋을 설정
+	public String join(MemberVO vo, HttpServletRequest request) {
+		String msg = "<script type = 'text/javascript'>";
+		//화면에서 입력한 정보를 DB에 저장한 후 홈화면으로 연결
+		if( service.member_insert(vo) ) {
+			//메일전송
+			common.sendEmail(vo.getEmail(), vo.getName());
+			msg += "alert('회원가입 축하^^'); location='"+ request.getContextPath() +"'";
+			
+		}else {
+			msg += "alert('회원가입 실패ㅠㅠ'); history.go(-1)"; 
+			
+		}
+		msg += "</script>";
+		return msg;
+	}
 	
 	//아이디 중복확인 요청
 	@ResponseBody @RequestMapping("/id_check")

@@ -27,13 +27,13 @@ public class MemberVO {
 		return addr;
 	}
 	public void setAddr(String addr) {
-		this.addr = addr;
+		this.addr = addr.replace(",", "<br>");
 	}
 	public String getTel() {
 		return tel;
 	}
 	public void setTel(String tel) {
-		this.tel = tel;
+		this.tel = tel.replaceAll(",","-");
 	}
 	public String getGender() {
 		return gender;

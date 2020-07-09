@@ -11,8 +11,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public boolean member_insert(MemberVO vo) {
-		// TODO Auto-generated method stub
-		return false;
+		return dao.member_insert(vo);
 	}
 
 	@Override
