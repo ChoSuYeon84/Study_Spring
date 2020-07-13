@@ -1,0 +1,94 @@
+공지글관리
+create table notice(
+id			number constraint notice_id_pk primary key,
+title		varchar2(300) not null,
+content		varchar2(4000) not null, -- 내용은 최대 4000까지 가능
+writer		varchar2(20) not null, -- 글을 작성한 사람의 id
+writedate	date default sysdate, --defalut:기본
+readcnt		number default 0,
+filename	varchar2(300),
+filepath	varchar2(300)
+);
+
+create sequence seq_notice
+start with 1 increment by 1;
+
+create or replace trigger trg_notice
+	before insert on notice
+	for each row
+begin
+	select seq_notice.nextval into :new.id from dual;
+end;
+/
+
+회원관리
+create table member(
+name	varchar2(20) not null,
+id		varchar2(20) constraint member_id_pk primary key,
+pw		varchar2(20) not null,
+age		number,
+gender	varchar2(3) default '남' not null,
+birth	date,
+post	varchar2(7),
+addr	varchar2(50),
+email	varchar2(50) not null,
+tel		varchar2(20),
+admin	varchar2(1) default 'N'
+);
+
+관리자회원정보저장
+
+
+alter table member
+add(gender varchar2(3) default '남' not null,
+    birth date,
+    post varchar2(7),
+    email varchar2(50),
+    admin varchar2(1) default 'N' );
+    
+update member
+set email = id||'@naver.com';
+
+alter table member
+modify (irum not null, pw not null, email not null);
+
+alter table member rename column irum to name;
+
+alter table member
+add constraint member_id_pk primary key(id);
+
+
+고객관리
+create table customer(
+	 id		number constraint customer_id_pk primary key,
+	 name	varchar2(50) not null,
+	 gender	varchar2(3) not null,
+	 email	varchar2(50),
+	 phone	varchar2(13)
+);
+
+create SEQUENCE seq_customer start with 1 INCREMENT by 1;
+
+insert into customer(id, name, gender)
+values(seq_customer.nextval,'홍길동','남');
+
+insert into customer(name, gender)
+values ('심청이', '여');
+
+select * from customer;
+
+commit;
+
+--trigger
+create or replace trigger trg_customer
+    before insert on customer
+    for each row
+begin
+    select seq_customer.nextval into :new.id from dual;
+end;
+/
+
+
+mvnrepository.com 사이트 접속
+
+DBCP(DataBase Connection Pool)
