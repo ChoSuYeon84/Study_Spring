@@ -1,13 +1,16 @@
 package com.hanul.iot;
 
+import java.io.File;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import common.CommonService;
@@ -21,7 +24,46 @@ public class NoticeController {
 	@Autowired private NoticeServiceImpl service;
 	@Autowired private CommonService common;
 	
+	//공지글 수정화면 요청
+	@RequestMapping("/modify.no")
+	public String medify(int id, Model model) {
+		//선택한 공지글 정보를 DB에서 조회한뒤 수정화면에 출력
+		model.addAttribute("vo", service.notice_detail(id));
+		return "notice/modify";
+	}
 	
+	//공지글 삭제처리 요청
+	@RequestMapping("/delete.no")
+	public String delete(int id, HttpSession session) {
+		//선택한 공지글에 첨부된 파일이 있다면 서버의 물리적 영역에서 해당 파일도 삭제한다.
+		NoticeVO vo = service.notice_detail(id);
+		if( vo.getFilepath() != null) {
+			File file = new File(session.getServletContext().getRealPath("resources")+vo.getFilepath());
+			if ( file.exists() ) file.delete();
+		}
+		
+		//선택한 공지글을 DB에서 삭제한 후 목록화면으로 연결
+		service.notice_delete(id);
+		return "redirect:list.no";
+	}
+	
+	//첨부파일 다운로드 요청
+	@ResponseBody @RequestMapping("/download.no")
+	public void download(int id, HttpSession session, HttpServletResponse response) {
+		NoticeVO vo = service.notice_detail(id);
+		common.download(vo.getFilename(), vo.getFilepath(), session, response);
+	}
+	
+	//공지글 상세화면 요청
+	@RequestMapping("/detail.no")
+	public String detail(int id, Model model) {
+		//선택한 공지글에 대한 조회수 증가 처리
+		service.notice_read(id);
+		//선택한 공지글 정보를 DB에서 조회한뒤 상세화면에 출력
+		model.addAttribute("vo", service.notice_detail(id));
+		model.addAttribute("crlf", "\r\n");
+		return "notice/detail";
+	}
 	
 	//신규 공지글 저장처리 요청
 	@RequestMapping("/insert.no")

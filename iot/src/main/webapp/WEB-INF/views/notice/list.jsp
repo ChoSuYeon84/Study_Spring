@@ -29,10 +29,10 @@
 </tr>
 <c:forEach items="${list }" var="vo">
 <tr><td>${vo.no}</td>
-	<td class='left'>${vo.title }</td>
-	<td>${vo.writer }</td>
+	<td class='left'><a href='detail.no?id=${vo.id}'>${vo.title }</a></td>
+	<td>${vo.name }</td>
 	<td>${vo.writedate }</td>
-	<td></td>
+	<td>${ empty vo.filename ? '' : '<img class="file-img" src="img/attach.png"/>' }</td>
 </tr>
 </c:forEach>
 </table>

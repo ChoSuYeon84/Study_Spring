@@ -9,4 +9,5 @@ public interface NoticeService {
 	NoticeVO notice_detail(int id);	//공지글 상세조회
 	void notice_update(NoticeVO vo); 	//공지글 변경저장
 	void notice_delete(int id);			//공지글 삭제
+	void notice_read(int id);	//조회수증가처리
 }

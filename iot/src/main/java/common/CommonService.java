@@ -1,11 +1,15 @@
 package common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.mail.EmailAttachment;
@@ -13,10 +17,35 @@ import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CommonService {
+	//첨부파일 다운로드 처리  (세션은 물리적 위치를 찾기 위해 필요한것, 클라이언트쪽에 응답하기 위해 리스폰스가 필요)
+	public File download(String filename, String filepath, HttpSession session, HttpServletResponse response) {
+		File file = new File( session.getServletContext().getRealPath("resources")+ filepath);
+		String mime = session.getServletContext().getMimeType(filename);	//마인타입(확장자에해당하는)을 뽑을수 있음
+		
+		response.setContentType(mime);
+		
+		try {
+			filename = URLEncoder.encode(filename, "utf-8").replaceAll("\\+", "%20");	//파일명에 공백이 +가 되는 것을 방지하기 위해 공백을 뜻하는 아스키문자열 20으로 처리
+					
+					;
+			response.setHeader("content-disposition", "attachment; filename="+ filename);	//첨부파일의 헤더정보
+			
+			ServletOutputStream out = response.getOutputStream();
+			FileCopyUtils.copy(new FileInputStream(file), out);	//출력을 내보냄
+			out.flush();
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return file;
+	}
+	
+	
 	//첨부파일업로드처리
 	public String upload(String category, MultipartFile file, HttpSession session) {
 		//서버의 업로드할 물리적 위치

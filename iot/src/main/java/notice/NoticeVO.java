@@ -4,9 +4,15 @@ import java.sql.Date;
 
 public class NoticeVO {
 	private int id, readcnt, no;
-	private String title, content, writer, filename, filepath;
+	private String title, content, writer, filename, filepath, name;
 	private Date writedate;
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public int getNo() {
 		return no;
 	}
