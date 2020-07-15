@@ -27,8 +27,7 @@ public class NoticeDAO implements NoticeService {
 
 	@Override
 	public void notice_update(NoticeVO vo) {
-		// TODO Auto-generated method stub
-
+		sql.update("notice.mapper.update", vo);
 	}
 
 	@Override
@@ -40,6 +39,13 @@ public class NoticeDAO implements NoticeService {
 	@Override
 	public void notice_read(int id) {
 		sql.update("notice.mapper.read", id);
+	}
+
+	@Override
+	public NoticePage notice_list(NoticePage page) {
+		page.setTotalList((Integer)sql.selectOne("notice.mapper.totalList"));	//총 건수를 알아와야함
+		page.setList( sql.selectList("notice.mapper.list", page)); //쿼리문에 파라미터를 여러건 보낼수 없으므로 엔드리스트, 비긴리스트를 두개 보낼수 없으므로 page를 보냄
+		return page;
 	}
 
 }

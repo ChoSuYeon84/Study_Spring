@@ -21,6 +21,11 @@ begin
 end;
 /
 
+insert into notice( title, content, writer, writedate, filepath, filename )
+select title, content, writer, writedate, filepath, filename from notice;
+
+commit;
+
 회원관리
 create table member(
 name	varchar2(20) not null,

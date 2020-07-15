@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import common.CommonService;
 import member.MemberServiceImpl;
 import member.MemberVO;
+import notice.NoticePage;
 import notice.NoticeServiceImpl;
 import notice.NoticeVO;
 
@@ -23,6 +25,45 @@ import notice.NoticeVO;
 public class NoticeController {
 	@Autowired private NoticeServiceImpl service;
 	@Autowired private CommonService common;
+	
+	//공지글 수정처리 요청
+	@RequestMapping("/update.no")
+	public String update(HttpSession session, String attach, NoticeVO vo, MultipartFile file) {
+		
+		//원래 공지글의 첨부파일 관련정보를 조회
+		NoticeVO notice = service.notice_detail(vo.getId());
+		String uuid = session.getServletContext().getRealPath("resources") + notice.getFilepath();
+		
+		//파일을 첨부한 경우 - 없었는데 첨부 / 있던 파일을 바꿔서 첨부
+		if( !file.isEmpty() ) {
+			vo.setFilename( file.getOriginalFilename() );
+			vo.setFilepath( common.upload("notice", file, session));
+			
+			//원래 있던 첨부파일은 서버에서 삭제
+			if( notice.getFilename() != null ) {
+				File f = new File(uuid);
+				if( f.exists() ) f.delete();
+			}
+			
+		}else {
+			//원래 있던 첨부파일을 삭제하거나 원래부터 첨부파일이 없었던 경우
+			if( attach.isEmpty() ) {
+				//원래 있던 첨부파일은 서버에서 삭제
+				if( notice.getFilename() != null ) {
+					File f = new File(uuid);
+					if( f.exists() ) f.delete();
+				}	
+			}else {
+			//원래있던 첨부파일을 그대로 사용하는 경우
+				vo.setFilename( notice.getFilename() );
+				vo.setFilepath( notice.getFilepath() );
+			}
+		}
+		
+		//화면에서 변경입력한 정보를 DB에 저장한 후 상세화면으로 연결
+			service.notice_update(vo);
+		return "redirect:detail.no?id="+vo.getId();
+	}
 	
 	//공지글 수정화면 요청
 	@RequestMapping("/modify.no")
@@ -88,10 +129,11 @@ public class NoticeController {
 	}
 	
 	@Autowired private MemberServiceImpl member;
+	@Autowired private NoticePage page;
 	
 	//공지사항 목록화면 요청
 	@RequestMapping("/list.no")
-	public String list(Model model, HttpSession session) {
+	public String list(Model model, HttpSession session, @RequestParam(defaultValue = "1") int curPage) {	//defaultValue = "1": 공지사항 페이지 클릭시 기본이 첫페이지가 되게함 / curPage : 내가 누른 페이지가 됨
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("id", "admin");
 		map.put("pw", "manager");
@@ -99,7 +141,8 @@ public class NoticeController {
 		session.setAttribute("category", "no");
 		
 		//DB에서 공지글 목록을 조회해와 목록화면에 출력
-		model.addAttribute("list", service.notice_list());
+		page.setCurPage(curPage);	//현재 페이지를 notice 페이지에 담고
+		model.addAttribute("page", service.notice_list(page)); //그 주소를 담아둠
 		
 		return "notice/list";
 	}

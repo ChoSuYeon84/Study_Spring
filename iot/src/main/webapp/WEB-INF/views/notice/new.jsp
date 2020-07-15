@@ -15,7 +15,7 @@
 <form action="insert.no" method="post" enctype='multipart/form-data' >
 <table>
 <tr><th class="w-px160">제목</th>
-	<td><input type="text" class="need" name="title"/></td>
+	<td><input type="text"  class="need" name="title"/></td>
 </tr>
 <tr><th>작성자</th>
 	<td>${login_info.name }</td>
@@ -39,7 +39,7 @@
 <a class="btn-fill" onclick="if( necessary() ) $('form').submit()">저장</a>
 <a class="btn-empty" href='list.no'>취소</a>
 </div>
-<script type="text/javascript" src="js/need_check.js"></script>
+<script type="text/javascript" src="js/need_check.js?v=<%=new java.util.Date().getTime()%>"></script>
 <script type="text/javascript" src="js/file_attach.js"></script>
 </body>
 </html>
