@@ -8,7 +8,22 @@ writedate	date default sysdate, --defalut:기본
 readcnt		number default 0,
 filename	varchar2(300),
 filepath	varchar2(300)
+root		number,				--원글의 id와 같음 / 원글의 root
+step		number default 0,	--답글 (같은 답글끼리의 출력순서를 위한 필드)	/ 원글 step+1 but 원글의 step보다 더 큰 step을 가진 글에 대해서는 +1을 먼저한다.
+indent		number default 0 	--들여쓰기 (원글의 답글인지 답글의 답글인지를 구분하기위한 들여쓰기) / 원글 indent+1
 );
+
+select id, root, step, indent from notice;
+
+update notice set root=id;
+commit;
+
+alter table notice
+add (root		number,
+step		number default 0,	
+indent		number default 0);
+
+alter trigger trg_notice disable;
 
 create sequence seq_notice
 start with 1 increment by 1;

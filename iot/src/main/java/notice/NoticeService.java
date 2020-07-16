@@ -11,4 +11,5 @@ public interface NoticeService {
 	void notice_update(NoticeVO vo); 	//공지글 변경저장
 	void notice_delete(int id);			//공지글 삭제
 	void notice_read(int id);	//조회수증가처리
+	void notice_reply_insert(NoticeVO vo);	//답글저장
 }

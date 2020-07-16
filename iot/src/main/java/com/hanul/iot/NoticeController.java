@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,30 @@ import notice.NoticeVO;
 public class NoticeController {
 	@Autowired private NoticeServiceImpl service;
 	@Autowired private CommonService common;
+	
+	//공지글 신규답글저장 처리요청
+	@RequestMapping("/reply_insert.no")
+	public String reply_insert(NoticeVO vo, MultipartFile file, HttpSession session) {
+		if( !file.isEmpty()) {
+			vo.setFilename(file.getOriginalFilename());
+			vo.setFilepath(common.upload("notice", file, session));
+		}
+		
+		vo.setWriter( ((MemberVO) session.getAttribute("login_info")).getId() );
+		
+		//화면에서 입력한 정보를 DB에 저장한 후 목록화면으로 연결
+		service.notice_reply_insert(vo);
+		return "redirect:list.no";
+	}
+	
+	
+	//공지글 답글쓰기 화면 요청
+	@RequestMapping("/reply.no")
+	public String reply(Model model, int id) {
+		//원글의 정보를 답글쓰기 화면에서 알 수 있도록 한다.
+		model.addAttribute("vo", service.notice_detail(id));
+		return "notice/reply";
+	}
 	
 	//공지글 수정처리 요청
 	@RequestMapping("/update.no")

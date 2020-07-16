@@ -38,6 +38,7 @@ public class PageVO {
 		//총블럭수= 총페이지수/블럭당보여질페이지수
 		//154/10 -> 15..4 -> 16블럭
 		totalBlock = totalPage / blockPage;
+		if( totalPage % blockPage > 0 ) ++totalBlock;
 		
 		//시작/끝 목록번호
 		//끝목록번호 : 1536, 1526, 1516,
@@ -53,7 +54,7 @@ public class PageVO {
 		//끝 페이지번호 : 10, 20, 30, ...
 		endPage = curBlock * blockPage;
 		//시작블럭번호 : 1, 11, 21, ...
-		beginPage = endList - (blockPage-1);
+		beginPage = endPage - (blockPage-1);
 		
 		//1536건 -> 1페이지 : 글번호-1536~1527, 블럭-1~10
 		//		   154페이지 : 글번호-6~1, 블럭-151~154

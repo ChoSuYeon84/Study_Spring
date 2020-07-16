@@ -10,6 +10,8 @@
 <body>
 <h3>공지사항</h3>
 
+<form method="post" action="list.no" id="list">
+<input type="hidden" name="curPage" value="1"/>
 <div id="list-top">
 	<div>
 	<ul>
@@ -19,6 +21,7 @@
 	</ul>
 	</div>
 </div>
+</form>
 
 <table>
 <tr><th class="w-px60">번호</th>
@@ -42,5 +45,8 @@
 </tr>
 </c:forEach>
 </table>
+<div class="btnSet">
+	<jsp:include page="/WEB-INF/views/include/page.jsp"/>
+</div>
 </body>
 </html>
