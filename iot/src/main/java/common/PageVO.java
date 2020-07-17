@@ -11,7 +11,20 @@ public class PageVO {
 	private int curPage;	//현재페이지번호
 	private int beginList, endList;	//현재페이지의 시작/끝 목록번호
 	private int beginPage, endPage;	//현재 블럭의 시작/끝 페이지 번호
+	private String search, keyword;
 	
+	public String getSearch() {
+		return search;
+	}
+	public void setSearch(String search) {
+		this.search = search;
+	}
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 	public int getPageList() {
 		return pageList;
 	}

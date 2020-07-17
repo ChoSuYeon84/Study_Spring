@@ -64,6 +64,7 @@ table tr td label:not(:last-child) {margin-right: 20px;}
 .w-px160 {width: 160px}
 .w-px180 {width: 180px}
 .w-px200 {width: 200px}
+.w-px300 {width: 300px}
 
 .left{text-align: left}
 .right{text-align: right}
@@ -74,10 +75,13 @@ table tr td label:not(:last-child) {margin-right: 20px;}
 #list-top ul li * { vertical-align: middle;}
 ul {list-style: none;; padding: 0;}
 #list-top ul:last-child {float: right;}
+#list-top ul:first-child {float: left;}
+#list-top ul li:not(:first-child) {margin-left: 3px;}
 #list-top div { width: 100%; height: 32px;}
 
 input[name=title] {width:calc(100% - 14px)}
 textarea[name=content] {width: calc(100% - 6px); height: 150px; resize: none;}
+select {height: 32px;}
 
 .file-img { width: 18; height: 18px; cursor: pointer;}
 #attach-file, #delete-file { display: none; }

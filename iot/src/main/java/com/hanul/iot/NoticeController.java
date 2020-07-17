@@ -128,6 +128,7 @@ public class NoticeController {
 		//선택한 공지글 정보를 DB에서 조회한뒤 상세화면에 출력
 		model.addAttribute("vo", service.notice_detail(id));
 		model.addAttribute("crlf", "\r\n");
+		model.addAttribute("page", page);
 		return "notice/detail";
 	}
 	
@@ -158,7 +159,7 @@ public class NoticeController {
 	
 	//공지사항 목록화면 요청
 	@RequestMapping("/list.no")
-	public String list(Model model, HttpSession session, @RequestParam(defaultValue = "1") int curPage) {	//defaultValue = "1": 공지사항 페이지 클릭시 기본이 첫페이지가 되게함 / curPage : 내가 누른 페이지가 됨
+	public String list(Model model, HttpSession session, @RequestParam(defaultValue = "1") int curPage, String search, String keyword) {	//defaultValue = "1": 공지사항 페이지 클릭시 기본이 첫페이지가 되게함 / curPage : 내가 누른 페이지가 됨
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("id", "admin");
 		map.put("pw", "manager");
@@ -166,8 +167,10 @@ public class NoticeController {
 		session.setAttribute("category", "no");
 		
 		//DB에서 공지글 목록을 조회해와 목록화면에 출력
-		page.setCurPage(curPage);	//현재 페이지를 notice 페이지에 담고
-		model.addAttribute("page", service.notice_list(page)); //그 주소를 담아둠
+		page.setCurPage(curPage);	//1.현재 페이지를 notice 페이지에 담고
+		page.setSearch(search);		//2. 검색탭에서의 목록과(작성자 등)
+		page.setKeyword(keyword);	//2. 키워드를 담아둠
+		model.addAttribute("page", service.notice_list(page)); //1.그 주소를 담아둠
 		
 		return "notice/list";
 	}

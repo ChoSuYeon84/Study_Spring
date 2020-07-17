@@ -33,7 +33,7 @@
 </tr>
 </table>
 <div class="btnSet">
-<a class="btn-fill" href="list.no">목록으로</a>
+<a class="btn-fill" href="list.no?curPage=${page.curPage }&search${page.search}&keyword=${page.keyword}">목록으로</a>
 <!-- 관리자인 경우 수정/삭제 가능 -->
 <c:if test="${login_info.admin eq 'y' }">
 <a class="btn-fill" href="modify.no?id=${vo.id }">수정</a>

@@ -37,16 +37,35 @@ insert into notice (id, root, title, content, writer, filename, filepath)
 values (seq_notice.nextval, seq_notice.currval, #{title}, #{content}, #{writer}, #{filename, jdbcType=VARCHAR}, #{filepath, jdbcType=VARCHAR})
 </insert>
 
+<!-- 검색창에서 search(전체, 관리자, 제목, 내용 등)와 keyword(검색어) 를 가져오기 위함 -->
+<sql id="search_where">
+<if test="search == 'title' or search == 'content' ">
+where ${search} like '%' || #{keyword} || '%'
+</if>
+<if test = "search == 'writer'">
+where writer in (select id from member where name like '%' || #{keyword} || '%')
+</if>
+<if test="search == 'all'">
+where title like '%' || #{keyword} || '%'
+or content like '%' || #{keyword} || '%'
+or <include refid="search_writer"></include>
+</if>
+</sql>
+
+<sql id="search_writer">
+writer in (select id from member where name like '%' || #{keyword} || '%')
+</sql>
+
 <select id="list" resultType="notice.NoticeVO">
 select * from
 	(select rownum no, n.*, (select name from member m where m.id = writer) name from
-	(select * from notice order by root, step desc) n 
+	(select * from notice <include refid="search_where"/> order by root, step desc) n 
 	order by no desc) n
 where no between #{beginList} and #{endList}
 </select>
 
 <select id="totalList" resultType="integer">
-select count(*) from notice
+select count(*) from notice <include refid="search_where"/>
 </select>
 
 </mapper>

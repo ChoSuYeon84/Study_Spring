@@ -15,6 +15,17 @@
 <div id="list-top">
 	<div>
 	<ul>
+		<li><select name="search" class="w-px80">
+				<option value="all" ${page.search eq 'all' ? 'selected' : '' }>전체</option>
+				<option value="title" ${page.search eq 'title' ? 'selected' : '' }>제목</option>
+				<option value="content" ${page.search eq 'content' ? 'selected' : '' }>내용</option>
+				<option value="writer" ${page.search eq 'writer' ? 'selected' : '' }>작성자</option>
+			</select>
+		</li>
+		<li><input value="${page.keyword }" type="text" name="keyword" class="w-px300"/></li>
+		<li><a class="btn-fill" onclick="$('form').submit()">검색</a></li>
+	</ul>
+	<ul>
 	<c:if test="${login_info.admin eq 'y' }">
 		<li><a class="btn-fill" href="new.no">글쓰기</a></li>
 	</c:if>
@@ -32,7 +43,11 @@
 </tr>
 <c:forEach items="${page.list }" var="vo">
 <tr><td>${vo.no}</td>
-	<td class='left'><a title="${vo.content}" href='detail.no?id=${vo.id}'>${vo.title }</a></td>
+	<td class='left'>
+	<c:forEach var="i" begin="1" end="${vo.indent }">
+	${i eq vo.indent ? "<img src='img/re.gif'/>" : '&nbsp;&nbsp;' }
+	</c:forEach>
+	<a title="${vo.content}" href='detail.no?id=${vo.id}&curPage=${page.curPage}'>${vo.title }</a></td>
 	<td>${vo.name }</td>
 	<td>${vo.writedate }</td>
 	<td><c:if test="${! empty vo.filename }">
