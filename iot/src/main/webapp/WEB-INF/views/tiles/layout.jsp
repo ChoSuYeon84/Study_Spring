@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${category eq 'cu'? '고객관리': (category eq 'no' ? '공지사항 ' : (category eq 'bo' ? '방명록' : (category eq 'da' ? '공공데이터' : (category eq 'join' ? '회원가입 ' : '')))) }${empty category ? '' : ' : ' }IOT</title>
+<title>${category eq 'cu'? '고객관리': (category eq 'no' ? '공지사항 ' : (category eq 'bo' ? '방명록' : (category eq 'da' ? '공공데이터' : (category eq 'join' ? '회원가입 ' : (category eq 'qa' ? 'QnA' : ''))))) }${empty category ? '' : ' : ' }IOT</title>
 <link rel="icon" type="image/x-icon" href="img/hanul.ico">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js"></script>
 </head>

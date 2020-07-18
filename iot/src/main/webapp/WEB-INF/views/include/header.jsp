@@ -24,6 +24,7 @@ header ul li input {display: block;}
 		<li><a href="list.no" ${category eq 'no' ? "class='active'" : ''}>공지사항</a></li>
 		<li><a href="list.bo" ${category eq 'bo' ? "class='active'" : ''}>방명록</a></li>
 		<li><a href="list.da" ${category eq 'da' ? "class='active'" : ''}>공공데이터</a></li>
+		<li><a href="list.qa" ${category eq 'qa' ? "class='active'" : ''}>QnA</a></li>
 	</ul>
 	</div>
 	
