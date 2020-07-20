@@ -17,7 +17,7 @@ end}
 
 
 <update id="update">
-update notice set title= #{title}, content=#{content}, filename=#{filename, jdbcType=VARCHAR}, filepath=#{filepath, jdbcType=VARCHAR} where id=#{id}
+update notice set title=#{title}, content=#{content}, filename=#{filename, jdbcType=VARCHAR}, filepath=#{filepath, jdbcType=VARCHAR} where id=#{id}
 </update>
 
 <delete id="delete">

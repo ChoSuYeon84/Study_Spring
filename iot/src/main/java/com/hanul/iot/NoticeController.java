@@ -92,7 +92,7 @@ public class NoticeController {
 	
 	//공지글 수정화면 요청
 	@RequestMapping("/modify.no")
-	public String medify(int id, Model model) {
+	public String modify(int id, Model model) {
 		//선택한 공지글 정보를 DB에서 조회한뒤 수정화면에 출력
 		model.addAttribute("vo", service.notice_detail(id));
 		return "notice/modify";

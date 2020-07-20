@@ -26,8 +26,7 @@ public class QnaServiceImp implements QnaService {
 
 	@Override
 	public void qna_update(QnaVO vo) {
-		// TODO Auto-generated method stub
-
+		dao.qna_update(vo);
 	}
 
 	@Override
@@ -38,6 +37,11 @@ public class QnaServiceImp implements QnaService {
 	@Override
 	public void qna_read(int id) {
 		dao.qna_read(id);
+	}
+
+	@Override
+	public QnaPage qna_list(QnaPage page) {
+		return dao.qna_list(page);
 	}
 
 }
