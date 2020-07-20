@@ -11,8 +11,7 @@ public class QnaServiceImp implements QnaService {
 	
 	@Override
 	public void qna_insert(QnaVO vo) {
-		// TODO Auto-generated method stub
-
+		dao.qna_insert(vo);
 	}
 
 	@Override
@@ -22,8 +21,7 @@ public class QnaServiceImp implements QnaService {
 
 	@Override
 	public QnaVO qna_detail(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.qna_detail(id);
 	}
 
 	@Override
@@ -34,14 +32,12 @@ public class QnaServiceImp implements QnaService {
 
 	@Override
 	public void qna_delete(int id) {
-		// TODO Auto-generated method stub
-
+		dao.qna_delete(id);
 	}
 
 	@Override
 	public void qna_read(int id) {
-		// TODO Auto-generated method stub
-
+		dao.qna_read(id);
 	}
 
 }

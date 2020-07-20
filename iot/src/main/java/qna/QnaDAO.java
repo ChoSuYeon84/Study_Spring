@@ -12,7 +12,7 @@ public class QnaDAO implements QnaService {
 
 	@Override
 	public void qna_insert(QnaVO vo) {
-		// TODO Auto-generated method stub
+		sql.insert("qna.mapper.insert", vo);
 
 	}
 
@@ -23,8 +23,7 @@ public class QnaDAO implements QnaService {
 
 	@Override
 	public QnaVO qna_detail(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return sql.selectOne("qna.mapper.detail", id);
 	}
 
 	@Override
@@ -35,14 +34,12 @@ public class QnaDAO implements QnaService {
 
 	@Override
 	public void qna_delete(int id) {
-		// TODO Auto-generated method stub
-
+		sql.delete("qna.mapper.delete", id);
 	}
 
 	@Override
 	public void qna_read(int id) {
-		// TODO Auto-generated method stub
-
+		sql.update("qna.mapper.read", id);
 	}
 
 }
