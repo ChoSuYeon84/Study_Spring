@@ -44,4 +44,9 @@ public class QnaServiceImp implements QnaService {
 		return dao.qna_list(page);
 	}
 
+	@Override
+	public void qna_reply_insert(QnaVO vo) {
+		dao.qna_reply_insert(vo);
+	}
+
 }

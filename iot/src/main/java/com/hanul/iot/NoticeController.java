@@ -47,6 +47,7 @@ public class NoticeController {
 	@RequestMapping("/reply.no")
 	public String reply(Model model, int id) {
 		//원글의 정보를 답글쓰기 화면에서 알 수 있도록 한다.
+		model.addAttribute("page", page);
 		model.addAttribute("vo", service.notice_detail(id));
 		return "notice/reply";
 	}

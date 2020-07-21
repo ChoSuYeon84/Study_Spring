@@ -33,10 +33,15 @@
 </tr>
 </table>
 <div class="btnSet">
-<a class="btn-fill" href="list.qa">목록으로</a>
+<a class="btn-fill" href="list.qa?curPage=${page.curPage }&search=${page.search}&keyword=${page.keyword}">목록으로</a>
+<!-- 관리자인 경우 수정/삭제 가능 -->
 <c:if test="${login_info.admin eq 'y' }">
 <a class="btn-fill" href="modify.qa?id=${vo.id }">수정</a>
 <a class="btn-fill" onclick='if(confirm("정말 삭제?")) {href="delete.qa?id=${vo.id }"}'>삭제</a>
+</c:if>
+<!-- 로그인이 된 경우 답글쓰기 가능 -->
+<c:if test="${!empty login_info }">
+<a class='btn-fill' href='reply.qa?id=${vo.id }'>답글쓰기</a>
 </c:if>
 </div>
 </body>

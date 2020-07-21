@@ -43,9 +43,15 @@ public class QnaDAO implements QnaService {
 
 	@Override
 	public QnaPage qna_list(QnaPage page) {
-		page.setTotalList((Integer)sql.selectOne("qna.mapper.totalList"));	//총 건수를 알아와야함
+		page.setTotalList((Integer)sql.selectOne("qna.mapper.totalList", page));	//총 건수를 알아와야함
 		page.setList( sql.selectList("qna.mapper.list", page)); //쿼리문에 파라미터를 여러건 보낼수 없으므로 엔드리스트, 비긴리스트를 두개 보낼수 없으므로 page를 보냄
 		return page;
 	}
 
+	@Override
+	public void qna_reply_insert(QnaVO vo) {
+		sql.insert("qna.mapper.reply_insert", vo);
+	}
+
+	
 }

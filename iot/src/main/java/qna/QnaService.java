@@ -11,4 +11,5 @@ public interface QnaService {
 	void qna_update(QnaVO vo);	//qna글 변경저장
 	void qna_delete(int id);	//qna글 삭제
 	void qna_read(int id);		//조회수 증가 처리
+	void qna_reply_insert(QnaVO vo);	//답글저장
 }

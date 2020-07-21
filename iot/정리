@@ -40,6 +40,10 @@ select title, content, writer from qna;
 
 commit;
 
+alter table qna
+add (root		number,
+step		number default 0,	
+indent		number default 0);
 
 
 공지글관리

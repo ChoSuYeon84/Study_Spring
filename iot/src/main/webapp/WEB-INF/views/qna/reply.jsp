@@ -8,7 +8,7 @@
 </head>
 <body>
 <h3>답글쓰기</h3>
-<form action="reply_insert.no" method="post" enctype='multipart/form-data' >
+<form action="reply_insert.qa" method="post" enctype='multipart/form-data' >
 <input type="hidden" name='root' value="${vo.root }"/>
 <input type="hidden" name='step' value="${vo.step }"/>
 <input type="hidden" name='indent' value="${vo.indent }"/>
@@ -36,7 +36,7 @@
 </form>
 <div class="btnSet">
 <a class="btn-fill" onclick="if( necessary() ) $('form').submit()">저장</a>
-<a class="btn-empty" href='list.no?curPage=${page.curPage }&search=${page.search}&keyword=${page.keyword}'>취소</a>
+<a class="btn-empty" href='list.qa?curPage=${page.curPage }&search=${page.search}&keyword=${page.keyword}'>취소</a>
 </div>
 <script type="text/javascript" src="js/need_check.js?v=<%=new java.util.Date().getTime()%>"></script>
 <script type="text/javascript" src="js/file_attach.js"></script>

@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="qna.mapper">
 
+<insert id="reply_insert">
+<!-- 원글의 root와 root가 같고, 원글의 step보다 더 큰 step을 가진 글에 대해서는 +1 먼저 한다. > 표현을 위해 CDATA처리 -->
+<![CDATA[
+{call declare begin
+update qna set step = step+1 where root=#{root} and step > #{step}; 
+
+insert into qna (id, root, title, content, writer, step, indent, filename, filepath)
+values (seq_qna.nextval, #{root}, #{title}, #{content}, #{writer}
+		, #{step}+1, #{indent}+1, #{filename, jdbcType=VARCHAR}, #{filepath, jdbcType=VARCHAR});
+end}
+]]>
+</insert>
+
 <update id="update">
 update qna set title=#{title}, content=#{content}, filename=#{filename, jdbcType=VARCHAR}, filepath=#{filepath, jdbcType=VARCHAR} where id=#{id}
 </update>
@@ -19,20 +32,38 @@ select q.*, (select name from member m where m.id = q.writer) name from qna q wh
 </select>
 
 <insert id="insert">
-insert into qna (title, content, writer, filename, filepath)
-values (#{title}, #{content}, #{writer}, #{filename, jdbcType=VARCHAR}, #{filepath, jdbcType=VARCHAR})
+insert into qna (id, root, title, content, writer, filename, filepath)
+values (seq_qna.nextval, seq_qna.currval, #{title}, #{content}, #{writer}, #{filename, jdbcType=VARCHAR}, #{filepath, jdbcType=VARCHAR})
 </insert>
+
+<sql id="search_where">
+<if test="search == 'title' or search == 'content' ">
+where ${search} like '%' || #{keyword} || '%'
+</if>
+<if test = "search == 'writer'">
+where writer in (select id from member where name like '%' || #{keyword} || '%')
+</if>
+<if test="search == 'all'">
+where title like '%' || #{keyword} || '%'
+or content like '%' || #{keyword} || '%'
+or <include refid="search_writer"></include>
+</if>
+</sql>
+
+<sql id="search_writer">
+writer in (select id from member where name like '%' || #{keyword} || '%')
+</sql>
 
 <select id="list" resultType="qna.QnaVO">
 select * from
 	(select rownum no, n.*, (select name from member m where m.id = writer) name from
-	(select * from qna order by id) n 
+	(select * from qna <include refid="search_where"/> order by root, step desc) n 
 	order by no desc) n
 where no between #{beginList} and #{endList}
 </select>
 
 <select id="totalList" resultType="integer">
-select count(*) from qna
+select count(*) from qna <include refid="search_where"/>
 </select>
 
 </mapper>

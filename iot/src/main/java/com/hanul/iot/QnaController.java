@@ -26,6 +26,31 @@ public class QnaController {
 	@Autowired private QnaServiceImp service;
 	@Autowired private CommonService common;
 	
+	//문의글 신규 답글저장 처리요청
+	@RequestMapping("/reply_insert.qa")
+	public String reply_insert(QnaVO vo, MultipartFile file, HttpSession session) {
+		if( !file.isEmpty()) {
+			vo.setFilename(file.getOriginalFilename());
+			vo.setFilepath(common.upload("qna", file, session));
+		}
+		
+		vo.setWriter( ((MemberVO) session.getAttribute("login_info")).getId() );
+		
+		//화면에서 입력한 정보를 DB에 저장한 후 목록화면으로 연결
+		service.qna_reply_insert(vo);
+		return "redirect:list.qa";
+	}
+	
+	
+	//문의글 답글쓰기 화면 요청
+	@RequestMapping("/reply.qa")
+	public String reply(Model model, int id) {
+		//원글의 정보를 답글쓰기 화면에서 알 수 있도록 한다.
+		model.addAttribute("page", page);
+		model.addAttribute("vo", service.qna_detail(id));
+		return "qna/reply";
+	}
+	
 	//문의글 수정처리 요청
 	@RequestMapping("/update.qa")
 	public String update(HttpSession session, String attach, QnaVO vo, MultipartFile file) {
@@ -104,6 +129,7 @@ public class QnaController {
 		//선택한 문의글 정보를 DB에서 조회한 뒤 상세화면에 출력
 		model.addAttribute("vo", service.qna_detail(id));
 		model.addAttribute("crlf", "\r\n");
+		model.addAttribute("page", page);
 		return "qna/detail";
 	}
 	
@@ -135,7 +161,7 @@ public class QnaController {
 	@Autowired private QnaPage page;
 	//QnA 목록화면 요청
 	@RequestMapping("/list.qa")
-	public String list(Model model, HttpSession session, @RequestParam(defaultValue = "1") int curPage) {//defaultValue = "1": 공지사항 페이지 클릭시 기본이 첫페이지가 되게함 / curPage : 내가 누른 페이지가 됨
+	public String list(Model model, HttpSession session, @RequestParam(defaultValue = "1") int curPage, String search, String keyword) {//defaultValue = "1": 공지사항 페이지 클릭시 기본이 첫페이지가 되게함 / curPage : 내가 누른 페이지가 됨
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("id", "admin");
@@ -146,6 +172,8 @@ public class QnaController {
 
 		//DB에서 공지글 목록을 조회해와 목록화면에 출력
 		page.setCurPage(curPage);	//현재 페이지를 qna 페이지에 담고
+		page.setSearch(search);		//2. 검색탭에서의 목록과(작성자 등)
+		page.setKeyword(keyword);	//2. 키워드를 담아둠
 		model.addAttribute("page", service.qna_list(page)); //그 주소를 담아둠
 		
 		return "qna/list";
