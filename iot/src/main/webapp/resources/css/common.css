@@ -85,3 +85,15 @@ select {height: 32px;}
 
 .file-img { width: 18; height: 18px; cursor: pointer;}
 #attach-file, #delete-file { display: none; }
+
+ul.grid { width: 80%; margin: 0 10%; }
+.grid li { float: left; width: 19%; height: 150px; border: 1px solid gray; box-sizing: border-box;}
+.grid li:not(:nth-child(5n)) {margin: 0 1.25% 20px 0}
+.grid li div { text-align: left; padding: 10px; }
+.grid li div:nth-child(1) { 
+	height: 60px;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp:3;	
+}
+.grid li div:nth-child(2) { padding: 0 10px;}

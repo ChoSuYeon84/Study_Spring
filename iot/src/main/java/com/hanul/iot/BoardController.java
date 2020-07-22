@@ -44,12 +44,16 @@ public class BoardController {
 	
 	//방명록 목록화면 요청
 	@RequestMapping("/list.bo")
-	public String list(HttpSession session, Model model, @RequestParam(defaultValue = "1") int curPage, String search, String keyword) {
+	public String list(HttpSession session, Model model, @RequestParam(defaultValue = "1") int curPage, 
+			String search, String keyword, @RequestParam(defaultValue = "list") String viewType,
+			@RequestParam(defaultValue = "10") int pageList) {
 		//DB에서 방명록 정보를 조회해와 목록화면에 출력
 		session.setAttribute("category", "bo");
 		page.setCurPage(curPage);
 		page.setSearch(search);
 		page.setKeyword(keyword);
+		page.setViewType(viewType);
+		page.setPageList(pageList);
 		model.addAttribute("page", service.board_list(page));
 		
 		return "board/list";

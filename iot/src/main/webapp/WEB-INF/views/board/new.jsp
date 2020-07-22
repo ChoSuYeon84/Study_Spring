@@ -39,6 +39,10 @@
 <a class="btn-empty" href="list.bo">취소</a>
 </div>
 <script type="text/javascript">
+$('#delete-file').on('click', function(){
+	$('#preview').html('');
+});
+
 $('#attach-file').on('change', function(){
 	var attach = this.files[0];
 	if ( attach ){
@@ -51,7 +55,7 @@ $('#attach-file').on('change', function(){
 				$('#preview-img').attr('src', e.target.result); // html태그 중 id 가 preview-img 인 태그에 src 속성 값을 읽은 파일로 변경 ( src = "파일에서 읽은 값 즉 파일")
 			}
 			reader.readAsDataURL(attach);
-		}
+		} else $('#preview').html('');
 
 	}
 });

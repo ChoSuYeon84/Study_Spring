@@ -15,7 +15,7 @@ values (#{title}, #{content}, #{writer}, #{filename, jdbcType=VARCHAR}, #{filepa
 	where <include refid="writer"/>
 	</if>
 	<if test="search == 'all'">
-	where ${search} like '%' || #{keyword} || '%'
+	where title like '%' || #{keyword} || '%'
 	or content like '%' || #{keyword} || '%'
 	or <include refid="writer"/>
 	</if>
