@@ -1,0 +1,48 @@
+@charset "UTF-8";
+@font-face { 
+	font-family: 'paybooc-Bold'; 
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/paybooc-Bold.woff') format('woff'); 
+	font-weight: normal; 
+	font-style: normal; }
+
+* {
+	font-family: 'paybooc-Bold'; 
+}
+
+.w-pct60 {width: 60%}
+.w-pct70 {width: 70%}
+.w-pct80 {width: 80%}
+.w-px40 {width: 40px}
+.w-px60 {width: 60px}
+.w-px80 {width: 80px}
+.w-px100 {width: 100px}
+.w-px120 {width: 120px}
+.w-px140 {width: 140px}
+.w-px160 {width: 160px}
+.w-px180 {width: 180px}
+.w-px200 {width: 200px}
+.w-px300 {width: 300px}
+
+.my-info{
+	border: 1px solid #ccc;
+	overflow: hidden;
+	height: 120px;
+	
+}
+
+.my-btnSet {
+	margin-: 13px ;
+	padding: 5px 30px 10px;
+	clear: both;
+}
+
+a.mybtn-fill, a.mybtn-empty {
+	text-align: center;
+	padding: 5px 12px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	text-decoration: none !important;
+}
+
+a.mybtn-fill {background-color: #ccc}
+a.mybtn-empty {color: gray; margin: 2px; }
