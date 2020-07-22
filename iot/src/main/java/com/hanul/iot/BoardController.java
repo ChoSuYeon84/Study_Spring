@@ -7,14 +7,33 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import board.BoardPage;
 import board.BoardServiceImpl;
+import board.BoardVO;
+import common.CommonService;
+import member.MemberVO;
 
 @Controller
 public class BoardController {
 	@Autowired private BoardServiceImpl service;
 	@Autowired private BoardPage page;
+	@Autowired private CommonService common;
+	
+	//신규방명록 저장처리 요청
+	@RequestMapping("/insert.bo")
+	public String insert(BoardVO vo, MultipartFile file, HttpSession session) {
+		//화면에서 입력한 정보를 DB에 저장한 후 목록화면으로 연결
+		if( !file.isEmpty() ) {
+			vo.setFilename( file.getOriginalFilename() );
+			vo.setFilepath( common.upload("board", file, session));
+		}
+		
+		vo.setWriter( ((MemberVO)session.getAttribute("login_info")).getId() );
+		service.board_insert(vo);
+		return "redirect:list.bo";
+	}
 	
 	//방명록 신규 작성 화면 요청
 	@RequestMapping("/new.bo")

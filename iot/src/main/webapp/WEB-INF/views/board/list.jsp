@@ -36,12 +36,14 @@
 </form>
 <table>
 <tr><th class="w-px60">번호</th>
-	<th>제목</th><th class="w-px100">작성자</th>
-	<th class="w-px120">작성일자</th><th class="w-px60">첨부파일</th>
+	<th>제목</th>
+	<th class="w-px100">작성자</th>
+	<th class="w-px120">작성일자</th>
+	<th class="w-px60">첨부파일</th>
 </tr>
 <c:forEach items="${page.list }" var="vo">
 <tr><td>${vo.no }</td>
-	<td>${vo.title }</td>
+	<td class="left">${vo.title }</td>
 	<td>${vo.name }</td>
 	<td>${vo.writedate }</td>
 	<td><c:if test="${!empty vo.filename }">

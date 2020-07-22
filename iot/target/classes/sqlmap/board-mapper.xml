@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board.mapper">
 
+<insert id="insert">
+insert into board(title, content, writer, filename, filepath)
+values (#{title}, #{content}, #{writer}, #{filename, jdbcType=VARCHAR}, #{filepath, jdbcType=VARCHAR})
+</insert>
+
 <sql id="search">
 	<if test="search == 'title' or search == 'content'"> 
 	where ${search} like '%' || #{keyword} || '%'
