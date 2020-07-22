@@ -16,6 +16,13 @@ public class BoardController {
 	@Autowired private BoardServiceImpl service;
 	@Autowired private BoardPage page;
 	
+	//방명록 신규 작성 화면 요청
+	@RequestMapping("/new.bo")
+	public String board() {
+		//방명록 글쓰기화면으로 연결
+		return "board/new";
+	}
+	
 	//방명록 목록화면 요청
 	@RequestMapping("/list.bo")
 	public String list(HttpSession session, Model model, @RequestParam(defaultValue = "1") int curPage, String search, String keyword) {
