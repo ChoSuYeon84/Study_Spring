@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board.mapper">
+
+<sql id="search">
+	<if test="search == 'title' or search == 'content'"> 
+	where ${search} like '%' || #{keyword} || '%'
+	</if>
+	<if test="search == 'writer'">
+	where <include refid="writer"/>
+	</if>
+	<if test="search == 'all'">
+	where ${search} like '%' || #{keyword} || '%'
+	or content like '%' || #{keyword} || '%'
+	or <include refid="writer"/>
+	</if>
+</sql>
+<sql id="writer">
+writer in (select id from member where name like '%' || #{keyword} || '%')
+</sql>
+
+<select id ="list" resultType="board.BoardVO">
+select n.* , (select name from member where member.id=writer) name 
+from (select b.*, rownum no 
+	from (select * from board 
+		 <include refid="search"/> order by id) b
+	order by no desc) n
+where no between #{beginList} and #{endList}
+</select>
+
+<select id ="total" resultType="integer">
+select count(*) from board <include refid="search"/>
+</select>
+</mapper>
