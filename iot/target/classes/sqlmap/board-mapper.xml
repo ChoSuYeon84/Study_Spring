@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board.mapper">
+<update id="update">
+update board set title=#{title}, content=#{content}, filename=#{filename, jdbcType=VARCHAR}, filepath=#{filepath, jdbcType=VARCHAR}
+where id=#{id}
+</update>
 
 <select id="detail" resultType="board.BoardVO">
 select b.*, (select name from member m where m.id=b.writer) name from board b where id = #{id}

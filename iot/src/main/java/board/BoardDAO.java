@@ -34,8 +34,7 @@ public class BoardDAO implements BoardService {
 
 	@Override
 	public int board_update(BoardVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sql.update("board.mapper.update", vo);
 	}
 
 	@Override

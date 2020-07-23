@@ -30,7 +30,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int board_update(BoardVO vo) {
-		return 0;
+		return dao.board_update(vo);
 	}
 
 	@Override

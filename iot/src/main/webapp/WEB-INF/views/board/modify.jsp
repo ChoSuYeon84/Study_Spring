@@ -8,7 +8,7 @@
 </head>
 <body>
 <h3>방명록 수정</h3>
-<form method="get" action="update.bo">
+<form method="post" action="update.bo" enctype="multipart/form-data">
 <table>
 <tr><th class="w-px160">제목</th>
 	<td><input type="text" name="title" value="${vo.title }" class="need" title="제목"/></td>
@@ -30,7 +30,13 @@
 	</td>
 </tr>
 </table>
+<input type="hidden" name="attach"/>
+<input type="hidden" name="id" value="${vo.id }"/>
 </form>
+<div class="btnSet">
+<a class="btn-fill" onclick="if( necessary() ){ $('[name=attach]').val($('#file-name').text()); $('form').submit() }">저장</a>
+<a class="btn-empty" href="javascript:history.go(-1)">취소</a>
+</div>
 <script type="text/javascript">
 if(${!empty vo.filename}){
 	$("#delete-file").css("display", "inline");

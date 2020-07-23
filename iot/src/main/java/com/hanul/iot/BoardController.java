@@ -1,5 +1,7 @@
 package com.hanul.iot;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -22,6 +24,41 @@ public class BoardController {
 	@Autowired private BoardServiceImpl service;
 	@Autowired private BoardPage page;
 	@Autowired private CommonService common;
+	
+	//방명록 수정처리 요청
+	@RequestMapping("/update.bo")
+	public String update(BoardVO vo, MultipartFile file, HttpSession session, String attach, Model model) {
+		//화면에서 입력한 정보를 DB에 변경저장한 후 상세화면으로 연결
+		BoardVO board = service.board_detail(vo.getId());
+		String uuid = session.getServletContext().getRealPath("resources") + board.getFilepath();
+		//파일을 첨부한 경우 - 없었는데 새로 첨부, 있었는데 바꿔 첨부
+		if (! file.isEmpty()) {
+			vo.setFilename(file.getOriginalFilename());
+			vo.setFilepath(common.upload("board", file, session));
+			
+			if( board.getFilename() != null) {
+				File f = new File(uuid);
+				if( f.exists() ) f.delete();
+			}
+		} else {
+		//파일 첨부가 없는 경우 - if원래 없었고, 있었는데 삭제한 경우, else있었는데 그대로 사용하는경우
+			if( attach.isEmpty() ) {
+				if( board.getFilename() != null) { // 파일이 존재하면 삭제
+					File f = new File(uuid);
+					if( f.exists() ) f.delete();
+				}
+			} else {
+				vo.setFilename(board.getFilename());
+				vo.setFilepath(board.getFilepath());
+			}
+		}
+		service.board_update(vo);
+		
+		//return "redirect:detail.bo?id="+vo.getId();
+		model.addAttribute("url", "detail.bo");
+		model.addAttribute("id", vo.getId());
+		return "board/redirect";
+	}
 	
 	//방명록 수정화면 요청
 	@RequestMapping("/modify.bo")
