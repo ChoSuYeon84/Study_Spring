@@ -23,13 +23,12 @@ public class BoardDAO implements BoardService {
 
 	@Override
 	public BoardVO board_detail(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return sql.selectOne("board.mapper.detail", id);
 	}
 
 	@Override
 	public void board_read(int id) {
-		// TODO Auto-generated method stub
+		sql.update("board.mapper.read", id);
 
 	}
 
