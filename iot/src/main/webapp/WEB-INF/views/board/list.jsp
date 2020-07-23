@@ -9,12 +9,14 @@
 <style type="text/css">
 table { table-layout:fixed; }
 table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.grid li div span { float: right;}
 </style>
 </head>
 <body>
 <h3>방명록 목록</h3>
 <form id="list" method="post" action="list.bo">
 <input type="hidden" name="curPage" value="1"/>
+<input type="hidden" name="id"/>
 <div id="list-top">
 <div>
 	<ul>
@@ -63,7 +65,7 @@ table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </tr>
 <c:forEach items="${page.list }" var="vo">
 <tr><td>${vo.no }</td>
-	<td class="left">${vo.title }</td>
+	<td class="left"><a onclick='go_detail(${vo.id})'>${vo.title }</a></td>
 	<td>${vo.name }</td>
 	<td>${vo.writedate }</td>
 	<td><c:if test="${!empty vo.filename }">
@@ -78,9 +80,9 @@ table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 <c:if test="${page.viewType eq 'grid' }">
 <ul class='grid'>
 	<c:forEach items="${page.list }" var="vo">
-	<li><div>${vo.title }</div>
+	<li><div><a onclick='go_detail(${vo.id})'>${vo.title }</a></div>
 		<div>${vo.name }</div>
-		<div>${vo.writedate }</div>
+		<div>${vo.writedate }<span>${empty vo.filename ? '' : '<img src="img/attach.png" class="file-img" />' }</span></div>
 	</li>
 	</c:forEach>
 </ul>
@@ -91,9 +93,15 @@ table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 <jsp:include page="/WEB-INF/views/include/page.jsp"/>
 </div>
 <script type="text/javascript">
+function go_detail(id){
+	$('[name=id]').val(id);
+	$('form').attr('action', 'detail.bo');
+	$('form').submit();
+}
+
 $(function(){
 	$('#data-list ul').css('height', 
-		( $('.grid li').length < 5 ? 1 : $('.grid li').length/5 )	
+		( ( $('.grid li').length % 5 > 0 ? 1 : 0 ) + Math.floor( $('.grid li').length/5 ) )	
 		* $('.grid li').outerHeight(true) - 20);
 });
 </script>

@@ -91,9 +91,11 @@ ul.grid { width: 80%; margin: 0 10%; }
 .grid li:not(:nth-child(5n)) {margin: 0 1.25% 20px 0}
 .grid li div { text-align: left; padding: 10px; }
 .grid li div:nth-child(1) { 
-	height: 60px;
+	height: 60px; line-height : 23px;
 	overflow: hidden;
 	display: -webkit-box;
-	-webkit-line-clamp:3;	
+	-webkit-line-clamp: 3;	
+	-webkit-box-orient: vertical; /* 말줄임표시 */	
+	word-wrap: break-word; /* 영문여러줄 */
 }
 .grid li div:nth-child(2) { padding: 0 10px;}

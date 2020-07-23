@@ -21,6 +21,13 @@ public class BoardController {
 	@Autowired private BoardPage page;
 	@Autowired private CommonService common;
 	
+	//방명록 상세 화면 요청
+	@RequestMapping("/detail.bo")
+	public String detail() {
+		//선택한 방명록 글을 DB에서 조회해와 상세 화면에 출력
+		return "board/detail";
+	}
+	
 	//신규방명록 저장처리 요청
 	@RequestMapping("/insert.bo")
 	public String insert(BoardVO vo, MultipartFile file, HttpSession session) {
