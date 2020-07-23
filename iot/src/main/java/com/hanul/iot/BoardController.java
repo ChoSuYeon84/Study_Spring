@@ -23,6 +23,14 @@ public class BoardController {
 	@Autowired private BoardPage page;
 	@Autowired private CommonService common;
 	
+	//방명록 수정화면 요청
+	@RequestMapping("/modify.bo")
+	public String modify(int id, Model model) {
+		//선택한 방명록 글의 정보를 DB에서 조회해와 수정화면에 출력
+		model.addAttribute( "vo", service.board_detail(id) ); 
+		return "board/modify";
+	}
+	
 	//방명록 첨부파일 다운로드 요청
 	@ResponseBody @RequestMapping("/download.bo")
 	public void download(int id, HttpSession session, HttpServletResponse response) {

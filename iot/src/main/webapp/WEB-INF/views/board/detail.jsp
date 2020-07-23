@@ -7,6 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+table td{ word-break : break-all}
+</style>
 </head>
 <body>
 <h3>방명록 상세</h3>
@@ -28,5 +31,25 @@
 	</td>
 </tr>
 </table>
+<div class="btnSet">
+<a class="btn-fill" onclick="go_list()">목록으로</a>
+<c:if test="${login_info.admin eq 'y' or login_info.id eq vo.writer }"> <!-- 관리자나 작성자로 로그인한 경우만 수정/삭제 가능 -->
+<a class="btn-fill" onclick="$('form').attr('action', 'modify.bo'); $('form').submit()">수정</a>
+<a class="btn-fill">삭제</a>
+</c:if>
+</div>
+<form method="post" action="list.bo">
+<input type="hidden" name="id" value="${vo.id }"/>
+<input type="hidden" name="curPage" value="${page.curPage }"/>
+<input type="hidden" name="search" value="${page.search }"/>
+<input type="hidden" name="keyword" value="${page.keyword }"/>
+<input type="hidden" name="viewType" value="${page.viewType }"/>
+<input type="hidden" name="pageList" value="${page.pageList }"/>
+</form>
+<script type="text/javascript">
+function go_list(){
+	$('form').submit();
+}
+</script>
 </body>
 </html>
