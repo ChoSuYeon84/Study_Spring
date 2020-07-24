@@ -26,6 +26,7 @@ table td{ word-break : break-all}
 <tr><th>첨부파일</th>
 	<td colspan="5" class="left"><c:if test="${!empty vo.filename }">
 		${vo.filename }
+		<span id="preview"></span>
 		<a href="download.bo?id=${vo.id }"><i class="fas fa-download font-img"></i></a>
 		</c:if>
 	</td>
@@ -35,7 +36,7 @@ table td{ word-break : break-all}
 <a class="btn-fill" onclick="go_list()">목록으로</a>
 <c:if test="${login_info.admin eq 'y' or login_info.id eq vo.writer }"> <!-- 관리자나 작성자로 로그인한 경우만 수정/삭제 가능 -->
 <a class="btn-fill" onclick="$('form').attr('action', 'modify.bo'); $('form').submit()">수정</a>
-<a class="btn-fill">삭제</a>
+<a class="btn-fill" onclick='if( confirm("정말 삭제?")){ $("form").attr("action", "delete.bo"); $("form").submit()  }'>삭제</a>
 </c:if>
 </div>
 <form method="post" action="list.bo">
@@ -47,6 +48,21 @@ table td{ word-break : break-all}
 <input type="hidden" name="pageList" value="${page.pageList }"/>
 </form>
 <script type="text/javascript">
+if( ${ !empty vo.filename}){
+	showAttachImge();
+}
+
+function showAttachImge(){
+	//첨부된 파일이 이미지인 경우 보여지게
+	var filename = '${vo.filename}';
+	var ext = filename.substring( filename.lastIndexOf('.')+1 ).toLowerCase();
+	var imgs = [ 'gif', 'jpg', 'jpeg', 'bmp', 'png'];
+	if (imgs.indexOf(ext) > -1 ){
+		var img = "<img src='"+ "${vo.filepath}".substring(1)+"' id = 'preview-img' class='file-img' style='border-radius: 50%'/>";
+		$('#preview').html(img);
+	}
+}
+
 function go_list(){
 	$('form').submit();
 }

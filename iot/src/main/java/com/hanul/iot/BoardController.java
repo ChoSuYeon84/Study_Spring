@@ -25,6 +25,18 @@ public class BoardController {
 	@Autowired private BoardPage page;
 	@Autowired private CommonService common;
 	
+	//방명록 삭제처리 요청
+	@RequestMapping("/delete.bo")
+	public String delete(int id, Model model) {
+		//선택한 방명록 글을 DB에서 삭제한 후 목록화면으로 연결
+		service.board_delete(id);
+		model.addAttribute("url", "list.bo");
+		model.addAttribute("id", id);
+		model.addAttribute("page", page);
+		
+		return "board/redirect";
+	}
+	
 	//방명록 수정처리 요청
 	@RequestMapping("/update.bo")
 	public String update(BoardVO vo, MultipartFile file, HttpSession session, String attach, Model model) {
