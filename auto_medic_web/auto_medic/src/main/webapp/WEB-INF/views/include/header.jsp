@@ -17,7 +17,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <Style>
-<
+
 style>#topMenu {
    height: 30px; /* 메인 메뉴의 높이 */
    width: 850px; /* 메인 메뉴의 넓이 */
@@ -187,47 +187,3 @@ a img{
         </div>
     </div>
 </div>
-
-
-<Script>
-
-function go_logout(){
-   $.ajax({
-      type:'post',
-      url:'logout',
-      success(){
-            location.reload();
-         },error:function(req,text){
-               alert(text+":"+req.status);
-            }
-      });
-}
-function go_login(){
-   if($('#userid').val()==''){
-         
-         $('#userid').focus();
-         return;
-      }else if($('#userpw').val()==''){
-         alert('비밀번호를 입력하세요!');
-         $('#userpw').focus();
-         return;
-      }
-
-      $.ajax({
-         type:'post',
-         url:'login',
-         data: {id:$('#userid').val(),pw:$('#userpw').val()},
-         success: function(data){
-            alert(data);
-            if(data=='true'){
-                  location.reload();
-               }else{
-                     alert('아이디나 비밀번호가 일치하지 않습니다!');
-                     $('#userid').focus();
-                  }
-            },error:function(req, text){
-                  alert(text+":"+req.status);
-               }
-      });
-}
-</Script>

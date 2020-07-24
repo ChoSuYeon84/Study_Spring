@@ -23,26 +23,3 @@
 .w-px200 {width: 200px}
 .w-px300 {width: 300px}
 
-.my-info{
-	border: 1px solid #ccc;
-	overflow: hidden;
-	height: 120px;
-	
-}
-
-.my-btnSet {
-	margin-: 13px ;
-	padding: 5px 30px 10px;
-	clear: both;
-}
-
-a.mybtn-fill, a.mybtn-empty {
-	text-align: center;
-	padding: 5px 12px;
-	border: 1px solid #ccc;
-	border-radius: 3px;
-	text-decoration: none !important;
-}
-
-a.mybtn-fill {background-color: #ccc}
-a.mybtn-empty {color: gray; margin: 2px; }

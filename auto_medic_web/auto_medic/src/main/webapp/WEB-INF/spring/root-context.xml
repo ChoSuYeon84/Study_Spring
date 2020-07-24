@@ -9,5 +9,5 @@
 	<!--xml파일을 사용하겠다 -->
 	<import resource="classpath:data/*.xml"/>
 	
-	<!-- <context:component-scan base-package="" /> -->
+	<context:component-scan base-package="member" />
 </beans>
