@@ -9,6 +9,20 @@
 <title>Insert title here</title>
 <style type="text/css">
 table td{ word-break : break-all}
+#popup {
+	width: 350px; height: 350px;
+	position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+	border: 3px solid #666; border-radius : 100%;
+	z-index: 999999999; display: none;
+}
+#popup-background {
+	position: absolute; left: 0; top: 0;
+	width: 100%; height: 100%;
+	background-color: #000;
+	opacity: 0.3; display: none;
+	
+}
+.popup{ width: 100%; height: 100%;}
 </style>
 </head>
 <body>
@@ -47,21 +61,30 @@ table td{ word-break : break-all}
 <input type="hidden" name="viewType" value="${page.viewType }"/>
 <input type="hidden" name="pageList" value="${page.pageList }"/>
 </form>
+<div id='popup'></div>
+<div id='popup-background' onclick="$('#popup, #popup-background').css('display', 'none');"></div>
 <script type="text/javascript">
 if( ${ !empty vo.filename}){
-	showAttachImge();
+	showAttachImge('#preview');
 }
 
-function showAttachImge(){
+function showAttachImge( id ){
 	//첨부된 파일이 이미지인 경우 보여지게
 	var filename = '${vo.filename}';
 	var ext = filename.substring( filename.lastIndexOf('.')+1 ).toLowerCase();
 	var imgs = [ 'gif', 'jpg', 'jpeg', 'bmp', 'png'];
 	if (imgs.indexOf(ext) > -1 ){
-		var img = "<img src='"+ "${vo.filepath}".substring(1)+"' id = 'preview-img' class='file-img' style='border-radius: 50%'/>";
-		$('#preview').html(img);
+		var img = "<img src='"+ "${vo.filepath}".substring(1)+"' id = 'preview-img' class='"+(id=='#popup' ? 'popup' : 'file-img')+"' style='border-radius: 50%'/>";
+		$(id).html(img);
 	}
 }
+
+//이미지를 클릭했을때 이미지를 크게 보이게 하려는부분
+$('#preview-img').click(function(){
+	$('#popup, #popup-background').css('display', 'block');
+	showAttachImge('#popup')
+	
+});
 
 function go_list(){
 	$('form').submit();

@@ -83,7 +83,7 @@ input[name=title] {width:calc(100% - 14px)}
 textarea[name=content] {width: calc(100% - 6px); height: 150px; resize: none;}
 select {height: 32px;}
 
-.file-img { width: 18; height: 18px; cursor: pointer;}
+.file-img { width: 18px; height: 18px; cursor: pointer;}
 #attach-file, #delete-file { display: none; }
 
 ul.grid { width: 80%; margin: 0 10%; }
