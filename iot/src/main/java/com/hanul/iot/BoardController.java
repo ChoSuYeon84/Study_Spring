@@ -8,11 +8,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import board.BoardCommentVO;
 import board.BoardPage;
 import board.BoardServiceImpl;
 import board.BoardVO;
@@ -24,6 +26,23 @@ public class BoardController {
 	@Autowired private BoardServiceImpl service;
 	@Autowired private BoardPage page;
 	@Autowired private CommonService common;
+	
+	//댓글 목록 조회 요청
+	@RequestMapping("/board/comment/{pid}")
+	public String comment_list(@PathVariable int pid, Model model) {
+		//DB에서 댓글 목록을 조회해와 댓글 목록 화면에 출력
+		model.addAttribute("list", service.board_comment_list(pid));
+		return "board/comment/list";
+	}
+	
+	//댓글저장처리 요청
+	@ResponseBody @RequestMapping("board/comment/insert")
+	public boolean comment_insert(BoardCommentVO vo, HttpSession session) {
+		//화면에서 입력한 정보를 DB에 저장한다
+		vo.setWriter( ((MemberVO)session.getAttribute("login_info")).getId());
+		return service.board_comment_insert(vo) > 0 ? true : false;
+	}
+	
 	
 	//방명록 삭제처리 요청
 	@RequestMapping("/delete.bo")

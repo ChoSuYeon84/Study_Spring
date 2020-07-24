@@ -1,3 +1,43 @@
+방명록 댓글관리
+create table board_comment(
+id			number constraint board_comment_id_pk primary key,
+pid			number not null, --원글의 아이디
+writer		varchar2(20) not null, --댓글 작성자 아이디
+content		varchar2(4000) not null,	--4000이 최대임
+writedate	date sysdate,
+constraint board_comment_pid_fk foreing key(pid) references board(id) on delete cascade,
+constraint board_comment_writer_fk foreign key(writer) references member(id) on delete cascade
+);
+
+create sequence seq_board_comment
+start with 1 increment by 1;
+
+create or replace trigger trg_board_comment
+    before insert on board_comment
+    for each row
+begin
+    select seq_board_comment.nextval into :new.id from dual;
+end;
+/
+
+
+방명록관리
+create table board(
+id		number constraint board_id_pk primary key,
+title		varchar2(300) not null,
+content		varchar2(4000) not null, -- 내용은 최대 4000까지 가능
+writer		varchar2(20) not null, -- 글을 작성한 사람의 id
+writedate	date default sysdate, --defalut:기본
+readcnt		number default 0,
+filename    varchar2(300),
+filepath    varchar2(300)
+);
+
+insert into board (title, content, writer, filename, filepath)
+select title, content, writer, filename, filepath from board;
+
+commit;
+
 Qna관리
 create table qna(
 id		number constraint qna_id_pk primary key,

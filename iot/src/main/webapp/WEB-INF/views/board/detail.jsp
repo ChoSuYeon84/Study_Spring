@@ -23,6 +23,7 @@ table td{ word-break : break-all}
 	
 }
 .popup{ width: 100%; height: 100%;}
+#comment_regist span {width: 50%; float: left;}
 </style>
 </head>
 <body>
@@ -53,6 +54,15 @@ table td{ word-break : break-all}
 <a class="btn-fill" onclick='if( confirm("정말 삭제?")){ $("form").attr("action", "delete.bo"); $("form").submit()  }'>삭제</a>
 </c:if>
 </div>
+
+<div style="margin: 0 auto; padding-top: 20px; width: 500px;">
+	<div id="comment_regist">
+		<span class="left">댓글작성</span>
+		<span class="right"><a class="btn-fill-s" onclick="comment_regist()">등록</a></span>
+		<textarea id='comment' style="width: 99%; height: 60px; margin-top: 5px; resize: none;"></textarea>
+	</div>
+	<div id='comment_list' style="text-align: left"></div>
+</div>
 <form method="post" action="list.bo">
 <input type="hidden" name="id" value="${vo.id }"/>
 <input type="hidden" name="curPage" value="${page.curPage }"/>
@@ -64,6 +74,45 @@ table td{ word-break : break-all}
 <div id='popup'></div>
 <div id='popup-background' onclick="$('#popup, #popup-background').css('display', 'none');"></div>
 <script type="text/javascript">
+function comment_regist(){
+	if( ${empty login_info} ){
+		alert('댓글을 등록하려면 로그인 하세요!');
+		return;
+	}
+	if( $('comment').val()==''){
+		alert('댓글을 입력하세요!')
+		$('comment').focus();
+		return;
+	}
+
+	$.ajax({
+		url: 'board/comment/insert',
+		data: { pid: ${vo.id}, content:$('#comment').val()},	//원글의 아이디가 필요 pid: ${vo.id}
+		success: function(data){//여기서 data는 파라메터 변수임
+			if(data){
+				$("#comment").val('');
+				comment_list();
+			}
+
+		}, error : function(req, text){
+			alert(text+':'+req.status)
+		}
+	});
+}
+
+function comment_list(){
+	$.ajax({
+		url : 'board/comment/${vo.id}', 
+		success: function(data){	//문자로 되어있는 데이터의 결과를
+			$('#comment_list').html(data);
+
+		}, error : function(req, text){
+			alert(text+':'+req.status)
+		}
+	});
+}
+
+
 if( ${ !empty vo.filename}){
 	showAttachImge('#preview');
 }
@@ -89,6 +138,8 @@ $('#preview-img').click(function(){
 function go_list(){
 	$('form').submit();
 }
+
+comment_list();
 </script>
 </body>
 </html>

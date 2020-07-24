@@ -1,5 +1,7 @@
 package board;
 
+import java.util.List;
+
 public interface BoardService {
 	//CRUD
 		int board_insert(BoardVO vo);
@@ -8,4 +10,9 @@ public interface BoardService {
 		void board_read(int id);
 		int board_update(BoardVO vo);
 		int board_delete(int id);
+		
+		int board_comment_insert(BoardCommentVO vo);
+		List<BoardCommentVO> board_comment_list(int pid);	// pid에 딸려있는 댓글여러건
+		int board_comment_update(BoardCommentVO vo);
+		int board_comment_delete(int id);
 }
