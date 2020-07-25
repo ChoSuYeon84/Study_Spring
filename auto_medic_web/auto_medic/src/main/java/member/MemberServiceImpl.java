@@ -28,8 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean member_id_check(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		return dao.member_id_check(id);
 	}
 
 	@Override

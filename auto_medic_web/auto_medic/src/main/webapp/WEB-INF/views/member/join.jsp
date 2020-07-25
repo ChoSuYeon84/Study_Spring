@@ -3,12 +3,13 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel = "stylesheet" type="text/css" href="css/common.css?v=<%= new Date().getTime()%>"> 
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="js/join_check.js?v=<%=new java.util.Date().getTime()%>"></script>
 <style type="text/css">
 * {
 margin: 0 auto; 
@@ -46,8 +47,16 @@ height: 215px;
 width: 500px;
 }
 
+table tr td{
+text-align: left
+}
+
+.valid, .invalid {font-size: 12px; font-weight: bold;}
+.valid {color : green}
+.invalid {color : red}
 </style>
 </head>
+
 <body>
 <a href="<c:url value='/'/>"><img src="img/logo_web.png" alt="홈으로" id="logo"></a>
 <h3>회원가입</h3>
@@ -57,18 +66,21 @@ width: 500px;
 </tr>
 <tr>
 	<td><input class="chk" title='아이디' type="text" name="id"/><br/>
-		<div class="valid">아이디를 입력하세요(영문소문자, 숫자만 입력 가능)</div>
+		<div class="valid">아이디를 입력하세요(이메일주소만 입력 가능)</div>
 	</td>
 </tr>
 <tr>
-	<td><a class='btn-fill-s' id="id_chk">아이디중복확인</a></td>
+	<td><a class='btn-fill-s' id="id_chk" onclick="id_check()">아이디중복확인</a></td>
 </tr>
 <tr><th>인증번호</th>
 </tr>
 <tr>
 	<td><input type="text"/><br/>
-		<div class="valid">아이디를 입력하세요(영문소문자, 숫자만 입력 가능)</div>
+		<div class="valid">인증번호를 입력하세요</div>
 	</td>
+</tr>
+<tr>
+	<td><a class='btn-fill-s' id="idNum_chk" onclick="idNum_chk()">인증번호확인</a></td>
 </tr>
 <tr><th>비밀번호</th>
 </tr>
@@ -96,13 +108,68 @@ width: 500px;
 </tr>
 <tr>
 	<td><input type="text" name="tel"/><br/>
-		<div class="valid">닉네임을 입력하세요</div>
+		<div class="valid">연락처를 입력하세요</div>
 	</td>
 </tr>
 </table>
 </form>
 <div class="btnSet">
-<a class="btn-fill" onclick="go_join()" id="join_us">회원가입</a>
+<a class="btn-fill" id="join_us" onclick="go_join()">회원가입</a>
 </div>
+
+
+<script type="text/javascript">
+
+function id_check(){
+//	올바른 아이디 입력형태인지 파악하여 유효하지 않다면 중복확인 불필요
+	var $id =  $('[name=id]')
+	if( $id.hasClass( 'chked' )) return;
+	console.log('go check')
+	var data = join.tag_status( $id);
+	if( data.code != 'valid'){
+		alert(data.desc);
+		$id.focus();
+		return;
+	}
+
+	$.ajax({
+		type: 'post',
+		url: 'id_check',
+		data: { id:$id.val() },
+		success: function(data){
+			data = join.id_usable(data);
+			console.log(data);
+			alert(data.desc);
+			display_status( $id.siblings('div'), data );
+			$id.addClass('chked');
+		}, error: function(req, text){
+			alert(text+': '+req.status);
+		}
+	});
+	
+}
+
+$('.chk').on('keyup', function(){
+	if( $(this).attr('name')=='id'){
+		if( event.keyCode==13){ id_check(); }
+		else {
+			$(this).removeClass('chked');
+			validate( $(this));
+		}
+	}else validate( $(this));
+	
+	
+});
+function validate(t){
+	var data = join.tag_status(t);
+	//console.log(data);
+	display_status (t.siblings('div'), data);
+}
+function display_status(div, data){
+	div.text( data.desc );
+	div.removeClass();
+	div.addClass( data.code );
+}
+</script>
 </body>
 </html>

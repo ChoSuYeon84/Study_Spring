@@ -12,8 +12,8 @@
  		max: {code:'invalid', desc:'최대 10자 이내로 입력하세요' },
  	},
  	id:{
- 		valid: { code:'valid', desc:'아이디를 중복확인하세요' },
- 		invalid: {code:'invalid', desc:'아이디는 영문 소문자,숫자만 입력하세요' },
+ 		valid: { code:'valid', desc:'아이디 중복확인버튼을 클릭해주세요' },
+ 		invalid: { code:'invalid', desc:'아이디는 이메일 주소로 입력해주세요' },
  		usable: { code: 'valid', desc:'사용가능한 아이디입니다'},
  		unusable: {code: 'invalid', desc:'이미 사용중인 아이디입니다.'},
  	},
@@ -22,13 +22,11 @@
  		else return this.id.unusable;
  	},
  	id_status: function(id){
- 		var reg = /[^a-z0-9]/g;
+ 		var reg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
  		title = $('[name=id]').attr('title');
  		if( id=='' ) return this.common.empty;
  		else if(id.match(space) ) return this.common.space;
- 		else if( reg.test(id) ) return this.id.invalid;
- 		else if(id.length<5) return this.common.min;
- 		else if(id.length>10) return this.common.max;
+ 		else if( !reg.test(id) ) return this.id.invalid;
  		else return this.id.valid;
  	},
  	pw:{
@@ -55,18 +53,6 @@
  		if( pw_ck == '') return this.common.empty;
  		else if( pw_ck==$('[name=pw]').val() ) return this.pw.equal;
  		else return this.pw.notEqual;
- 	},
- 	email:{
- 		valid:{ code:'valid', desc:'유효한 이메일입니다' },
- 		invalid:{ code:'invalid', desc:'유효하지 않은이메일입니다' },
- 	},
- 	email_status: function(email){
- 		var reg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-			title = $('[name=email]').attr('title');
- 		if(email==' ') return this.common.empty;
- 		else if(email.match(space) )return this.common.space;
- 		else if( reg.test(email) ) return this.email.valid;
- 		else return this.email.invalid; 
  	},
  	tag_status: function(tag){
  		var data = tag.val();
