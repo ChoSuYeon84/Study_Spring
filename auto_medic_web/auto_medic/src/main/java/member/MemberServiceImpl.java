@@ -43,4 +43,9 @@ public class MemberServiceImpl implements MemberService {
 		return false;
 	}
 
+	@Override
+	public boolean member_nick_check(String nickname) {
+		return dao.member_nick_check(nickname);
+	}
+
 }

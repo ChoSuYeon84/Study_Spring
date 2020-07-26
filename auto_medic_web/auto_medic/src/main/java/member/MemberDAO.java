@@ -44,4 +44,9 @@ public class MemberDAO implements MemberService {
 		return false;
 	}
 
+	@Override
+	public boolean member_nick_check(String nickname) {
+		return (Integer) sql.selectOne("member.mapper.nickname_check", nickname) == 0 ? true : false;
+	}
+
 }

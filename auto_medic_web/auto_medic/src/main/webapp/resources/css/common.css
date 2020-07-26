@@ -9,6 +9,8 @@
 	font-family: 'paybooc-Bold'; 
 }
 
+a:hover {cursor: pointer;}
+
 .w-pct60 {width: 60%}
 .w-pct70 {width: 70%}
 .w-pct80 {width: 80%}

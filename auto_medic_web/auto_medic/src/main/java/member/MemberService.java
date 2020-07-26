@@ -11,6 +11,8 @@ public interface MemberService {
 	MemberVO member_login(HashMap<String, String> map);
 	//아이디중복확인
 	boolean member_id_check(String id);
+	//닉네임중복확인
+	boolean member_nick_check(String nickname);
 	//마이페이지에서 회원정보변경저장
 	boolean member_update(MemberVO vo);
 	//회원정보탈퇴

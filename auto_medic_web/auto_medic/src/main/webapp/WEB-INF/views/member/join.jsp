@@ -101,14 +101,14 @@ text-align: left
 <tr>
 	<td><input class="chk" title='닉네임' type="text" name="nickname"/><br/>
 		<div class="valid">닉네임을 입력하세요</div>
-		<a class='btn-fill-s' id="nickname_chk">닉네임중복확인</a>
+		<a class='btn-fill-s' id="nick_chk" onclick="nick_check()">닉네임중복확인</a>
 	</td>
 </tr>
 <tr><th>연락처</th>
 </tr>
 <tr>
-	<td><input type="text" name="tel"/><br/>
-		<div class="valid">연락처를 입력하세요</div>
+	<td><input class="chk" type="text" name="tel"/><br/>
+		<div class="valid">연락처를 입력하세요 (숫자만 입력가능)</div>
 	</td>
 </tr>
 </table>
@@ -119,6 +119,42 @@ text-align: left
 
 
 <script type="text/javascript">
+function go_join(){
+	//필수항목의 유효성을 판단하도록 한다.
+	//중복확인한 경우
+	if( $('[name=id]').hasClass('chked') ){
+		//이미사용중인 경우는 회원가입 불가
+		if($('[name=id]').siblings('div').hasClass('invalid')){
+			alert('회원가입불가\n'+join.id.unusable.desc);
+			$('[name=id]').focus();
+			return;
+		}
+	}else{
+	//중복확인 하지 않은 경우
+		if( !item_check( $('[name=id]') ) ) return;
+		else{
+			alert('회원가입불가\n'+join.id.valid.desc);
+			$('[name=id]').focus();
+			return;
+		}
+	}
+	if( !item_check( $('[name=pw]') ) ) return;
+	if( !item_check( $('[name=pw_ck]') ) ) return;
+	if( !item_check( $('[name=nickname]') ) ) return;
+	if( !item_check( $('[name=tel]') ) ) return;
+
+	$('form').submit();
+	
+}
+
+function item_check(item){
+	var data = join.tag_status(item);
+	if( data.code == 'invalid' ){
+		alert('회원가입불가!\n' + data.desc);
+		item.focus();
+		return false;
+	} else return true;
+}
 
 function id_check(){
 //	올바른 아이디 입력형태인지 파악하여 유효하지 않다면 중복확인 불필요
@@ -139,7 +175,6 @@ function id_check(){
 		success: function(data){
 			data = join.id_usable(data);
 			console.log(data);
-			alert(data.desc);
 			display_status( $id.siblings('div'), data );
 			$id.addClass('chked');
 		}, error: function(req, text){
@@ -149,8 +184,34 @@ function id_check(){
 	
 }
 
+function nick_check(){
+	var $nickname =  $('[name=nickname]')
+	if( $nickname.hasClass( 'chked' )) return;
+	console.log('go check')
+	var data = join.tag_status( $nickname);
+	if( data.code != 'valid'){
+		alert(data.desc);
+		$nickname.focus();
+		return;
+	}
+
+	$.ajax({
+		type: 'post',
+		url: 'nickname_check',
+		data: { nickname:$nickname.val() },
+		success: function(data){
+			data = join.nickname_usable(data);
+			console.log(data);
+			display_status( $nickname.siblings('div'), data );
+			$nickname.addClass('chked');
+		}, error: function(req, text){
+			alert(text+': '+req.status);
+		}
+	});
+}
+
 $('.chk').on('keyup', function(){
-	if( $(this).attr('name')=='id'){
+	if( $(this).attr('name')=='id' || $(this).attr('name')=='nickname'){
 		if( event.keyCode==13){ id_check(); }
 		else {
 			$(this).removeClass('chked');

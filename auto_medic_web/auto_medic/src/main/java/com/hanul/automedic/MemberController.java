@@ -17,6 +17,12 @@ import member.MemberVO;
 public class MemberController {
 	@Autowired private MemberServiceImpl service;
 	
+	//닉네임 중복확인 요청
+		@ResponseBody @RequestMapping("/nickname_check")
+		public boolean nickname_check(String nickname) {
+			return service.member_nick_check(nickname);
+		}
+	
 	//아이디 중복확인 요청
 		@ResponseBody @RequestMapping("/id_check")
 		public boolean id_check(String id) {
