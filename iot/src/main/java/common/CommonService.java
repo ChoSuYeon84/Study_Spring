@@ -1,7 +1,10 @@
 package common;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -22,6 +25,37 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CommonService {
+	//공공데이터 REST API 요청처리
+	public String xml_list(StringBuilder url) {
+		String result = url.toString();
+		try {
+			
+			HttpURLConnection conn = (HttpURLConnection)new URL( result ).openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Content-type", "application/json");
+			 BufferedReader rd;
+		        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+		            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		        } else {
+		            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+		        }
+		        StringBuilder sb = new StringBuilder();
+		        String line;
+		        while ((line = rd.readLine()) != null) {
+		            sb.append(line);
+		        }
+		        rd.close();
+		        conn.disconnect();
+		        result = sb.toString();
+		        System.out.println(result);
+		        
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
+	}
+	
+	
 	//첨부파일 다운로드 처리  (세션은 물리적 위치를 찾기 위해 필요한것, 클라이언트쪽에 응답하기 위해 리스폰스가 필요)
 	public File download(String filename, String filepath, HttpSession session, HttpServletResponse response) {
 		File file = new File( session.getServletContext().getRealPath("resources")+ filepath);

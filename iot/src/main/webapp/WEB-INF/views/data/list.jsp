@@ -8,5 +8,40 @@
 </head>
 <body>
 <h3>공공데이터</h3>
+<div class="btnSet dataOption">
+	<a class="btn-fill">약국조회</a>
+	<a class="btn-empty">유기동물조회</a>
+</div>
+<div id='data-list' style="margin:20px p auto"></div>
+
+<script type="text/javascript">
+$('.dataOption a').click(function(){
+	//이미 선택된 버튼에 대해서는 적용하지 않으려면
+	if( $(this).hasClass('btn-empty')) {
+		$('.dataOption a').removeClass();
+		$(this).addClass('btn-fill');
+		var idx = $(this).index();
+		$('.dataOption a:not(:eq('+idx+'))').addClass('btn-empty');
+		if( idx==0 ) pharmacy_list();
+		else		 animail_list();
+	}
+});
+pharmacy_list();
+function pharmacy_list(){
+	$.ajax({
+		url: 'data/pharmacy',
+		success: function(){
+
+		}, error: function(req, text){
+			alert(text+":"+req.status)
+		}
+	});
+	
+}
+function animail_list(){
+	
+}
+</script>
+
 </body>
 </html>
