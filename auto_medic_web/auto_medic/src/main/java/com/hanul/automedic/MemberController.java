@@ -2,9 +2,11 @@ package com.hanul.automedic;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +18,9 @@ import member.MemberVO;
 @Controller
 public class MemberController {
 	@Autowired private MemberServiceImpl service;
+	@Inject JavaMailSender mailSender;     //메일 서비스를 사용하기 위해 의존성을 주입.
+	
+
 	
 	//닉네임 중복확인 요청
 		@ResponseBody @RequestMapping("/nickname_check")

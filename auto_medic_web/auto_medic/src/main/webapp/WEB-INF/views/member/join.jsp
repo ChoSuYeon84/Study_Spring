@@ -2,14 +2,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<link rel = "stylesheet" type="text/css" href="css/common.css?v=<%= new Date().getTime()%>"> 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>AutoMedic : 회원가입</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="js/join_check.js?v=<%=new java.util.Date().getTime()%>"></script>
+<link rel = "stylesheet" type="text/css" href="css/common.css?v=<%= new Date().getTime()%>"> 
 <style type="text/css">
 * {
 margin: 0 auto; 
@@ -36,7 +36,7 @@ display: block;
 
 .btn-fill, .btn-fill-s{
 height: 50px;
-width: 500px;
+width: 509px;
 background-color: #ccc;
 text-align: center;
 line-height: 50px;
@@ -108,7 +108,7 @@ text-align: left
 </tr>
 <tr>
 	<td><input class="chk" type="text" name="tel"/><br/>
-		<div class="valid">연락처를 입력하세요 (숫자만 입력가능)</div>
+		<div class="valid">연락처를 입력하세요 (-없이 숫자만 입력가능)</div>
 	</td>
 </tr>
 </table>
@@ -116,6 +116,7 @@ text-align: left
 <div class="btnSet">
 <a class="btn-fill" id="join_us" onclick="go_join()">회원가입</a>
 </div>
+<br/><br/>
 
 
 <script type="text/javascript">

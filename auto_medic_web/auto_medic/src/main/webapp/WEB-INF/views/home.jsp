@@ -120,7 +120,7 @@ function go_logout(){
 <div id = "content" class="container">
     <div class="row">	
         <div class="col-sm-12">
-           <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include> 
+          
         </div>
     </div>
     <div id='content' class="row">
@@ -172,6 +172,5 @@ function go_logout(){
     </div>
 </div>   
 
-<jsp:include page="/WEB-INF/views/include/footer.jsp"/> 
 </body>
 </html>

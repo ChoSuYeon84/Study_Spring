@@ -20,7 +20,7 @@
 
 style>#topMenu {
    height: 30px; /* 메인 메뉴의 높이 */
-   width: 850px; /* 메인 메뉴의 넓이 */
+   width: 1250px; /* 메인 메뉴의 넓이 */
 }
 
 #topMenu ul { /* 메인 메뉴 안의 ul을 설정함: 상위메뉴의 ul+하위 메뉴의 ul */
