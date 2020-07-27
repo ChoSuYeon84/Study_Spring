@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,11 +28,26 @@ public class BoardController {
 	@Autowired private BoardPage page;
 	@Autowired private CommonService common;
 	
+	//댓글 삭제 처리 요청
+	@ResponseBody @RequestMapping("/board/comment/delete/{id}")
+	public void comment_delete(@PathVariable int id) {
+		service.board_comment_delete(id);
+	}
+	
+	//댓글변경저장처리 요청
+	@ResponseBody @RequestMapping(value="board/comment/update", produces="application/text; charset=utf-8")
+	public String comment_update(@RequestBody BoardCommentVO vo) {
+		
+		return service.board_comment_update(vo) > 0 ? "성공^^" : "실패 ㅠㅠ";
+	}
+	
 	//댓글 목록 조회 요청
 	@RequestMapping("/board/comment/{pid}")
 	public String comment_list(@PathVariable int pid, Model model) {
 		//DB에서 댓글 목록을 조회해와 댓글 목록 화면에 출력
 		model.addAttribute("list", service.board_comment_list(pid));
+		model.addAttribute("crlf", "\r\n"); //캐리지리턴 라인피드를 엔터처리(줄바꿈해주겠다)
+		model.addAttribute("lf", "\n"); //라인피드를 엔터처리하겠다
 		return "board/comment/list";
 	}
 	
@@ -42,7 +58,6 @@ public class BoardController {
 		vo.setWriter( ((MemberVO)session.getAttribute("login_info")).getId());
 		return service.board_comment_insert(vo) > 0 ? true : false;
 	}
-	
 	
 	//방명록 삭제처리 요청
 	@RequestMapping("/delete.bo")
