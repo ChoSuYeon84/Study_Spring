@@ -5,6 +5,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+#map { 
+	position: absolute; width: 800px; height: 600px; 
+	left: 50%; top: 50%; transform:translate(-50%, -50%);
+	border: 3px solid #666; display: none;
+}
+
+#map-background {
+	position: absolute; left: 0; top: 0; 
+	width: 100%; height: 100%; 
+	background-color: #000;
+	opacity: 0.3; display: none;
+}
+</style>
 </head>
 <body>
 <h3>공공데이터</h3>
@@ -13,6 +27,8 @@
 	<a class="btn-empty">유기동물조회</a>
 </div>
 <div id='data-list' style="margin:20px 0 auto"></div>
+<div id='map-background'></div>
+<div id='map'></div>
 
 <script type="text/javascript">
 $('.dataOption a').click(function(){
@@ -36,7 +52,7 @@ function pharmacy_list(){
 				+ '<tr><th class="w-pw200">약국명</th><th class="w-pw140">전화번호</tn><th>주소</tn></tr>'
 
 				$(data.item).each(function(){
-					tag += '<tr><td>'+ this.yadmNm +'</td><td>'+ this.telno +'</td><td class="left">'+ this.addr +'</td>'
+					tag += '<tr><td><a class="map" data-x='+ this.XPos +' data-y=' + this.YPos + '>'+ this.yadmNm +'</a></td><td>'+ this.telno +'</td><td class="left">'+ this.addr +'</td>'
 						+'</tr>'
 				});
 				tag+= '</table>';
@@ -51,7 +67,33 @@ function pharmacy_list(){
 function animail_list(){
 	
 }
-</script>
 
+$(document).on('click', '.map', function(){
+	$('#map, #map-background').css('display', 'block');
+
+	var pos = {lat: $(this).data('y'), lng:$(this).data('x')} /* lat : 위도y lng : 경도x */
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: pos, 
+		zoom: 15
+	});
+
+/* 	new google.maps.Marker({
+		map : map, position: pos, title: $(this).text()
+	}); */
+
+	var info = new google.maps.InfoWindow();
+	info.setOptions({
+		content: '<div>'+ $(this).text() +'</div>',
+	});
+	info.open(map, new google.maps.Marker({
+		map:map, position:pos
+	}));
+});
+$('#map-background').click(function(){
+	$('#map, #map-background').css('display', 'none');
+});
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsrerDHJrp9Wu09Ij7MUELxCTPiYfxfBI">
+</script>
 </body>
 </html>
