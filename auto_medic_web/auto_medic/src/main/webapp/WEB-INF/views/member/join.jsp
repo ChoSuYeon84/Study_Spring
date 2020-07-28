@@ -13,6 +13,7 @@
 <style type="text/css">
 * {
 margin: 0 auto; 
+
 }
 
 #logo, #join_us, h3 {
@@ -27,7 +28,8 @@ float: left;
 input {
 height: 50px;
 width: 500px;
-color: #ccc;
+color: black;
+font-size: 20px;
 }
 
 .btn-fill-s{
@@ -80,7 +82,6 @@ text-align: left
 	</td>
 </tr>
 <tr>
-	<!-- <td><a class='btn-fill-s' id="idSend_mail" onclick="send_email()">인증번호 메일전송</a></td> -->
 	<td><a class='btn-fill-s' id="idNum_chk" onclick="idNum_chk()">인증번호확인</a></td>
 </tr>
 <tr><th>비밀번호</th>
@@ -158,52 +159,13 @@ function item_check(item){
 	} else return true;
 }
 
-//인증번호확인부분
-function idNum_chk(){
-	var $num =  $('[name=idNum_chk]')
-
-	$.ajax({
-		url: "idNum_chk",
-		data:  { num:$num.val() },
-		type: "POST",
-		success : function(data){
-			console.log("성공")
-		},
-		error : function(){
-			console.log("에러")		
-		}
-	});
-}
-
-/* //이메일 인증 전송부분
-function send_email(){
-	var $id =  $('[name=id]')
-	if( $id.hasClass( 'chked' )){
-		$.ajax({
-			url: "send_email",
-			data:  { e_mail:$id.val() },
-			type: "POST",
-			success : function(data){
-				console.log("성공")
-			},
-			error : function(){
-				console.log("에러")		
-			}
-		});
-	}else {
-		if($id.val()==''){
-			alert('아이디를 입력해주세요!')
-			return;
-		} else{
-			alert('아이디 중복확인 버튼을 눌러주세요!')
-			return;
-		}
-	}
-} */
+ //인증번호확인부분
+/* function idNum_chk(){
 
 
-
-
+	
+} 
+ */
 function id_check(){
 //	올바른 아이디 입력형태인지 파악하여 유효하지 않다면 중복확인 불필요
 	var $id =  $('[name=id]')
@@ -224,20 +186,7 @@ function id_check(){
 			data = join.id_usable(data);
 			console.log(data);
 			display_status( $id.siblings('div'), data );
-			$id.addClass('chked');
-
-/* 			$.ajax({
-				url: "send_email",
-				data:  { e_mail:$id.val() },
-				type: "POST",
-				success : function(data){
-					console.log("성공")
-				},
-				error : function(){
-					console.log("에러")		
-				}
-			}); */
-			
+			$id.addClass('chked');	
 		}, error: function(req, text){
 			alert(text+': '+req.status);
 		}

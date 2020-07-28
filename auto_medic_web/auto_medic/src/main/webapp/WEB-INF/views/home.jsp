@@ -5,6 +5,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
+
+//네이버로그인시 아이디, 이메일 표출
+$(document).ready(function() {
+	var Nname = ${result}.response.name;
+	var Nemail = ${result}.response.email;
+	var Nphoto = ${result}.response.profile_image;
+	$("#Nname").html(Nname+"님!");
+	$("#Nemail").html(Nemail);
+	$("#Nphoto").attr('src', Nphoto);
+  });
+
 function go_login(){
 	if($('#userid').val()==''){
 		alert('아이디를 입력하세요!');
@@ -134,10 +145,10 @@ function go_logout(){
 	        	<table class="my_info_tab">
 	        		<tr>
 	        			<td rowspan="2" style="vertical-align:middle"><img src='img/default_profile.jpg' class="myInfo-img"/></td>
-	        			<td>${login_info.member_nickname }님 ! </td>
+	        			<td>${result}.response.name;</td>
 	        		</tr>
 	        		<tr>
-	        			<td>${login_info.member_email }</td>
+	        			<td>${result}.response.email;</td>
 	        		</tr>
 	        		<tr>
 	        		<td colspan="2" class="my-btnSet">
@@ -165,9 +176,30 @@ function go_logout(){
 	        	<a class="mybtn-fill" onclick="go_login()" id="btn_login">로그인</a>
 	        	<a href="member" id="btn_join">회원가입</a>
 	        	<a id="btn_findPw">PW찾기</a>
-	        	<a id="btn_social">소셜로그인</a>
+	        	<a id="btn_Nlogin" href="Nlogin"><img src='img/naver.png' style="width: 25px; height: 25px; margin-left: 10px;"></a>
+	        	<a id="btn_Klogin"><img src='img/kakao.png' style="width: 25px; height: 25px; margin: 0 5px 0 10px;"></a>
         	</div>
         	</c:if>
+        	<!-- 네이버로그인한 경우-->
+        	<div class="my-info">
+	        	<table class="my_info_tab">
+	        		<tr>
+	        			<td rowspan="2" style="vertical-align:middle"><img id="Nphoto"></td>
+	        			<td id=Nname></td>
+	        		</tr>
+	        		<tr>
+	        			<td id=Nemail></td>
+	        		</tr>
+	        		<tr>
+	        		<td colspan="2" class="my-btnSet">
+	        			<a class="mybtn-empty" onclick="go_logout()">로그아웃</a>
+						<!-- <a class="mybtn-empty" href="#">내정보</a> -->
+						<a class="mybtn-empty" href="#">쪽지함</a>
+	        		</td>
+	        		</tr>
+	        	</table>
+	        </div>
+	        <!-- 네이버로그인한 경우-->
         </div>	
     </div>
 </div>   

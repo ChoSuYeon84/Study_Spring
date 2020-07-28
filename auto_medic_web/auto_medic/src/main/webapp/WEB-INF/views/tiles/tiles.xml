@@ -8,8 +8,13 @@
 			<put-attribute name="footer" value="/WEB-INF/views/include/footer.jsp"/>
 			    		
     	</definition>
+    	
     	<definition name="member/*" template="/WEB-INF/views/member/{1}.jsp">
     	</definition>
+    	
+    	<definition name="social/*" template="/WEB-INF/views/social/{1}.jsp">
+    	</definition>
+    	
     	<definition name="*/*" extends="layout">
     		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"/>
     	</definition>
