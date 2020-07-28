@@ -19,12 +19,31 @@ import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CommonService {
+	public String json_list(StringBuilder url) {
+		JSONObject json = null;
+		try {
+			json = (JSONObject)new JSONParser().parse( xml_list(url) );
+			json = (JSONObject)json.get("response");
+			json = (JSONObject)json.get("body");
+			//items가 데이터를 갖고 있어서 JSONObject 타입으로 형변환 가능한 경우만
+			if( json.get("items") instanceof JSONObject ) {
+				json = (JSONObject)json.get("items");
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return json.toJSONString();
+	}
+	
 	//공공데이터 REST API 요청처리
 	public String xml_list(StringBuilder url) {
 		String result = url.toString();
@@ -35,9 +54,9 @@ public class CommonService {
 			conn.setRequestProperty("Content-type", "application/json");
 			 BufferedReader rd;
 		        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-		            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		            rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8")); //"utf-8"추가 -> 데이터를 읽어올때 utf-8로 인코딩 하겠다
 		        } else {
-		            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+		            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
 		        }
 		        StringBuilder sb = new StringBuilder();
 		        String line;
