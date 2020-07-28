@@ -16,6 +16,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,16 +31,36 @@ public class MemberController {
 	@Autowired private MemberServiceImpl service;
 	@Autowired private JavaMailSender MailSender;
 	
+	/*
+	 * //메일인증번호 확인부분
+	 * 
+	 * @RequestMapping(value = "/idNum_chk{dice}", method = RequestMethod.POST)
+	 * public ModelAndView idNum_chk(String num, @PathVariable String dice,
+	 * HttpServletResponse response_equals) throws IOException {
+	 * 
+	 * ModelAndView mv = new ModelAndView();
+	 * 
+	 * if (num.equals(dice)) {
+	 * response_equals.setContentType("text/html; charset=UTF-8"); PrintWriter
+	 * out_equals = response_equals.getWriter();
+	 * out_equals.println("<script>alert('인증번호가 일치하였습니다. 회원가입창으로 이동합니다.');</script>"
+	 * ); out_equals.flush();
+	 * 
+	 * return mv; }else {
+	 * 
+	 * } }
+	 */
 	//메일 전송
-	@RequestMapping(value = "/send_email", method=RequestMethod.POST)
-	public ModelAndView sendMail(HttpServletRequest request, String e_mail, HttpServletResponse response_email) throws IOException {
+//	@RequestMapping(value = "/send_email", method=RequestMethod.POST)
+//	public ModelAndView sendMail(HttpServletRequest request, String e_mail, HttpServletResponse response_email) throws IOException {
+	public void sendMail( String tomail, HttpServletResponse response_email) throws IOException {
 		
 		Random r = new Random();
         int dice = r.nextInt(4589362) + 49311; //이메일로 받는 인증코드 부분 (난수)
         
         String setfrom = "automedic0724@gamil.com";
-        String tomail = request.getParameter("e_mail"); // 받는 사람 이메일
-        String title = "회원가입 인증 이메일 입니다."; // 제목
+//        String tomail = request.getParameter("e_mail"); // 받는 사람 이메일
+        String title = "오토메딕 - 이메일 인증을 진행해 주세요!"; // 제목
         String content =
                         
                 " 오토메딕 회원가입 인증번호는 " +dice+ " 입니다. "
@@ -63,18 +84,18 @@ public class MemberController {
             System.out.println(e);
         }
         
-        ModelAndView mv = new ModelAndView();    //ModelAndView로 보낼 페이지를 지정하고, 보낼 값을 지정한다.
-        mv.setViewName("/member/join");     //뷰의이름
-        mv.addObject("dice", dice);
-        
-        System.out.println("mv : "+mv);
-
-        response_email.setContentType("text/html; charset=UTF-8");
-        PrintWriter out_email = response_email.getWriter();
-        out_email.println("<script>alert('이메일이 발송되었습니다. 인증번호를 입력해주세요.');</script>");
-        out_email.flush();
-        
-        return mv;
+//        ModelAndView mv = new ModelAndView();    //ModelAndView로 보낼 페이지를 지정하고, 보낼 값을 지정한다.
+//        mv.setViewName("/member/join");     //뷰의이름
+//        mv.addObject("dice", dice);
+//        
+//        System.out.println("mv : "+mv);
+//
+//        response_email.setContentType("text/html; charset=UTF-8");
+//        PrintWriter out_email = response_email.getWriter();
+//        out_email.println("<script>alert('이메일이 발송되었습니다. 인증번호를 입력해주세요.');</script>");
+//        out_email.flush();
+//        
+//        return mv;
 	}
 
 	//닉네임 중복확인 요청
@@ -85,8 +106,13 @@ public class MemberController {
 	
 	//아이디 중복확인 요청
 		@ResponseBody @RequestMapping("/id_check")
-		public boolean id_check(String id) {
-			return service.member_id_check(id);
+		public boolean id_check(String id, HttpServletRequest request, HttpServletResponse response_email) throws Exception{
+			boolean exist = service.member_id_check(id) ;
+			if( exist ) {
+				sendMail( id, response_email);
+			}
+			return exist;
+//			return service.member_id_check(id);
 		}
 	
 	//회원가입화면 요청
