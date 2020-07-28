@@ -34,10 +34,13 @@ public class CommonService {
 			json = (JSONObject)json.get("response");
 			json = (JSONObject)json.get("body");
 			//items가 데이터를 갖고 있어서 JSONObject 타입으로 형변환 가능한 경우만
+			int count 
+			= json.get("totalCount") == null ? 0 :
+				Integer.parseInt(json.get("totalCount").toString());
 			if( json.get("items") instanceof JSONObject ) {
 				json = (JSONObject)json.get("items");
 			}
-			
+			json.put("count", count);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

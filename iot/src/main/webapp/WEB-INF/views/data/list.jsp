@@ -27,6 +27,10 @@
 	<a class="btn-empty">유기동물조회</a>
 </div>
 <div id='data-list' style="margin:20px 0 auto"></div>
+<div class="btnSet">
+	<div class="page_list"></div>
+</div>
+
 <div id='map-background'></div>
 <div id='map'></div>
 
@@ -38,14 +42,15 @@ $('.dataOption a').click(function(){
 		$(this).addClass('btn-fill');
 		var idx = $(this).index();
 		$('.dataOption a:not(:eq('+idx+'))').addClass('btn-empty');
-		if( idx==0 ) pharmacy_list();
+		if( idx==0 ) pharmacy_list(1);
 		else		 animail_list();
 	}
 });
-pharmacy_list();
-function pharmacy_list(){
+pharmacy_list(1);
+function pharmacy_list(page){
 	$.ajax({
 		url: 'data/pharmacy',
+		data: {pageNo: page},
 		success: function(data){
 			console.log(data);
 			var tag = '<table class="pharmacy">';
@@ -57,6 +62,7 @@ function pharmacy_list(){
 				});
 				tag+= '</table>';
 				$('#data-list').html(tag);
+				makePage( data.count, page );
 			
 		}, error: function(req, text){
 			alert(text+":"+req.status)
@@ -64,6 +70,43 @@ function pharmacy_list(){
 	});
 	
 }
+function makePage ( totalList, curPage ){
+	var page = pageInfo(totalList, curPage, pageList, blockPage);
+	var tag = '';
+
+	if( page.curBlock > 1) {
+		tag += '<a class="page_first">처음</a>'
+			+'<a class="page_prev">이전</a>'
+	}
+
+	for(var no = page.beginPage; no <= page.endPage; no++ ){
+		if( no == curPage )
+			tag += '<span class="page_on">'+ no +'</span>';
+		else
+			tag += '<a class="page_off">'+ no +'</a>';
+	}
+	if( page.curBlock < page.totalBlock){
+		tag += '<a class="page_next">다음</a>'
+			+'<a class="page_last">마지막</a>';
+	}
+	$('.page_list').html(tag);
+}
+
+//페이지 처리
+function pageInfo(totalList, curPage, pageList, blockPage){
+	 var page = new Object();
+	 page.totalPage = parseInt(totalList / pageList)
+						 +(totalList % pageList == 0 ? 0 : 1);
+	 page.totalBlock = parseInt (page.totalpage / blockPage)
+						 +(page.totalPage % blockPage == 0 ? 0 : 1);
+	 page.curBlock = parseInt(curPage / blockPage)
+	 					 +(curPage % blockPage == 0 ? 0 : 1);
+	 page.endPage = page.curBlock * blockPage;
+	 page.beginPage = page.endPage - (blockPage-1);
+	 if (page.endPage > page.totalPage ) page.endPage = page.totalPage;
+	 return page;
+}
+
 function animail_list(){
 	
 }
@@ -92,6 +135,8 @@ $(document).on('click', '.map', function(){
 $('#map-background').click(function(){
 	$('#map, #map-background').css('display', 'none');
 });
+var pageList = 10, blockPage = 10;	//페이지당 보여질 목록수, 블럭당 보여질 페이지수
+
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsrerDHJrp9Wu09Ij7MUELxCTPiYfxfBI">
 </script>
