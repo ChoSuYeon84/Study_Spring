@@ -18,10 +18,11 @@ public class DataController {
 	
 	//약국정보조회 요청
 	@ResponseBody @RequestMapping(value="/data/pharmacy", produces = "application/json; charset=utf-8") //한글이 ?로 나오지 않게 하기위한 처리
-	public String pharmarcy_list() {
+	public String pharmarcy_list(int pageNo) {
 		StringBuilder url = new StringBuilder("http://apis.data.go.kr/B551182/pharmacyInfoService/getParmacyBasisList");
 		url.append("?ServiceKey=" + key);
 		url.append("&_type=json");
+		url.append("&pageNo="+pageNo);
 		return common.json_list(url);
 	}
 	

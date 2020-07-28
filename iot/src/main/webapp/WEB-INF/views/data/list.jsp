@@ -18,6 +18,30 @@
 	background-color: #000;
 	opacity: 0.3; display: none;
 }
+
+.page_on, .page_off, .page_next, .page_last, .page_prev, .page_first {
+	display: inline-block; line-height: 30px; margin: 0px; 
+}
+
+.page_on, .page_off {
+	min-width: 30px;
+	padding: 0px 5px 2px;
+}
+
+.page_next, .page_last, .page_prev, .page_first {
+	text-indent: -9999999px;
+	border: 1px solid #d0d0d0; width: 30px;
+}
+
+.page_on {
+	border: 1px solid gray; background-color: gray; color: #fff; font-weight: bold;
+}
+
+.page_next { background: url('img/page_next.jpg') center no-repeat;}
+.page_last { background: url('img/page_last.jpg') center no-repeat;}
+.page_prev { background: url('img/page_prev.jpg') center no-repeat;}
+.page_first { background: url('img/page_first.jpg') center no-repeat;}
+
 </style>
 </head>
 <body>
@@ -75,19 +99,19 @@ function makePage ( totalList, curPage ){
 	var tag = '';
 
 	if( page.curBlock > 1) {
-		tag += '<a class="page_first">처음</a>'
-			+'<a class="page_prev">이전</a>'
+		tag += '<a class="page_first" data-page=1 >처음</a>'
+			+'<a class="page_prev" data-page='+ (page.beginPage-blockPage) +'>이전</a>'
 	}
 
 	for(var no = page.beginPage; no <= page.endPage; no++ ){
 		if( no == curPage )
 			tag += '<span class="page_on">'+ no +'</span>';
 		else
-			tag += '<a class="page_off">'+ no +'</a>';
+			tag += '<a class="page_off" data-page='+ no +'>'+ no +'</a>';
 	}
 	if( page.curBlock < page.totalBlock){
-		tag += '<a class="page_next">다음</a>'
-			+'<a class="page_last">마지막</a>';
+		tag += '<a class="page_next" data-page='+ (page.endPage+1) +'>다음</a>'
+			+'<a class="page_last" data-page='+ page.totalPage +'>마지막</a>';
 	}
 	$('.page_list').html(tag);
 }
@@ -95,15 +119,12 @@ function makePage ( totalList, curPage ){
 //페이지 처리
 function pageInfo(totalList, curPage, pageList, blockPage){
 	 var page = new Object();
-	 page.totalPage = parseInt(totalList / pageList)
-						 +(totalList % pageList == 0 ? 0 : 1);
-	 page.totalBlock = parseInt (page.totalpage / blockPage)
-						 +(page.totalPage % blockPage == 0 ? 0 : 1);
-	 page.curBlock = parseInt(curPage / blockPage)
-	 					 +(curPage % blockPage == 0 ? 0 : 1);
+	 page.totalPage = parseInt(totalList / pageList) + (totalList % pageList == 0 ? 0 : 1);
+	 page.totalBlock = parseInt(page.totalPage / blockPage) + (page.totalPage % blockPage == 0 ? 0 : 1);
+	 page.curBlock = parseInt(curPage / blockPage) + (curPage % blockPage == 0 ? 0 : 1);
 	 page.endPage = page.curBlock * blockPage;
 	 page.beginPage = page.endPage - (blockPage-1);
-	 if (page.endPage > page.totalPage ) page.endPage = page.totalPage;
+	 if ( page.endPage > page.totalPage ) page.endPage = page.totalPage;
 	 return page;
 }
 
@@ -111,7 +132,10 @@ function animail_list(){
 	
 }
 
-$(document).on('click', '.map', function(){
+$(document).on('click', '.page_list a', function(){
+	pharmacy_list( $(this).data('page') );
+	
+}).on('click', '.map', function(){
 	$('#map, #map-background').css('display', 'block');
 
 	var pos = {lat: $(this).data('y'), lng:$(this).data('x')} /* lat : 위도y lng : 경도x */
