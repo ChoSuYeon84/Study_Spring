@@ -42,6 +42,11 @@
 .page_prev { background: url('img/page_prev.jpg') center no-repeat;}
 .page_first { background: url('img/page_first.jpg') center no-repeat;}
 
+.list-view, .grid-view { font-size: 25px; color: #3367d6; padding-top: 3px}
+.common li i { vertical-align: top;}
+#list-top ul.common li:not(:last-child){margin-right: 10px;}
+#data-list ul.pharmacy li div:first-child {height:25px;}
+#data-list ul.pharmacy li div:last-child {font-size:14px;}
 </style>
 </head>
 <body>
@@ -49,6 +54,20 @@
 <div class="btnSet dataOption">
 	<a class="btn-fill">약국조회</a>
 	<a class="btn-empty">유기동물조회</a>
+</div>
+<div id='list-top'>
+	<ul class="common">
+		<li><select id='pageList' class='w-pw80'>
+			<option value="10">10개씩</option>
+			<option value="20">20개씩</option>
+			<option value="30">30개씩</option>
+			</select>
+		</li>
+		<li class='list-view'><i class="fas fa-list font-img"></i>
+		</li>
+		<li class='grid-view'><i class="fas fa-th font-img"></i>
+		</li>
+	</ul>
 </div>
 <div id='data-list' style="margin:20px 0 auto"></div>
 <div class="btnSet">
@@ -59,6 +78,7 @@
 <div id='map'></div>
 
 <script type="text/javascript">
+var viewType= 'list';
 $('.dataOption a').click(function(){
 	//이미 선택된 버튼에 대해서는 적용하지 않으려면
 	if( $(this).hasClass('btn-empty')) {
@@ -74,14 +94,14 @@ pharmacy_list(1);
 function pharmacy_list(page){
 	$.ajax({
 		url: 'data/pharmacy',
-		data: {pageNo: page},
+		data: {pageNo: page, rows:$('#pageList').val()},
 		success: function(data){
 			console.log(data);
 			var tag = '<table class="pharmacy">';
 				+ '<tr><th class="w-pw200">약국명</th><th class="w-pw140">전화번호</tn><th>주소</tn></tr>'
 
 				$(data.item).each(function(){
-					tag += '<tr><td><a class="map" data-x='+ this.XPos +' data-y=' + this.YPos + '>'+ this.yadmNm +'</a></td><td>'+ this.telno +'</td><td class="left">'+ this.addr +'</td>'
+					tag += '<tr><td><a class="map" data-x='+ this.XPos +' data-y=' + this.YPos + '>'+ this.yadmNm +'</a></td><td>'+ (this.telno ? this.telno : "-") +'</td><td class="left">'+ this.addr +'</td>'
 						+'</tr>'
 				});
 				tag+= '</table>';
@@ -131,14 +151,59 @@ function pageInfo(totalList, curPage, pageList, blockPage){
 function animail_list(){
 	
 }
+//테이블목록뷰-> 그리드뷰로 변경
+function pharmacy_grid_data( data ){
+	var tag = '<ul class="pharmacy grid">';
+	data.each(function(){
+		if( $(this).index() > 0 ) {	//0번은 헤드부분(제목)이므로 불필요해서 0 이후부터
+			var $a = $(this).find('.map'); 
+			tag += '<li>'
+				+'<div><a class="map" data-x="'+ $a.data('x') +'" data-y="'+ $a.data('y')+'">'+ $(this).children('td:eq(0)').text() +'</div>'
+				+'<div>'+ $(this).children('td:eq(1)').text() +'</div>'
+				+'<div>'+ $(this).children('td:eq(2)').text() +'</div>'
+				+'</li>';
+		}
+		
+	});
+	tag += '</ul>';
+	$('#data-list').html(tag);
+	$('#data-list ul').css('height', 
+			( ( $('.grid li').length % 5 > 0 ? 1 : 0 ) + Math.floor( $('.grid li').length/5 ) )	
+			* $('.grid li').outerHeight(true) - 20);
+		
+}
+
+function pharmacy_list_data(data){
+	
+}
 
 $(document).on('click', '.page_list a', function(){
 	pharmacy_list( $(this).data('page') );
+
+}).on('change', '.list-view', function(){
+	if(viewType=='grid'){
+		viewType='list';
+		pharmacy_list_data($('.grid li'));
+	}
+
+}).on('click', '.grid-view', function(){
+	if( viewType=='list' ){
+		viewType='grid';
+		pharmacy_grid_data( $('.pharmacy tr'));
+	}
+	
+}).on('change', '#pageList', function(){
+	pageList = $(this).val();
+	pharmacy_list(1);
 	
 }).on('click', '.map', function(){
+	if( $(this).data('y')=='undefined' || $(this).data('x')=='undefined'){
+		alert('위경도가 지원되지 않아 지도에 표시할 수 없습니다!')
+		return;
+	}
 	$('#map, #map-background').css('display', 'block');
 
-	var pos = {lat: $(this).data('y'), lng:$(this).data('x')} /* lat : 위도y lng : 경도x */
+	var pos = {lat: Number($(this).data('y')), lng: Number($(this).data('x'))} /* lat : 위도y lng : 경도x */
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: pos, 
 		zoom: 15
