@@ -40,13 +40,15 @@ public class MemberController {
 	
 	//아이디 중복확인 요청
 		@ResponseBody @RequestMapping("/id_check")
-		public boolean id_check(String id, HttpServletRequest request, HttpServletResponse response_email) throws Exception{
+		public int id_check(String id,HttpSession session,  HttpServletRequest request, HttpServletResponse response_email) throws Exception{
 			boolean exist = service.member_id_check(id) ;
 			//멤버id가 존재하지 않는다면(사용가능한 id면) 인증번호 메일전송
+			int authNo = -1;
 			if( exist ) {
-				sendMail( id, response_email);
+//				session.setAttribute("authNo", sendMail( id, response_email) );
+				authNo = sendMail( id, response_email) ;
 			}
-			return exist;
+			return authNo;
 		}
 	
 	//회원가입화면 요청
@@ -78,7 +80,7 @@ public class MemberController {
 	}
 	
 	//메일 전송
-	public void sendMail(String toMail, HttpServletResponse response_email) throws IOException {
+	public int sendMail(String toMail, HttpServletResponse response_email) throws IOException {
 
 		Random r = new Random();
 		int dice = r.nextInt(4589362) + 49311; // 이메일로 받는 인증코드 부분 (난수)
@@ -105,6 +107,6 @@ public class MemberController {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
+		return dice;
 	}
 }

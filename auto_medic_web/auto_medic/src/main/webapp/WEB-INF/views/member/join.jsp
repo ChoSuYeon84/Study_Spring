@@ -77,7 +77,7 @@ text-align: left
 <tr><th>인증번호</th>
 </tr>
 <tr>
-	<td><input type="text"/><br/>
+	<td><input type="text" id='authNo' /><br/>
 		<div class="valid">인증번호를 입력하세요</div>
 	</td>
 </tr>
@@ -160,12 +160,16 @@ function item_check(item){
 }
 
  //인증번호확인부분
-/* function idNum_chk(){
-
+ function idNum_chk(){
+	if ( $('#authNo').val() == authNo ){
+		alert('인증됨ㄱ');
+	}	else{
+		alert('인증안됨');
+		}
 
 	
-} 
- */
+}
+ 
 function id_check(){
 //	올바른 아이디 입력형태인지 파악하여 유효하지 않다면 중복확인 불필요
 	var $id =  $('[name=id]')
@@ -183,7 +187,8 @@ function id_check(){
 		url: 'id_check',
 		data: { id:$id.val() },
 		success: function(data){
-			data = join.id_usable(data);
+			authNo = data;
+			data = join.id_usable(data==-1 ? true : false);
 			console.log(data);
 			display_status( $id.siblings('div'), data );
 			$id.addClass('chked');	
@@ -193,6 +198,7 @@ function id_check(){
 	});
 
 }
+var authNo = '';
 
 function nick_check(){
 	var $nickname =  $('[name=nickname]')
