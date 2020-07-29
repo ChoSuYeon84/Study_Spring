@@ -96,7 +96,7 @@ function pharmacy_list(page){
 		url: 'data/pharmacy',
 		data: {pageNo: page, rows:$('#pageList').val()},
 		success: function(data){
-			if (viewType="list") pharmacy_list_data($(data.item), 0); //0일때는 제이슨데이터 사용, 나머지는 테이블 화면을 가져와서 사용
+			if (viewType=="list") pharmacy_list_data($(data.item), 0); //0일때는 제이슨데이터 사용, 나머지는 테이블 화면을 가져와서 사용
 			else				 pharmacy_grid_data($(data.item), 0);
 			
 				makePage( data.count, page );
@@ -147,17 +147,29 @@ function animail_list(){
 //테이블목록뷰 --> 그리드뷰로 변경
 function pharmacy_grid_data( data, type ){
 	var tag = '<ul class="pharmacy grid">';
-	data.each(function(){
-		if( $(this).index()>0 ){
-			var $a = $(this).find('.map');
+	if( type== 0) {
+		data.each(function(){
 			tag += '<li>'
 				+ '<div><a class="map" '
-				+ 'data-x="'+ $a.data('x') +'" data-y="'+ $a.data('y') +'" >'+ $(this).children('td:eq(0)').text() +'</a></div>'
-				+ '<div>'+ $(this).children('td:eq(1)').text() +'</div>'
-				+ '<div>'+ $(this).children('td:eq(2)').text() +'</div>'
-				+ '</li>';			
-		}
-	});
+				+ 'data-x="'+ this.XPos +'" data-y="'+ this.YPos +'" >'+ this.yadmNm +'</a></div>'
+				+ '<div>'+ (this.telno ? this.telno : '-') +'</div>'
+				+ '<div>'+ this.addr +'</div>'
+				+ '</li>';	
+		});
+		
+	}else{
+		data.each(function(){
+			if( $(this).index()>0 ){
+				var $a = $(this).find('.map');
+				tag += '<li>'
+					+ '<div><a class="map" '
+					+ 'data-x="'+ $a.data('x') +'" data-y="'+ $a.data('y') +'" >'+ $(this).children('td:eq(0)').text() +'</a></div>'
+					+ '<div>'+ $(this).children('td:eq(1)').text() +'</div>'
+					+ '<div>'+ $(this).children('td:eq(2)').text() +'</div>'
+					+ '</li>';			
+			}
+		});
+	}
 	tag += '</ul>';
 	$('#data-list').html( tag );
 	$('#data-list ul').css('height', 
