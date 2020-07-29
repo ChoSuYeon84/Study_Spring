@@ -96,16 +96,9 @@ function pharmacy_list(page){
 		url: 'data/pharmacy',
 		data: {pageNo: page, rows:$('#pageList').val()},
 		success: function(data){
-			console.log(data);
-			var tag = '<table class="pharmacy">';
-				+ '<tr><th class="w-pw200">약국명</th><th class="w-pw140">전화번호</tn><th>주소</tn></tr>'
-
-				$(data.item).each(function(){
-					tag += '<tr><td><a class="map" data-x='+ this.XPos +' data-y=' + this.YPos + '>'+ this.yadmNm +'</a></td><td>'+ (this.telno ? this.telno : "-") +'</td><td class="left">'+ this.addr +'</td>'
-						+'</tr>'
-				});
-				tag+= '</table>';
-				$('#data-list').html(tag);
+			if (viewType="list") pharmacy_list_data($(data.item), 0); //0일때는 제이슨데이터 사용, 나머지는 테이블 화면을 가져와서 사용
+			else				 pharmacy_grid_data($(data.item), 0);
+			
 				makePage( data.count, page );
 			
 		}, error: function(req, text){
@@ -151,45 +144,71 @@ function pageInfo(totalList, curPage, pageList, blockPage){
 function animail_list(){
 	
 }
-//테이블목록뷰-> 그리드뷰로 변경
-function pharmacy_grid_data( data ){
+//테이블목록뷰 --> 그리드뷰로 변경
+function pharmacy_grid_data( data, type ){
 	var tag = '<ul class="pharmacy grid">';
 	data.each(function(){
-		if( $(this).index() > 0 ) {	//0번은 헤드부분(제목)이므로 불필요해서 0 이후부터
-			var $a = $(this).find('.map'); 
+		if( $(this).index()>0 ){
+			var $a = $(this).find('.map');
 			tag += '<li>'
-				+'<div><a class="map" data-x="'+ $a.data('x') +'" data-y="'+ $a.data('y')+'">'+ $(this).children('td:eq(0)').text() +'</div>'
-				+'<div>'+ $(this).children('td:eq(1)').text() +'</div>'
-				+'<div>'+ $(this).children('td:eq(2)').text() +'</div>'
-				+'</li>';
+				+ '<div><a class="map" '
+				+ 'data-x="'+ $a.data('x') +'" data-y="'+ $a.data('y') +'" >'+ $(this).children('td:eq(0)').text() +'</a></div>'
+				+ '<div>'+ $(this).children('td:eq(1)').text() +'</div>'
+				+ '<div>'+ $(this).children('td:eq(2)').text() +'</div>'
+				+ '</li>';			
 		}
-		
 	});
 	tag += '</ul>';
-	$('#data-list').html(tag);
+	$('#data-list').html( tag );
 	$('#data-list ul').css('height', 
-			( ( $('.grid li').length % 5 > 0 ? 1 : 0 ) + Math.floor( $('.grid li').length/5 ) )	
-			* $('.grid li').outerHeight(true) - 20);
-		
+			( ($('.grid li').length%5>0 ? 1 : 0 ) + Math.floor($('.grid li').length/5) )	 
+			 * $('.grid li').outerHeight(true) - 20);
 }
+//그리드뷰 --> 테이블목록뷰로 변경
+function pharmacy_list_data(data, type){
 
-function pharmacy_list_data(data){
+	var tag = '<table class="pharmacy">'
+		+ '<tr><th class="w-px200">약국명</th>'
+			+ '<th class="w-px140">전화번호</th><th>주소</th></tr>';
+
+ 	if( type==0 ){
+ 		data.each(function(){
+			tag += '<tr><td><a class="map" data-x='+ this.XPos + ' data-y='+ this.YPos + ' >'+ this.yadmNm +'</a></td>'
+					+ '<td>'+ (this.telno ? this.telno : '-') + '</td>'
+					+ '<td class="left">'+ this.addr + '</td>'
+				+ '</tr>';
+		});
+ 	 	
+ 	}else{
+	
+		data.each(function(){
+			var $a = $(this).find('.map');
+			tag += '<tr><td><a class="map" '
+				+ 'data-x="'+ $a.data('x') 
+				+ '" data-y="'+ $a.data('y') +'">'+  $a.text() + '</a></td>'
+				+ '<td>'+ $(this).children('div:eq(1)').text() +'</td>'
+				+ '<td class="left">'+ $(this).children('div:eq(2)').text() +'</td>'
+				+ '</tr>';
+		});
+	}
+	tag += '</table>';
+	$('#data-list').html(tag);
 	
 }
 
 $(document).on('click', '.page_list a', function(){
 	pharmacy_list( $(this).data('page') );
 
-}).on('change', '.list-view', function(){
+}).on('click', '.list-view', function(){
 	if(viewType=='grid'){
 		viewType='list';
-		pharmacy_list_data($('.grid li'));
+		pharmacy_list_data($('.grid li'), 1);
 	}
 
 }).on('click', '.grid-view', function(){
 	if( viewType=='list' ){
 		viewType='grid';
-		pharmacy_grid_data( $('.pharmacy tr'));
+		pharmacy_grid_data( $('.pharmacy tr'), 1);
 	}
 	
 }).on('change', '#pageList', function(){
