@@ -11,8 +11,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean member_insert(MemberVO vo) {
-		// TODO Auto-generated method stub
-		return false;
+		return dao.member_insert(vo);
 	}
 
 	@Override
@@ -27,8 +26,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean member_id_check(String id) {
-		return dao.member_id_check(id);
+	public boolean member_id_check(String member_email) {
+		return dao.member_id_check(member_email);
 	}
 
 	@Override
@@ -44,8 +43,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean member_nick_check(String nickname) {
-		return dao.member_nick_check(nickname);
+	public boolean member_nick_check(String member_nickname) {
+		return dao.member_nick_check(member_nickname);
 	}
 
+	@Override
+	public void member_pw_update(MemberVO vo) {
+		dao.member_pw_update(vo);
+		
+	}
+	
+	
 }

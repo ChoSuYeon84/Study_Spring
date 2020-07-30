@@ -2,7 +2,6 @@ package member;
 
 public class MemberVO {
 	private String member_email, member_password, member_nickname, member_phonenum, member_profile;
-
 	
 	public String getMember_email() {
 		return member_email;

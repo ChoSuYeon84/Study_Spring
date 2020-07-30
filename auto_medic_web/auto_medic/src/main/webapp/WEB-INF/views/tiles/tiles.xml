@@ -9,6 +9,14 @@
 			    		
     	</definition>
     	
+    	<definition name="layout2" template="/WEB-INF/views/tiles/layout2.jsp">   
+           <put-attribute name="header2" value="/WEB-INF/views/include/header2.jsp"/>                              
+       </definition>
+       
+       <definition name="my/*" extends="layout2">
+            <put-attribute name="content" value="/WEB-INF/views/my/{1}.jsp"/>
+       </definition>
+    	
     	<definition name="member/*" template="/WEB-INF/views/member/{1}.jsp">
     	</definition>
     	

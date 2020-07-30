@@ -20,7 +20,7 @@ public class NaverLoginBO {
 	//state: 애플리케이션이 생성한 상태 토큰
 	private final static String CLIENT_ID = "przzu6N6M4M9BvGyF5QG";
 	private final static String CLIENT_SECRET = "1lG22iUMlW";
-	private final static String REDIRECT_URI = "http://192.168.0.22:90/automedic/callback";
+	private final static String REDIRECT_URI = "http://192.168.0.22:80/automedic/callback";
 	private final static String SESSION_STATE = "oauth_state";
 	
 	 /* 프로필 조회 API URL */

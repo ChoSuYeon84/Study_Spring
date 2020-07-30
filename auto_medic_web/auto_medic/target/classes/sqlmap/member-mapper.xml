@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member.mapper">
 
+<insert id="join">
+insert into manage_member(member_email, member_password, member_nickname, member_phonenum)
+values(#{member_email}, #{member_password}, #{member_nickname}, #{member_phonenum})
+</insert>
+
+<update id="update">
+update manage_member set member_password=#{member_password} where member_email=#{member_email}
+</update>
+
 <select id="nickname_check" resultType="integer">
 select count(*) from manage_member where member_nickname=#{member_nickname}
 </select>

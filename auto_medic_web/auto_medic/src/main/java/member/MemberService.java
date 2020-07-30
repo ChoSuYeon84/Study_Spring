@@ -17,4 +17,6 @@ public interface MemberService {
 	boolean member_update(MemberVO vo);
 	//회원정보탈퇴
 	boolean member_delete(String id);
+	//비밀번호 확인
+	void member_pw_update(MemberVO vo);
 }

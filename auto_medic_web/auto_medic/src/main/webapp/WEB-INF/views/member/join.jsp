@@ -12,13 +12,13 @@
 <link rel = "stylesheet" type="text/css" href="css/common.css?v=<%= new Date().getTime()%>"> 
 <style type="text/css">
 * {
-margin: 0 auto; 
+	margin: 0 auto; 
 
 }
 
 #logo, #join_us, h3 {
-margin: 0 auto;
-display: table;
+	margin: 0 auto;
+	display: table;
 }
 
 table th {
@@ -26,31 +26,31 @@ float: left;
 }
 
 input {
-height: 50px;
-width: 500px;
-color: black;
-font-size: 20px;
+	height: 50px;
+	width: 500px;
+	color: black;
+	font-size: 20px;
 }
 
 .btn-fill-s{
-display: block;
+	display: block;
 }
 
 .btn-fill, .btn-fill-s{
-height: 50px;
-width: 509px;
-background-color: #ccc;
-text-align: center;
-line-height: 50px;
+	height: 50px;
+	width: 509px;
+	background-color: #ccc;
+	text-align: center;
+	line-height: 50px;
 }
 
 img {
-height: 215px;
-width: 500px;
+	height: 215px;
+	width: 500px;
 }
 
 table tr td{
-text-align: left
+	text-align: left
 }
 
 .valid, .invalid {font-size: 12px; font-weight: bold;}
@@ -67,7 +67,7 @@ text-align: left
 <tr><th>아이디</th>
 </tr>
 <tr>
-	<td><input class="chk" title='아이디' type="text" name="id"/><br/>
+	<td><input class="chk" title='아이디' type="text" name="member_email"/><br/>
 		<div class="valid">아이디를 입력하세요(이메일주소만 입력 가능)</div>
 	</td>
 </tr>
@@ -77,7 +77,7 @@ text-align: left
 <tr><th>인증번호</th>
 </tr>
 <tr>
-	<td><input type="text" id='authNo' /><br/>
+	<td><input type="text" name="authNo" /><br/>
 		<div class="valid">인증번호를 입력하세요</div>
 	</td>
 </tr>
@@ -87,7 +87,7 @@ text-align: left
 <tr><th>비밀번호</th>
 </tr>
 <tr>
-	<td><input class="chk" title='비밀번호' type="password" name="pw"/><br/>
+	<td><input class="chk" title='비밀번호' type="password" name="member_password"/><br/>
 		<div class="valid">비밀번호를 입력하세요(영문대/소문자, 숫자를 모두 포함)</div>
 	</td>
 </tr>
@@ -101,7 +101,7 @@ text-align: left
 <tr><th>닉네임</th>
 </tr>
 <tr>
-	<td><input class="chk" title='닉네임' type="text" name="nickname"/><br/>
+	<td><input class="chk" title='닉네임' type="text" name="member_nickname"/><br/>
 		<div class="valid">닉네임을 입력하세요</div>
 		<a class='btn-fill-s' id="nick_chk" onclick="nick_check()">닉네임중복확인</a>
 	</td>
@@ -109,7 +109,7 @@ text-align: left
 <tr><th>연락처</th>
 </tr>
 <tr>
-	<td><input class="chk" type="text" name="tel"/><br/>
+	<td><input class="chk" type="text" name="member_phonenum"/><br/>
 		<div class="valid">연락처를 입력하세요 (-없이 숫자만 입력가능)</div>
 	</td>
 </tr>
@@ -125,26 +125,33 @@ text-align: left
 function go_join(){
 	//필수항목의 유효성을 판단하도록 한다.
 	//중복확인한 경우
-	if( $('[name=id]').hasClass('chked') ){
+	if( $('[name=member_email]').hasClass('chked') ){
 		//이미사용중인 경우는 회원가입 불가
-		if($('[name=id]').siblings('div').hasClass('invalid')){
-			alert('회원가입불가\n'+join.id.unusable.desc);
-			$('[name=id]').focus();
+		if($('[name=member_email]').siblings('div').hasClass('invalid')){
+			alert('회원가입불가\n'+join.member_email.unusable.desc);
+			$('[name=member_email]').focus();
 			return;
 		}
 	}else{
 	//중복확인 하지 않은 경우
-		if( !item_check( $('[name=id]') ) ) return;
+		if( !item_check( $('[name=member_email]') ) ) return;
 		else{
-			alert('회원가입불가\n'+join.id.valid.desc);
-			$('[name=id]').focus();
+			alert('회원가입불가\n'+join.member_email.valid.desc);
+			$('[name=member_email]').focus();
 			return;
 		}
 	}
-	if( !item_check( $('[name=pw]') ) ) return;
+
+	if(!$('[name=authNo]').hasClass('chked')){
+		alert('회원가입불가\n인증번호를 확인해주세요!')
+		return;
+	}
+	
+	if( !item_check( $('[name=authNo]') ) ) return;
+	if( !item_check( $('[name=member_password]') ) ) return;
 	if( !item_check( $('[name=pw_ck]') ) ) return;
-	if( !item_check( $('[name=nickname]') ) ) return;
-	if( !item_check( $('[name=tel]') ) ) return;
+	if( !item_check( $('[name=member_nickname]') ) ) return;
+	if( !item_check( $('[name=member_phonenum]') ) ) return;
 
 	$('form').submit();
 	
@@ -161,37 +168,40 @@ function item_check(item){
 
  //인증번호확인부분
  function idNum_chk(){
-	if ( $('#authNo').val() == authNo ){
-		alert('인증됨ㄱ');
-	}	else{
-		alert('인증안됨');
-		}
-
-	
+	var $authNo = $('[name=authNo]');
+	console.log(1, authNo);
+	var data = join.tag_status( $authNo);
+	$authNo.addClass('chked');	
+	display_status( $authNo.siblings('div'), data );
+	if( data.code != 'valid'){
+		//alert(data.desc);
+		$authNo.focus();
+		return;
+	}
 }
  
 function id_check(){
 //	올바른 아이디 입력형태인지 파악하여 유효하지 않다면 중복확인 불필요
-	var $id =  $('[name=id]')
-	if( $id.hasClass( 'chked' )) return;
-	console.log('go check')
-	var data = join.tag_status( $id);
+	var $member_email =  $('[name=member_email]')
+	if( $member_email.hasClass( 'chked' )) return;
+	console.log('go check id')
+	var data = join.tag_status( $member_email);
 	if( data.code != 'valid'){
 		alert(data.desc);
-		$id.focus();
+		$member_email.focus();
 		return;
 	}
 
 	$.ajax({
 		type: 'post',
 		url: 'id_check',
-		data: { id:$id.val() },
+		data: { member_email:$member_email.val() },
 		success: function(data){
 			authNo = data;
-			data = join.id_usable(data==-1 ? true : false);
+			data = join.member_email_usable(data == -1 ? false : true);
 			console.log(data);
-			display_status( $id.siblings('div'), data );
-			$id.addClass('chked');	
+			display_status( $member_email.siblings('div'), data );
+			$member_email.addClass('chked');	
 		}, error: function(req, text){
 			alert(text+': '+req.status);
 		}
@@ -201,25 +211,25 @@ function id_check(){
 var authNo = '';
 
 function nick_check(){
-	var $nickname =  $('[name=nickname]')
-	if( $nickname.hasClass( 'chked' )) return;
-	console.log('go check')
-	var data = join.tag_status( $nickname);
+	var $member_nickname =  $('[name=member_nickname]')
+	if( $member_nickname.hasClass( 'chked' )) return;
+	console.log('go check nickname')
+	var data = join.tag_status( $member_nickname);
 	if( data.code != 'valid'){
 		alert(data.desc);
-		$nickname.focus();
+		$member_nickname.focus();
 		return;
 	}
 
 	$.ajax({
 		type: 'post',
 		url: 'nickname_check',
-		data: { nickname:$nickname.val() },
+		data: { member_nickname:$member_nickname.val() },
 		success: function(data){
-			data = join.nickname_usable(data);
+			data = join.member_nickname_usable(data);
 			console.log(data);
-			display_status( $nickname.siblings('div'), data );
-			$nickname.addClass('chked');
+			display_status( $member_nickname.siblings('div'), data );
+			$member_nickname.addClass('chked');
 		}, error: function(req, text){
 			alert(text+': '+req.status);
 		}
@@ -227,7 +237,7 @@ function nick_check(){
 }
 
 $('.chk').on('keyup', function(){
-	if( $(this).attr('name')=='id' || $(this).attr('name')=='nickname'){
+	if( $(this).attr('name')=='member_email' || $(this).attr('name')=='member_nickname'|| $(this).attr('name')=='authNo'){
 		if( event.keyCode==13){ id_check(); }
 		else {
 			$(this).removeClass('chked');
@@ -239,7 +249,7 @@ $('.chk').on('keyup', function(){
 });
 function validate(t){
 	var data = join.tag_status(t);
-	//console.log(data);
+	console.log(data);
 	display_status (t.siblings('div'), data);
 }
 function display_status(div, data){

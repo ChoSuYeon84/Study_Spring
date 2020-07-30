@@ -1,9 +1,12 @@
 package com.hanul.automedic;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +32,7 @@ public class NLoginController {
 	//로그인 첫 화면 요청 메소드
 		@RequestMapping(value = "/Nlogin", method = { RequestMethod.GET, RequestMethod.POST })
 		public String Nlogin(Model model, HttpSession session) {
-			
+			System.out.println("네이버로그인");
 			/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
 			String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
 			
@@ -53,7 +56,17 @@ public class NLoginController {
 	        oauthToken = naverLoginBO.getAccessToken(session, code, state);
 	        //로그인 사용자 정보를 읽어온다.
 		    apiResult = naverLoginBO.getUserProfile(oauthToken);
+		    
+		    try {
+			    JSONObject obj = (JSONObject)new JSONParser().parse( apiResult );
+			    obj = (JSONObject)obj.get("response");
+			    HashMap<String, String> map = new HashMap<String, String>(); 
+			    map.put("id",  obj.get("email").toString());
+			    map.put("name", obj.get("name").toString());
+			    model.addAttribute("Naverlogin", map);
+		    }catch(Exception e) {}
 			model.addAttribute("result", apiResult);
+			
 			
 	        /* 네이버 로그인 성공 페이지 View 호출 */
 			return "home";
