@@ -33,9 +33,47 @@ input {
 }
 </style>
 <script type="text/javascript">
-function send_pw(){
+function userMail_chk(){
+	var $userMail = $('#userMail').val();
+	//alert($userMail);
+	if($userMail==""){
+		alert('이메일을 입력해주세요!');
+		return;
+	}else{
+
+		$.ajax({
+			//type: 'post',
+			dataType : "text",
+			url: 'userMail_chk',
+			data: { userMail :$userMail },
+			success: function(data){
+				//alert(data);
+				var result = false;
+				if(data == "true"){
+					result = true;
+				}
+				if(result){
+					console.log(data);
+					$('form').submit();
+				}else{
+					alert('존재하지 않는 이메일입니다!');
+					$("#userMail").val("");
+					return;
+				}
+			}, error: function(){
+				alert("로딩실패!");
+				console.log(data);
+			}
+
+		});
+
+	}	
+} 
+
+/* function userMail_chk(){
+	alert('이메일로 전송된 임시비밀번호를 확인해주세요!');
 	$('form').submit();
-}
+} */
 </script>
 </head>
 <body>
@@ -47,8 +85,8 @@ function send_pw(){
 <fieldset> 
 <legend>비밀번호 찾기</legend> 	
 <p>비밀번호를 찾고자 하는 아이디를 입력해 주세요.</p><br/> 
-	<label><input type="text" name="userMail"></label><br/><br/><br/>
-<a class=btnfp onclick="send_pw()">제출</a>
+	<label><input type="text" name="userMail" id="userMail"></label><br/><br/><br/>
+<a class=btnfp onclick="userMail_chk()">제출</a>
 </fieldset> 
 </form>
 </body>

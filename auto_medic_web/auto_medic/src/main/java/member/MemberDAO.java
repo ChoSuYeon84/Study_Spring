@@ -53,5 +53,15 @@ public class MemberDAO implements MemberService {
 		sql.update("member.mapper.update", vo);
 	}
 
+	@Override
+	public boolean member_email_chk(String member_email) {
+		String result = sql.selectOne("member.mapper.member_email_chk", member_email).toString();
+		if(result.equals("0")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+
 	
 }

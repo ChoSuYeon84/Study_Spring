@@ -85,12 +85,19 @@ public class MemberController {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
+			
 			MemberVO vo = new MemberVO();
 			vo.setMember_email(email);
 			vo.setMember_password(newCode);
 			service.member_pw_update(vo);
 		}
-		return "home";
+		return "redirect:/";
+	}
+	
+	//비밀번호찾기시 이메일 존재여부 확인
+	@ResponseBody @RequestMapping("/userMail_chk")
+	public boolean userMail_check(@RequestParam("userMail") String member_email) {
+		return service.member_email_chk(member_email);
 	}
 	
 	//비밀번호 찾기 요청

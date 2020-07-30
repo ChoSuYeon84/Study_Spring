@@ -19,4 +19,6 @@ public interface MemberService {
 	boolean member_delete(String id);
 	//비밀번호 확인
 	void member_pw_update(MemberVO vo);
+	//비밀번호 찾을때 이메일 존재여부 확인
+	boolean member_email_chk(String email);
 }

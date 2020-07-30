@@ -52,6 +52,11 @@ public class MemberServiceImpl implements MemberService {
 		dao.member_pw_update(vo);
 		
 	}
+
+	@Override
+	public boolean member_email_chk(String email) {
+		return dao.member_email_chk(email);
+	}
 	
 	
 }
