@@ -141,6 +141,13 @@ public class MemberController {
 	//로그인요청
 	@ResponseBody @RequestMapping("/login") //ResponseBody : 이것 자체가 응답이 되는것
 	public String login( String id, String pw, HttpSession session) {
+		
+		String name = session.getServletContext().getServletContextName();
+		System.out.println(name);
+		 name = session.getServletContext().getContextPath();
+		 System.out.println(name);
+
+		
 		//public String login( @RequestParam("id")  String member_email, @RequestParam("pw") String member_password, HttpSession session) {
 		//화면에서 입력한 아이디와 비밀번호가 
 		//일치하는 회원정보가 DB에 있는지 확인하여

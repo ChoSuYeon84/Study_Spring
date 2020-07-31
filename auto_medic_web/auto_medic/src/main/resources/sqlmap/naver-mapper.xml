@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="naver.mapper">
+
+<insert id="join">
+insert into naver_member(naver_email, naver_nickname)
+values(#{naver_email}, #{naver_nickname})
+</insert>
+
+<select id="login" resultType="naverlogin.NaverLoginVO">
+select * from naver_member where naver_email=#{id} and naver_nickname=#{name}
+</select>
+
+</mapper>

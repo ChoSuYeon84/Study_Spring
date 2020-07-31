@@ -10,6 +10,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="js/join_check.js?v=<%=new java.util.Date().getTime()%>"></script>
 <link rel = "stylesheet" type="text/css" href="css/common.css?v=<%= new Date().getTime()%>"> 
+<link rel="icon" type="image/x-icon" href="img/logo1.ico">
 <style type="text/css">
 * {
 	margin: 0 auto; 

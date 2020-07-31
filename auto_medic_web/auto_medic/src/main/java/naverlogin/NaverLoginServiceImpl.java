@@ -8,12 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class NaverLoginServiceImpl implements NaverLoginService {
 	@Autowired private NaverLoginDAO dao;
-	
-	@Override
-	public void naver_insert(NaverLoginVO vo) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public NaverLoginVO naver_select(String id) {
@@ -23,8 +17,12 @@ public class NaverLoginServiceImpl implements NaverLoginService {
 
 	@Override
 	public NaverLoginVO naver_login(HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.naver_login(map);
+	}
+
+	@Override
+	public boolean naver_insert(NaverLoginVO vo) {
+		return dao.naver_insert(vo);
 	}
 
 }

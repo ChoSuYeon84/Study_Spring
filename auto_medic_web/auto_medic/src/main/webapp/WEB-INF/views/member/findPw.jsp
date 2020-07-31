@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>AutoMedic : 비밀번호찾기</title>
 <link rel = "stylesheet" type="text/css" href="css/common.css?v=<%= new Date().getTime()%>"> 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link rel="icon" type="image/x-icon" href="img/logo1.ico">
 <style type="text/css">
 fieldset {
 	width: 500px;

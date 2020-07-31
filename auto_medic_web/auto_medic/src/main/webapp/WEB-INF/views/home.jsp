@@ -7,11 +7,11 @@
 <script>
 
 //네이버로그인시 아이디, 이메일 표출
-$(document).ready(function() {
-	if( ${! empty Naverlogin} ){
-		$("#Nname").html('${Naverlogin.name}님!');
-		$("#Nemail").html('${Naverlogin.id}');
-	}
+// $(document).ready(function() {
+// 	if( ${! empty Naverlogin} ){
+// 		$("#Nname").html('${Naverlogin.naver_email}님!');
+// 		$("#Nemail").html('${Naverlogin.naver_nickname}');
+// 	}
 // 	if( ${! empty result} ){
 // 		console.log('??');
 // 		var Nname = ${result}.response.name;
@@ -21,7 +21,7 @@ $(document).ready(function() {
 // 		$("#Nemail").html(Nemail);
 // 		$("#Nphoto").attr('src', Nphoto);
 // 	}
-  });
+//   });
  
 function go_login(){
 	if($('#userid').val()==''){
@@ -29,7 +29,7 @@ function go_login(){
 		$('#userid').focus();
 		return;
 	} else if($('#userpw').val()==''){
-		alert('아이디를 입력하세요!');
+		alert('비밀번호를 입력하세요!');
 		$('#userpw').focus();
 		return;
 	}
@@ -374,7 +374,7 @@ function search(){
 	        	<a href="member" id="btn_join">회원가입</a>
 	        	<a href="findPw" id="btn_findPw">PW찾기</a>
 	        	<a id="btn_Nlogin" href="Nlogin"><img src='img/naver.png' style="width: 25px; height: 25px; margin-left: 10px;"></a>
-	        	<a id="btn_Klogin"><img src='img/kakao.png' style="width: 25px; height: 25px; margin: 0 5px 0 10px;"></a>
+	        	<a id="btn_Klogin" href="Klogin"><img src='img/kakao.png' style="width: 25px; height: 25px; margin: 0 5px 0 10px;"></a>
         	</div>
         	</c:if>
         	<c:if test="${!empty Naverlogin }">
@@ -382,10 +382,10 @@ function search(){
 	        	<table class="my_info_tab">
 	        		<tr>
 	        			<td rowspan="2" style="vertical-align:middle"><img src='img/default_profile.jpg' class="myInfo-img"></td>
-	        			<td id=Nname></td>
+	        			<td id=Nname>${Naverlogin.naver_nickname}</td>
 	        		</tr>
 	        		<tr>
-	        			<td id=Nemail></td>
+	        			<td id=Nemail>${Naverlogin.naver_email}</td>
 	        		</tr>
 	        		<tr>
 	        		<td colspan="2" class="my-btnSet">

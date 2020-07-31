@@ -9,7 +9,7 @@
 	<!--xml파일을 사용하겠다 -->
 	<import resource="classpath:data/*.xml"/>
 	
-	<context:component-scan base-package="my, member, social" />
+	<context:component-scan base-package="my, member, social, kakaologin, naverlogin" />
 	
 	<!-- Gmail -->
   	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">

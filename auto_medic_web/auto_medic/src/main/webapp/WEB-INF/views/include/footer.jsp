@@ -2,6 +2,6 @@
     pageEncoding="UTF-8"%>
 <footer style='font-size:14px; border-top:1px solid #ccc; padding:15px 0; text-align:center;'>
 	<div>업체명: 식후30분 (Auto-Medic)</div>
-	<div>연락처 : 062-302-0302</div>
+	<div>연락처 : 062-302-0302</div><a href="contactus">오시는길</a>
 	<div>Copyright 2020</div>
 </footer>
