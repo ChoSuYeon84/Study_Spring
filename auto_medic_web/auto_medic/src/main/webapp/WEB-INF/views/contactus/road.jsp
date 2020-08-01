@@ -21,6 +21,7 @@
 p {
 	padding: 10px;
 	font-size: 1.8em;
+	margin-top: 30px;
 }
 
 #contactUs {
@@ -33,7 +34,7 @@ p {
 	margin-left: 5px;
 }
 
-li {
+#contactUs li {
 	line-height:40px; 
 	margin:5px 0 5px 20px;
 	list-style: none;

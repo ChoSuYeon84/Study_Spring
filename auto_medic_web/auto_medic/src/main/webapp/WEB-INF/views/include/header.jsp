@@ -14,27 +14,16 @@
 	padding: 0;
 }
 
-header {
-	min-width: 300px;
-	height: 80px;
-	background-color: navy;
-	font-size: 30px;
-	color: white;
-	position: relative;
-}
 
-header p {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translateX(-50%) translateY(-50%);
-}
 
 #dm_ul {
+height:100%;
 	width: 100%;
 	min-width: 300px;
 	text-align: center;
+	background-color: blue;
 }
+
 
 #dm_ul li{
 width:300px;
@@ -43,11 +32,13 @@ width:300px;
 
 #dm_ul li a{
 	color:white;
+	width:100%;
 }
-
+.logo{
+	display: inline;
+}
 #dm_ul li:first-child {
-	/* background-color: pink; */
-	width: 500px;
+	
 }
 
 .dropmenu ul ul {
@@ -81,42 +72,49 @@ width:300px;
 <Style>
 </style>
 <body>
+		<div class="dropmenu" style="z-index: 2">
 
-	<div class="dropmenu">
-		<ul id="dm_ul">
-			<li>
-				<a href="/automedic">
-					<img src="img/logo_web.png" href='#' alt='로고' height="150px" width="500px" />
-				</a>
-			</li>
+		<div class='logo'>
+			
+		</div>
+		<div>
+			<ul id="dm_ul">
+				<!-- <li class='logo'>
+				<ul>
+				<li><a></a></li>
+				
+				</ul><a href="/automedic">로고가 들어갈 <img src="img/logo_web.png"
+						href='#' alt='로고' height="100%" width="100%" />
+				</a></li> -->
 
-			<li><a href="/automedic">메인화면</a>
-				<ul>
-					<li><a href="#">인사말</a></li>
-					<li><a href="#">설립취지</a></li>
-					<li><a href="#">비전/미션</a></li>
-					<li><a href="#">교육목표</a></li>
-				</ul></li>
-			<li><a href="#">제품소개</a>
-				<ul>
-					<li><a href="#">퍼블리싱</a></li>
-					<li><a href="#">기획</a></li>
-					<li><a href="#">유니티</a></li>
-					<li><a href="#">포토샵</a></li>
-				</ul></li>
-			<li><a href="#">정보마당</a>
-				<ul>
-					<li><a href="map.if">지도검색</a></li>
-					<li><a href="drug.if">약검색</a></li>
-				</ul></li>
-			<li><a href="#">고객센터</a>
-				<ul>
-					<li><a href="#">공지사항</a></li>
-					<li><a href="#">학사일정</a></li>
-					<li><a href="#">행사사진</a></li>
-					<li><a href="#">시설안내</a></li>
-				</ul></li>
-		</ul>
+				<li><a href="/automedic">메인화면</a>
+					<ul style="z-index: 2">
+						<li><a href="#">인사말</a></li>
+						<li><a href="#">설립취지</a></li>
+						<li><a href="#">비전/미션</a></li>
+						<li><a href="#">교육목표</a></li>
+					</ul></li>
+				<li><a href="#">제품소개</a>
+					<ul style="z-index: 2">
+						<li><a href="#">퍼블리싱</a></li>
+						<li><a href="#">기획</a></li>
+						<li><a href="#">유니티</a></li>
+						<li><a href="#">포토샵</a></li>
+					</ul></li>
+				<li><a href="#">정보마당</a>
+					<ul style="z-index: 2">
+						<li><a href="map.if">지도검색</a></li>
+						<li><a href="drug.if">약검색</a></li>
+					</ul></li>
+				<li><a href="#">고객센터</a>
+					<ul style="z-index: 2">
+						<li><a href="#">공지사항</a></li>
+						<li><a href="#">학사일정</a></li>
+						<li><a href="#">행사사진</a></li>
+						<li><a href="#">시설안내</a></li>
+					</ul></li>
+			</ul>
+			</div>
 	</div>
 
 	<script type="text/javascript">
@@ -127,45 +125,3 @@ width:300px;
 </body>
 
 
-<Script>
-
-function go_logout(){
-   $.ajax({
-      type:'post',
-      url:'logout',
-      success(){
-            location.reload();
-         },error:function(req,text){
-               alert(text+":"+req.status);
-            }
-      });
-}
-function go_login(){
-   if($('#userid').val()==''){
-         
-         $('#userid').focus();
-         return;
-      }else if($('#userpw').val()==''){
-         alert('비밀번호를 입력하세요!');
-         $('#userpw').focus();
-         return;
-      }
-
-      $.ajax({
-         type:'post',
-         url:'login',
-         data: {id:$('#userid').val(),pw:$('#userpw').val()},
-         success: function(data){
-            alert(data);
-            if(data=='true'){
-                  location.reload();
-               }else{
-                     alert('아이디나 비밀번호가 일치하지 않습니다!');
-                     $('#userid').focus();
-                  }
-            },error:function(req, text){
-                  alert(text+":"+req.status);
-               }
-      });
-}
-</Script>
