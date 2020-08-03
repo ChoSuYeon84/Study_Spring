@@ -11,12 +11,6 @@ public class KakaoLoginDAO implements KakaoLoginService {
 	@Autowired private SqlSession sql;
 
 	@Override
-	public void kakao_insert(KakaoLoginVO vo) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
 	public KakaoLoginVO kakao_select(String id) {
 		// TODO Auto-generated method stub
 		return null;
@@ -24,8 +18,12 @@ public class KakaoLoginDAO implements KakaoLoginService {
 	
 	@Override
 	public KakaoLoginVO kakao_login(HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return sql.selectOne("kakao.mapper.login", map);
+	}
+
+	@Override
+	public boolean kakao_insert(KakaoLoginVO vo) {
+		return sql.insert("kakao.mapper.join", vo) == 0 ? false : true;
 	}
 
 }

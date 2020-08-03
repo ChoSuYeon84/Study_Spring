@@ -3,7 +3,54 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<script src = "//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+Kakao.init('1e375a8b8197c43949c6be5c803e61ba')
+function loginWithKakao() {
+	Kakao.Auth.login({
+		success : function(authObj) {
+			Kakao.API.request({
+				url : '/v2/user/me',
+				success : function(res) {
+					console.log(res.kakao_account.email);
+					console.log(res.properties.nickname);
+					var kakao_mail = res.kakao_account.email;
+					var kakao_nickname = res.properties.nickname;
+
+					$.ajax({
+						type : 'post',
+						url : 'kakaoLogin',
+						dataType : "json",
+						data : {
+							kakao_email : kakao_mail,
+							kakao_nickname : kakao_nickname
+						},
+						success : function(data) {
+							console.log("성공");
+							if (data) {
+								alert('kakao로그인 되었습니다');
+								location.reload();
+							} else {
+								alert('sns로그인에 실패하였습니다');
+							}
+						},
+						error : function() {
+							console.log("실패");
+						}
+					});
+				},
+				fail : function(error) {
+					alert(JSON.stringify(error));
+				}
+			});
+		},
+		fail : function(err) {
+			console.log(JSON.stringify(err))
+		},
+	})
+}
+</script>
 <script>
 
 //네이버로그인시 아이디, 이메일 표출
@@ -64,6 +111,7 @@ function go_logout(){
 		}
 	});
 }
+
 function search(){
 	  if(!$('#med').val()){
 		  alert("약 검색창을 입력해주세요.");
@@ -374,7 +422,7 @@ function search(){
 	        	<a href="member" id="btn_join">회원가입</a>
 	        	<a href="findPw" id="btn_findPw">PW찾기</a>
 	        	<a id="btn_Nlogin" href="Nlogin"><img src='img/naver.png' style="width: 25px; height: 25px; margin-left: 10px;"></a>
-	        	<a id="btn_Klogin" href="Klogin"><img src='img/kakao.png' style="width: 25px; height: 25px; margin: 0 5px 0 10px;"></a>
+	        	<a id="custom-login-btn" href="javascript:loginWithKakao()"><img src='img/kakao.png' style="width: 25px; height: 25px; margin: 0 5px 0 10px;"></a>
         	</div>
         	</c:if>
         	<c:if test="${!empty Naverlogin }">
@@ -397,11 +445,30 @@ function search(){
 	        	</table>
 	        </div>
 	        </c:if>
+	        <c:if test="${!empty Kakaologin }">
+        	<div class="my-info">
+	        	<table class="my_info_tab">
+	        		<tr>
+	        			<td rowspan="2" style="vertical-align:middle"><img src='img/default_profile.jpg' class="myInfo-img"></td>
+	        			<td id=Kname>${Kakaologin.kakao_nickname}</td>
+	        		</tr>
+	        		<tr>
+	        			<td id=Kemail>${Kakaologin.kakao_email}</td>
+	        		</tr>
+	        		<tr>
+	        		<td colspan="2" class="my-btnSet">
+	        			<a class="mybtn-empty" onclick="go_logout()">로그아웃</a>
+						<a class="mybtn-empty" href="#">내정보</a>
+						<a class="mybtn-empty" href="#">쪽지함</a>
+	        		</td>
+	        		</tr>
+	        	</table>
+	        </div>
+	        </c:if>
 	        <div class="input" style="margin:10px; ">
                <input type="text" id="med" placeholder="약검색">
                <input type="button" value="검색" id="search" onclick="search()" />                               
             </div>        	
         </div>	
-	
 </body>
 </html>

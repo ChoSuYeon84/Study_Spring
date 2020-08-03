@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kakao.mapper">
+
+<insert id="join">
+insert into kakao_member(kakao_email, kakao_nickname)
+values(#{kakao_email}, #{kakao_nickname})
+</insert>
+
+<select id="login" resultType="kakaologin.KakaoLoginVO">
+select * from kakao_member where kakao_email=#{kakao_email} and kakao_nickname=#{kakao_nickname}
+</select>
+
+</mapper>

@@ -82,8 +82,6 @@ public class NLoginController {
 			    }
 			    session.setAttribute("Naverlogin", vo);
 			    			    
-			    //DB에 정보가 존재하지 않으면 회원가입후 로그인처리
-			    
 			    
 		    }catch(Exception e) {
 		    	System.out.println(e.getMessage());
