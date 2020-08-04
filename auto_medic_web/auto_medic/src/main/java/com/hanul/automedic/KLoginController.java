@@ -36,4 +36,10 @@ public class KLoginController {
 		return vo == null ? false : true;
 	}
 	
+	//로그아웃 요청
+		@ResponseBody @RequestMapping("/Klogout")
+		public void Nlogout(HttpSession session) {
+			session.removeAttribute("Kakaologin");
+		}
+	
 }

@@ -29,7 +29,6 @@ function loginWithKakao() {
 						success : function(data) {
 							console.log("성공");
 							if (data) {
-								alert('kakao로그인 되었습니다');
 								location.reload();
 							} else {
 								alert('sns로그인에 실패하였습니다');
@@ -52,24 +51,7 @@ function loginWithKakao() {
 }
 </script>
 <script>
-
-//네이버로그인시 아이디, 이메일 표출
-// $(document).ready(function() {
-// 	if( ${! empty Naverlogin} ){
-// 		$("#Nname").html('${Naverlogin.naver_email}님!');
-// 		$("#Nemail").html('${Naverlogin.naver_nickname}');
-// 	}
-// 	if( ${! empty result} ){
-// 		console.log('??');
-// 		var Nname = ${result}.response.name;
-// 		var Nemail = ${result}.response.email;
-// 		var Nphoto = ${result}.response.profile_image;
-// 		$("#Nname").html(Nname+"님!");
-// 		$("#Nemail").html(Nemail);
-// 		$("#Nphoto").attr('src', Nphoto);
-// 	}
-//   });
- 
+//오토메딕 앱 로그인
 function go_login(){
 	if($('#userid').val()==''){
 		alert('아이디를 입력하세요!');
@@ -99,11 +81,35 @@ function go_login(){
 		}
 	});
 }
-
+//오토메딕 앱로그아웃
 function go_logout(){
 	$.ajax({
 		type : 'post',
 		url : 'logout',
+		success : function(){
+			location.reload();
+		},error : function(req, text){
+			alert(text+' : '+req.status)
+		}
+	});
+}
+//네이버로그아웃
+function go_Nlogout(){
+	$.ajax({
+		type : 'post',
+		url : 'Nlogout',
+		success : function(){
+			location.reload();
+		},error : function(req, text){
+			alert(text+' : '+req.status)
+		}
+	});
+}
+//카카오로그아웃
+function go_Klogout(){
+	$.ajax({
+		type : 'post',
+		url : 'Klogout',
 		success : function(){
 			location.reload();
 		},error : function(req, text){
@@ -437,7 +443,7 @@ function search(){
 	        		</tr>
 	        		<tr>
 	        		<td colspan="2" class="my-btnSet">
-	        			<a class="mybtn-empty" onclick="go_logout()">로그아웃</a>
+	        			<a class="mybtn-empty" onclick="go_Nlogout()">로그아웃</a>
 						<a class="mybtn-empty" href="#">내정보</a>
 						<a class="mybtn-empty" href="#">쪽지함</a>
 	        		</td>
@@ -457,7 +463,7 @@ function search(){
 	        		</tr>
 	        		<tr>
 	        		<td colspan="2" class="my-btnSet">
-	        			<a class="mybtn-empty" onclick="go_logout()">로그아웃</a>
+	        			<a class="mybtn-empty" onclick="go_Klogout()">로그아웃</a>
 						<a class="mybtn-empty" href="#">내정보</a>
 						<a class="mybtn-empty" href="#">쪽지함</a>
 	        		</td>

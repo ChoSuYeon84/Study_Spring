@@ -1,96 +1,105 @@
 package com.hanul.automedic;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
-
-import naverlogin.NaverLoginBO;
 import naverlogin.NaverLoginServiceImpl;
 import naverlogin.NaverLoginVO;
+import naverlogin.Utils;
 
 @Controller
 public class NLoginController {
-	/* NaverLoginBO */
-	private NaverLoginBO naverLoginBO;
-	private String apiResult = null;
 	
 	@Autowired private NaverLoginServiceImpl service;
 	
-	@Autowired
-	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
-		this.naverLoginBO = naverLoginBO;
-	}
-
-	//로그인 첫 화면 요청 메소드
-		@RequestMapping(value = "/Nlogin", method = { RequestMethod.GET, RequestMethod.POST })
-		public String Nlogin(Model model, HttpSession session) {
-			
-			System.out.println("네이버로그인");
-			/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
-			String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
-			
-			//https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=sE***************&
-			//redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125
-			System.out.println("네이버:" + naverAuthUrl);
-			
-			//네이버 
-			model.addAttribute("url", naverAuthUrl);
-
-			/* 생성한 인증 URL을 View로 전달 */
-			return "social/Nlogin";
-		}
+	private static final String mydomain = "http%3A%2F%2Flocalhost%2Fautomedic%2Fcallback";
+	private static final String clientId = "przzu6N6M4M9BvGyF5QG";
+	private static final String clientSecret = "1lG22iUMlW";
+	private static final String requestUrl = "https://nid.naver.com/oauth2.0/authorize?client_id=" + clientId + "&response_type=code&redirect_uri="+ mydomain + "&state="; 
+	 
+	 
+	@RequestMapping(value = "/Nlogin")
+	 public String naverLogin(HttpSession session) {
+	  String state = Utils.generateState();     //토큰을 생성합니다.
+	  session.setAttribute("state", state);      //세션에 토큰을 저장합니다.
+	  return "redirect:" + requestUrl + state;   //만들어진 URL로 인증을 요청합니다.
+	 
+	 }
+	 
+	private static final String userProfileUrl = "https://apis.naver.com/nidlogin/nid/getUserProfile.xml";
+	@RequestMapping("/callback")
+	 public String callback(Model model, @RequestParam String state, @RequestParam String code, HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException {
+	  String storedState = (String) request.getSession().getAttribute("state");  //세션에 저장된 토큰을 받아옵니다.
+	  System.out.println("세션저장토큰 :" +state);
+	  System.out.println("인증요청받은토큰 : " + storedState);
+	  if (!state.equals(storedState)) {             //세션에 저장된 토큰과 인증을 요청해서 받은 토큰이 일치하는지 검증합니다.
+	   System.out.println("401 unauthorized");   //인증이 실패했을 때의 처리 부분입니다.
+	   return "redirect:/";
+	  }
+	  String data = Utils.getHtml(getAccessUrl(state, code), null);           //AccessToken을 요청하고 그 값을 가져옵니다.
+	  Map<String,String> map = Utils.JSONStringToMap(data);               //JSON의 형태로 받아온 값을 Map으로 저장합니다.
+	  System.out.println(data);
+	  String accessToken = map.get("access_token");
+	  String tokenType = map.get("token_type"); 
+	  
+		String profileDataXml = Utils.getHtml(userProfileUrl, tokenType + " " + accessToken);
+		// tokentype 와 accessToken을 조합한 값을 해더의 Authorization에 넣어 전송합니다. 결과 값은 xml로
+		// 출력됩니다.
+		System.out.println("xml : "+profileDataXml);
+		org.json.JSONObject jsonObject = XML.toJSONObject(profileDataXml); // xml을 json으로 파싱합니다.
+		org.json.JSONObject responseData = jsonObject.getJSONObject("data");
+		// json의 구조가 data 아래에 자식이 둘인 형태여서 map으로 파싱이 안됩니다. 따라서 자식 노드로 접근합니다.
+		Map<String, String> userMap = Utils.JSONStringToMap(responseData.get("response").toString());
+		// 사용자 정보 값은 자식노드 중에 response에 저장되어 있습니다. response로 접근하여 그 값들은 map으로 파싱합니다.
 		
-		//네이버 로그인 성공시 callback호출 메소드
-		@RequestMapping(value = "/callback", method = { RequestMethod.GET, RequestMethod.POST })
-		public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
-				throws IOException {
-			System.out.println("여기는 callback");
-			OAuth2AccessToken oauthToken;
-	        oauthToken = naverLoginBO.getAccessToken(session, code, state);
-	        //로그인 사용자 정보를 읽어온다.
-		    apiResult = naverLoginBO.getUserProfile(oauthToken);
+			String email= userMap.get("email");
+			String name = userMap.get("name");
+			
+			System.out.println(email);
+			System.out.println(name);
+			
+			HashMap<String, String> navermap = new HashMap<String, String>(); 
+		    navermap.put("naver_email",  email);
+		    navermap.put("naver_nickname", name);
+		    model.addAttribute("Naverlogin", navermap);
+		    System.out.println(navermap);
 		    
-		    try {
-			    JSONObject obj = (JSONObject)new JSONParser().parse( apiResult );
-			    obj = (JSONObject)obj.get("response");
-			    HashMap<String, String> map = new HashMap<String, String>(); 
-			    map.put("id",  obj.get("email").toString());
-			    map.put("name", obj.get("name").toString());
-			    model.addAttribute("Naverlogin", map);
-			    
-			    //사용자가 네이버 로그인시, DB에 정보가 존재하면 로그인처리,
-			    NaverLoginVO vo= service.naver_login(map);
-			    if(vo == null) {
-			    	vo = new NaverLoginVO();
-			    	vo.setNaver_email(obj.get("email").toString());
-			    	vo.setNaver_nickname(obj.get("name").toString());
-			    	service.naver_insert(vo);
-			    }
-			    session.setAttribute("Naverlogin", vo);
-			    			    
-			    
-		    }catch(Exception e) {
-		    	System.out.println(e.getMessage());
+		    //사용자가 네이버 로그인시, DB에 정보가 존재하면 로그인처리,
+		    NaverLoginVO vo= service.naver_login(navermap);
+		    if(vo == null) {
+		    	vo = new NaverLoginVO();
+		    	vo.setNaver_email(email);
+		    	vo.setNaver_nickname(name);
+		    	service.naver_insert(vo);
 		    }
-			model.addAttribute("result", apiResult);
-			
-	        /* 네이버 로그인 성공 페이지 View 호출 */
-			
-			return "redirect:/";
-		}
-
+		    session.setAttribute("Naverlogin", vo);
+		
+	  return "redirect:/";
+	 }
+	
+	
+	private String getAccessUrl(String state, String code) {
+		  String accessUrl = "https://nid.naver.com/oauth2.0/token?client_id=" + clientId + "&client_secret=" + clientSecret
+		    + "&grant_type=authorization_code" + "&state=" + state + "&code=" + code;
+		  return accessUrl;
+	}
+	
+	//로그아웃 요청
+	@ResponseBody @RequestMapping("/Nlogout")
+	public void Nlogout(HttpSession session) {
+		session.removeAttribute("Naverlogin");
+	}
+	
 }

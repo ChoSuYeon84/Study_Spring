@@ -8,7 +8,7 @@ values(#{naver_email}, #{naver_nickname})
 </insert>
 
 <select id="login" resultType="naverlogin.NaverLoginVO">
-select * from naver_member where naver_email=#{id} and naver_nickname=#{name}
+select * from naver_member where naver_email=#{naver_email} and naver_nickname=#{naver_nickname}
 </select>
 
 </mapper>

@@ -25,9 +25,6 @@
 		<beans:property name="order" value="1" />
 	</beans:bean>
 	
-	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
-	<beans:bean id="naverLoginBO" class="naverlogin.NaverLoginBO" />
-	
 	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
 		<beans:property name="order" value="0" />
 	</beans:bean>
