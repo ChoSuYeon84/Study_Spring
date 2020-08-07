@@ -3,7 +3,32 @@ package info;
 import java.sql.Date;
 
 public class InfoVO {
-	private String name,appear,keep,effi,eat,caution,img;
+	private String title, content, writer, name
+			, filename, filepath;
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
 
 	public String getName() {
 		return name;
@@ -13,54 +38,21 @@ public class InfoVO {
 		this.name = name;
 	}
 
-	public String getAppear() {
-		return appear;
+	public String getFilename() {
+		return filename;
 	}
 
-	public void setAppear(String appear) {
-		this.appear = appear;
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
-	public String getKeep() {
-		return keep;
+	public String getFilepath() {
+		return filepath;
 	}
 
-	public void setKeep(String keep) {
-		this.keep = keep;
+	public void setFilepath(String filepath) {
+		this.filepath = filepath;
 	}
-
-	public String getEffi() {
-		return effi;
-	}
-
-	public void setEffi(String effi) {
-		this.effi = effi;
-	}
-
-	public String getEat() {
-		return eat;
-	}
-
-	public void setEat(String eat) {
-		this.eat = eat;
-	}
-
-	public String getCaution() {
-		return caution;
-	}
-
-	public void setCaution(String caution) {
-		this.caution = caution;
-	}
-
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
-	}
-	
 	
 	
 	

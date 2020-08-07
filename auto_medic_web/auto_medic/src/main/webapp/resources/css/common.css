@@ -24,4 +24,27 @@ a:hover {cursor: pointer;}
 .w-px180 {width: 180px}
 .w-px200 {width: 200px}
 .w-px300 {width: 300px}
+.w-px500 {width: 500px}
 
+<!--0804박형규 추가-->
+ul.grid { width:80%; margin:0 10%; }
+.grid li { float:left; width:19%; height:150px; 
+	border:1px solid gray; box-sizing:border-box; }
+.grid li:not(:nth-child(5n)) { margin:0 1.25% 20px 0 }
+.grid li div{ text-align:left; padding:10px; }
+.grid li div:nth-child(1) { 
+	height:60px; line-height:23px;
+	overflow:hidden; display:-webkit-box;
+	-webkit-line-clamp:3; 	
+	-webkit-box-orient:vertical; /* 말줄임표시 */
+	word-wrap:break-word; /* 영문여러줄 */
+}
+.grid li div:nth-child(2) { padding: 0 10px; }
+
+#list-top{ width:80%; padding:20px 10%; }
+#list-top ul { margin:0; display:flex; }
+#list-top ul li * { vertical-align:middle; }
+ul { list-style:none; padding:0; }
+#list-top ul:last-child { float:right; }
+#list-top ul:first-child { float:left; }
+#list-top ul li:not(:first-child) { margin-left:2px }

@@ -85,6 +85,8 @@ public class NLoginController {
 		    	service.naver_insert(vo);
 		    }
 		    session.setAttribute("Naverlogin", vo);
+		    session.removeAttribute("login_info");
+		    session.removeAttribute("Kakaologin");
 		
 	  return "redirect:/";
 	 }

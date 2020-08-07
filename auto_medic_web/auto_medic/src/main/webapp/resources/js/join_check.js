@@ -88,7 +88,7 @@
  		else if(member_nickname.match(space) ) return this.common.space;
  		else if(reg.test(member_nickname) ) return this.member_nickname.invalid;
  		else if(member_nickname.length<2) return this.member_nickname.min;
- 		else if(member_nickname.length>9) return this.member_nickname.max;
+ 		else if(member_nickname.length>8) return this.member_nickname.max;
  		else return this.member_nickname.valid;
  	},
  	
@@ -107,7 +107,7 @@
  	
  	tag_status: function(tag){
  		var data = tag.val();
- 	console.log(2, data, '] ==? ', authNo);
+ 	
  		
  		tag = tag.attr('name');
  		if(tag=='member_email') data = this.member_email_status(data);

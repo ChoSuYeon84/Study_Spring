@@ -33,6 +33,8 @@ public class KLoginController {
 			service.kakao_insert(vo);
 		}
 		session.setAttribute("Kakaologin", vo);
+		session.removeAttribute("login_info");
+		session.removeAttribute("Naverlogin");
 		return vo == null ? false : true;
 	}
 	

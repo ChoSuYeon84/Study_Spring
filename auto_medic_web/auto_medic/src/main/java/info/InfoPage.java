@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import common.PageVO;
 
 @Component
-public class InfoPage extends PageVO {
+public class InfoPage extends PageInfoVO {
 	private List<InfoVO> list;
 
 	public List<InfoVO> getList() {
@@ -17,4 +16,7 @@ public class InfoPage extends PageVO {
 	public void setList(List<InfoVO> list) {
 		this.list = list;
 	}
+
+	
+	
 }

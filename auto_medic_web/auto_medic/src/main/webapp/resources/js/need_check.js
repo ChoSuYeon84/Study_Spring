@@ -23,3 +23,11 @@
  	}
  
  });
+ 
+ $('[name=nickname]').on('keypress',function(e){
+ 	if(e.keyCode==13){
+ 		if( necessary() ) $('form').submit();
+ 		else return false;
+ 	}
+ 
+ });

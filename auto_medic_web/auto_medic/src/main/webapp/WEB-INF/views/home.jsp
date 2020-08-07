@@ -3,121 +3,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<script src = "//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript">
-Kakao.init('1e375a8b8197c43949c6be5c803e61ba')
-function loginWithKakao() {
-	Kakao.Auth.login({
-		success : function(authObj) {
-			Kakao.API.request({
-				url : '/v2/user/me',
-				success : function(res) {
-					console.log(res.kakao_account.email);
-					console.log(res.properties.nickname);
-					var kakao_mail = res.kakao_account.email;
-					var kakao_nickname = res.properties.nickname;
-
-					$.ajax({
-						type : 'post',
-						url : 'kakaoLogin',
-						dataType : "json",
-						data : {
-							kakao_email : kakao_mail,
-							kakao_nickname : kakao_nickname
-						},
-						success : function(data) {
-							console.log("성공");
-							if (data) {
-								location.reload();
-							} else {
-								alert('sns로그인에 실패하였습니다');
-							}
-						},
-						error : function() {
-							console.log("실패");
-						}
-					});
-				},
-				fail : function(error) {
-					alert(JSON.stringify(error));
-				}
-			});
-		},
-		fail : function(err) {
-			console.log(JSON.stringify(err))
-		},
-	})
-}
-</script>
 <script>
-//오토메딕 앱 로그인
-function go_login(){
-	if($('#userid').val()==''){
-		alert('아이디를 입력하세요!');
-		$('#userid').focus();
-		return;
-	} else if($('#userpw').val()==''){
-		alert('비밀번호를 입력하세요!');
-		$('#userpw').focus();
-		return;
-	}
+//주소가 노출되지 않게 함수로 주기
+ function go_navigation(member_email){
 
-	$.ajax({
-		type: 'post',
-		url: 'login',
-		data: { id: $('#userid').val(), pw:$('#userpw').val()},
-		success: function(data){
-			//alert(data);
-			if (data == 'true'){
-				location.reload();
-			}else {
-				alert('아이디나 비밀번호가 일치하지 않습니다!');
-				$('#userid').focus();
-			}
-			
-		},error : function(req, text){
-			alert(text+' : '+req.status)
-		}
-	});
-}
-//오토메딕 앱로그아웃
-function go_logout(){
-	$.ajax({
-		type : 'post',
-		url : 'logout',
-		success : function(){
-			location.reload();
-		},error : function(req, text){
-			alert(text+' : '+req.status)
-		}
-	});
-}
-//네이버로그아웃
-function go_Nlogout(){
-	$.ajax({
-		type : 'post',
-		url : 'Nlogout',
-		success : function(){
-			location.reload();
-		},error : function(req, text){
-			alert(text+' : '+req.status)
-		}
-	});
-}
-//카카오로그아웃
-function go_Klogout(){
-	$.ajax({
-		type : 'post',
-		url : 'Klogout',
-		success : function(){
-			location.reload();
-		},error : function(req, text){
-			alert(text+' : '+req.status)
-		}
-	});
-}
-
+ 	$('[name=member_email]').val(member_email); 	
+ 	$('form').submit();
+ 	
+ }
+ 
 function search(){
 	  if(!$('#med').val()){
 		  alert("약 검색창을 입력해주세요.");
@@ -127,7 +22,8 @@ function search(){
 		
 	}
 
-	$(document).ready(
+
+$(document).ready(
 			function() {
 
 				var refreshInterval = null;
@@ -146,7 +42,7 @@ function search(){
 				}
 				 
 				function moveSlider(index) {
-					var willMoveleft = -(index * 850);
+					var willMoveleft = -(index * 1710);
 
 					$('.col-sm-9').animate({
 						left : willMoveleft
@@ -159,7 +55,7 @@ function search(){
 
 					$('.slider_text[data-index!=' + index + ']').hide('slow',
 							function() {
-								$(this).css('left', -850);
+								$(this).css('left', -1710);
 							});
 
 					$('.control_button[data-index=' + index + ']').addClass(
@@ -186,7 +82,7 @@ function search(){
 					});
 				});
 
-				$('.slider_text').css('left', -850).each(function(index) {
+				$('.slider_text').css('left', -1710).each(function(index) {
 					$(this).attr('data-index', index);
 				});
 
@@ -209,8 +105,26 @@ function search(){
 <head>
    <title>Home</title>
    <Style>
+   .input{
+   margin:10px; 
+   }
+  
+   
+   #login{
+   position: relative;
+		left:1585px;
+		top:-745px;
+   padding:0px;
+   width: 300px;
+   height: 224px;
+   		
+   
+   }
 	#content {
-		height: 700px;
+		height: 730px;
+		position: relative;
+		left:0px;
+		top:10px;
 	}
 	
 	.myInfo-img {
@@ -241,8 +155,14 @@ function search(){
 		width: 260px;
 		margin: 10px;
 		padding: 5px;
+		
 	}
+	#profile{
+	position: relative;
+		top:-745px;
+		left: 1600px;
 	
+	}
 	.my-btnSet {
 		margin-: 13px;
 	}
@@ -268,10 +188,8 @@ function search(){
 		
 	}
 	
-	#btn_join, #btn_findPw {
-		text-decoration: none;
+	#btn_join, #btn_findPw, #btn_social {
 		padding: 11px;
-		color: black;
 	}
 	
 	
@@ -279,26 +197,26 @@ function search(){
     padding:0px;
     overflow: hidden;
 	position: relative;
-	width: 850px; height:600px; margin:0 auto;
+	width: 1710px; height:700px; margin:0 auto;
 } 
 
 .col-sm-9 {
 
-	width: 4250px; height:600px; position: relative;
+	width: 8550px; height:700px; position: relative;
 }
 .mainimg{ 
  
     float: left;
-	width: 850px; 
-	height:600px; 
+	width: 1710px; 
+	height:700px; 
 	margin:0px;
 } 
 
 	/* Slider Text Panel */
 	.slider_text_panel {
 		position: absolute;
-		top: 200px;
-		left: 500px;
+		top: 250px;
+		left: 1000px;
 	}
 	
 	.slider_text {
@@ -311,8 +229,8 @@ function search(){
 	/* Control Panel */
 	.control_panel {
 		position: absolute;
-		top: 550px;
-		left: 420px;
+		top: 650px;
+		left: 670px;
 		height: 13px;
 		overflow: hidden;
 	}
@@ -343,15 +261,15 @@ function search(){
     <div id='content' class="row">
         <!-- 메인화면 이미지 -->
         <!-- <img src='img/home.png' class="img-responsive"/></div> -->
-         <div class="animation_canvas"> 
+        <div class="animation_canvas"> 
         <div class="col-sm-9">
         <!-- 메인화면 이미지 -->
          <a href="#"><img src='img/med.png' class="mainimg"/></a><a>
-         <img src='img/running.PNG' class="mainimg"/></a><a>
+         <img src='img/running1.PNG' class="mainimg"/></a><a>
          <img src='img/clock.jpg' class="mainimg"/></a><a>
-         <img src='img/happy2.jpg' class="mainimg"/></a><a>
+         <img src='img/happy.jpg' class="mainimg"/></a><a>
          <img src='img/iot2.jpg' class="mainimg"/></a>
-       </div>  
+      </div>
        <div class="slider_text_panel">
 			<div class="slider_text">
 				<h1>0. Lorem ipsum</h1>
@@ -387,11 +305,11 @@ function search(){
 		</div>   
     </div>  
 </div>
-
-   
-        <div  style="padding: 0px;">
+ <%-- <div id="profile" style="padding: 0px;">
         	<!-- 로그인한 경우 -->
-        	<c:if test="${!empty login_info }">
+        	<c:if test="${!empty login_info && empty Naverlogin && empty Kakaologin }">
+        	<form method="post" action="navigation.my" >
+        	<input type="hidden" name="member_email">
         	<div class="my-info">
 	        	<table class="my_info_tab">
 	        		<tr>
@@ -404,15 +322,16 @@ function search(){
 	        		<tr>
 	        		<td colspan="2" class="my-btnSet">
 	        			<a class="mybtn-empty" onclick="go_logout()">로그아웃</a>
-						<a class="mybtn-empty" href="navigation.my?member_email=${login_info.member_email }">내정보</a>
+						<a class="mybtn-empty"  onclick="go_navigation('${login_info.member_email }')" >내정보</a>
 						<a class="mybtn-empty" href="#">쪽지함</a>
 	        		</td>
 	        		</tr>
 	        	</table>
 	        </div>
+	        </form>
 	        </c:if>
 	        <!-- 로그인하지 않은 경우 -->
-	        <c:if test="${empty login_info }">
+	        <c:if test="${empty login_info && empty Naverlogin && empty Kakaologin }">
 	        <div class="my-info">
 	        	<table class="my_info_tab">
 	        		<tr>
@@ -471,10 +390,11 @@ function search(){
 	        	</table>
 	        </div>
 	        </c:if>
-	        <div class="input" style="margin:10px; ">
-               <input type="text" id="med" placeholder="약검색">
+	        <div class="input" >
+               <input type="text" id="med" placeholder="약검색" size="29">
                <input type="button" value="검색" id="search" onclick="search()" />                               
             </div>        	
-        </div>	
+        </div>	 --%>
+	
 </body>
 </html>

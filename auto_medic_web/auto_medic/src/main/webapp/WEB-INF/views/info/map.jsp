@@ -21,7 +21,7 @@
 }
 
 #category {
-    width: fit-content;
+	width: fit-content;
 	position: relative;
 	top: -102px;
 	left: 10px;
@@ -359,52 +359,68 @@ li:hover {
 	cursor: default;
 	color: #777;
 }
-  #content{
-         height:700px;
-      }
-.map_wrap{
+
+#content {
+	height: 700px;
+}
+
+.container1 {
+	background-color: red;
+	height: 700px;
+	width: 1280px;
+	margin: 0 auto;
+}
+
+.map_wrap {
 	margin: 0 auto;
 }
 </style>
 
 </head>
 <body>
-	<div class="row">
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+
+	<div class='container1'>
+		<div class="map_wrap">
+
+			<div id="map"
+				style="width: 100%; height: 700px; position: relative; overflow: hidden;"></div>
+			<ul id="category">
+
+				<li id="HP8" data-order="1"><span class="category_bg mart"></span>
+					병원</li>
+				<li id="PM9" data-order="2"><span class="category_bg pharmacy"></span>
+					약국</li>
+
+			</ul>
+		</div>
 	</div>
 
-	
-			<div class="map_wrap">
-
-				<div id="map"
-					style="width: 80%; height: 100%; position: relative; overflow: hidden;"></div>
-				<ul id="category">
-
-					<li id="HP8" data-order="1"><span class="category_bg mart"></span>
-						병원</li>
-					<li id="PM9" data-order="2"><span class="category_bg pharmacy"></span>
-						약국</li>
-
-				</ul>
-			</div>
-
-
-	<!-- <div id="map" class="col-sm-12" style="height: 700px; width: 100%"></div> -->
-
-
-	
 	<!-- services와 clusterer, drawing 라이브러리 불러오기 -->
 	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff9476fb6e3b5fc105003be7b7640ceb&libraries=services,clusterer,drawing"></script>
-	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff9476fb6e3b5fc105003be7b7640ceb&libraries=services"></script>
-	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff9476fb6e3b5fc105003be7b7640ceb"></script>
-
-
 
 
 	<script type="text/javascript">
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		mapOption = {
+			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+			level : 3
+		// 지도의 확대 레벨
+		};
+
+		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+		// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+		var mapTypeControl = new kakao.maps.MapTypeControl();
+
+		// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+		// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+		map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+		// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+		var zoomControl = new kakao.maps.ZoomControl();
+		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
 		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 		if (navigator.geolocation) {
 
@@ -454,21 +470,7 @@ li:hover {
 			// 지도 중심좌표를 접속위치로 변경합니다
 			map.setCenter(locPosition);
 		}
-		//현재위치 가져오기 끝================================================================================================================================
 
-		//일반뷰/스카이뷰 전환 가져오기 ================================================================================================================================
-		/* // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-		 var mapTypeControl = new kakao.maps.MapTypeControl();
-
-		 // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
-		 // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
-		 map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
-		 // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-		 var zoomControl = new kakao.maps.ZoomControl();
-		 map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT); */
-
-		//일반뷰/스카이뷰 전환 가져오기 끝 ================================================================================================================================
 		var places = new kakao.maps.services.Places();
 		var callback = function(status, result, pagination) {
 			console.log(3);
@@ -486,16 +488,8 @@ li:hover {
 		markers = [], // 마커를 담을 배열입니다
 		currCategory = ''; // 현재 선택된 카테고리를 가지고 있을 변수입니다
 
-		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-		mapOption = {
-			center : new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-			level : 5
-		// 지도의 확대 레벨
-		};
 
-		// 지도를 생성합니다    
-		var map = new kakao.maps.Map(mapContainer, mapOption);
-
+		//============================================
 		// 장소 검색 객체를 생성합니다
 		var ps = new kakao.maps.services.Places(map);
 
@@ -545,7 +539,7 @@ li:hover {
 		// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
 		function placesSearchCB(data, status, pagination) {
 			if (status === kakao.maps.services.Status.OK) {
-
+				alert("카테코리 클릭! " + data);
 				// 정상적으로 검색이 완료됐으면 지도에 마커를 표출합니다
 				displayPlaces(data);
 			} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
@@ -674,7 +668,6 @@ li:hover {
 			}
 		}
 	</script>
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 
 </body>
 </html>

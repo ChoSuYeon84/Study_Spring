@@ -46,7 +46,7 @@ p {
 }
 </style>
 <meta charset="UTF-8">
-<title>Automedic : 오시는길</title>
+<title>AutoMedic : 오시는길</title>
 </head>
 <body>
 

@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,12 +19,49 @@ import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
+import org.json.JSONObject;
+import org.json.XML;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CommonService {
+
+	public String json_list(StringBuilder url) {
+		System.out.println("여기 들어왔냐용?");
+		
+		/*String result = xml_list(url);
+		 * org.json.JSONObject xmlJSONObj = XML.toJSONObject(result); String
+		 * xmlJSONObjString = xmlJSONObj.toString(); //=> xmlJSONObjString 는 xml를
+		 * json형태로 변환한 것을 말한다.
+		 */		
+		JSONObject json = null;
+		try {
+			System.out.println("try들어옴");
+			
+//			json = (JSONObject)new JSONParser().parse( xml_list(url) );
+			json = XML.toJSONObject(xml_list(url) );
+			//System.out.println("try들어옴2 : "+json);
+			json = (JSONObject)json.get("response");
+			json = (JSONObject)json.get("body");
+			//items 가 데이터를 갖고 있어서 JSONObject 타입으로 형변환가능한 경우만
+			int count 
+			= json.get("totalCount")==null ? 0 : 
+				Integer.parseInt(json.get("totalCount").toString());
+			if( json.get("items") instanceof JSONObject) {
+				json = (JSONObject)json.get("items");
+			}
+			json.put("count", count);
+			System.out.println("트라이마지막문");
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println(json.toString());
+//		return  json.toJSONString();
+		return  json.toString();
+	}
+	
 	//공공데이터 REST API 요청처리
 	public String xml_list(StringBuilder url) {
 		String result = url.toString();
@@ -35,9 +71,9 @@ public class CommonService {
 			conn.setRequestProperty("content-type", "application/json");
 			  BufferedReader rd;
 		        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-		            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		            rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
 		        } else {
-		            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+		            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
 		        }
 		        StringBuilder sb = new StringBuilder();
 		        String line;
@@ -48,7 +84,7 @@ public class CommonService {
 		        conn.disconnect();
 		        
 		        result = sb.toString();
-		        System.out.println(result);
+		       // System.out.println(result);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

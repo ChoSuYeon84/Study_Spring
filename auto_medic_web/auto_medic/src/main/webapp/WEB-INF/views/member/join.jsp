@@ -38,11 +38,13 @@ input {
 }
 
 .btn-fill, .btn-fill-s{
-	height: 50px;
+	height: 55px;
 	width: 509px;
-	background-color: #ccc;
+	background-color: #304294;
+	color: white;
 	text-align: center;
-	line-height: 50px;
+	line-height: 55px;
+	border-radius: 5px;
 }
 
 img {
@@ -61,7 +63,7 @@ table tr td{
 </head>
 
 <body>
-<a href="<c:url value='/'/>"><img src="img/logo_web.png" alt="홈으로" id="logo"></a>
+<a href="<c:url value='/'/>"><img src="img/logo4.png" alt="홈으로" id="logo"></a>
 <h3>회원가입</h3>
 <form action="join" method="post">
 <table>
@@ -73,7 +75,7 @@ table tr td{
 	</td>
 </tr>
 <tr>
-	<td><a class='btn-fill-s' id="id_chk" onclick="id_check()">아이디중복확인</a></td>
+	<td><a class='btn-fill-s' id="id_chk" onclick="id_check()">아이디 중복확인</a></td>
 </tr>
 <tr><th>인증번호</th>
 </tr>
@@ -83,7 +85,7 @@ table tr td{
 	</td>
 </tr>
 <tr>
-	<td><a class='btn-fill-s' id="idNum_chk" onclick="idNum_chk()">인증번호확인</a></td>
+	<td><a class='btn-fill-s' id="idNum_chk" onclick="idNum_chk()">인증번호 확인</a></td>
 </tr>
 <tr><th>비밀번호</th>
 </tr>
@@ -104,7 +106,7 @@ table tr td{
 <tr>
 	<td><input class="chk" title='닉네임' type="text" name="member_nickname"/><br/>
 		<div class="valid">닉네임을 입력하세요</div>
-		<a class='btn-fill-s' id="nick_chk" onclick="nick_check()">닉네임중복확인</a>
+		<a class='btn-fill-s' id="nick_chk" onclick="nick_check()">닉네임 중복확인</a>
 	</td>
 </tr>
 <tr><th>연락처</th>
@@ -117,7 +119,7 @@ table tr td{
 </table>
 </form>
 <div class="btnSet">
-<a class="btn-fill" id="join_us" onclick="go_join()">회원가입</a>
+<a class="btn-fill" id="join_us" onclick="go_join()">회원 가입</a>
 </div>
 <br/><br/>
 

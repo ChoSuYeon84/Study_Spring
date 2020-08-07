@@ -1,3 +1,4 @@
+
 package com.hanul.automedic;
 
 import java.io.IOException;
@@ -28,11 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import member.MemberServiceImpl;
 import member.MemberVO;
+import my.MyServiceImpl;
 
 @Controller
 public class MemberController {
 	@Autowired private MemberServiceImpl service;
 	@Autowired private JavaMailSender MailSender;
+	@Autowired private MyServiceImpl Myservice;
 	
 	//회원가입처리 요청
 		@ResponseBody @RequestMapping(value="/join", produces="text/html; charset=utf-8")	//산출물(produces)에 대한 캐릭터 셋을 설정
@@ -109,6 +112,7 @@ public class MemberController {
 	//닉네임 중복확인 요청
 		@ResponseBody @RequestMapping("/nickname_check")
 		public boolean nickname_check(String member_nickname) {
+			System.out.println("닉네임 => "+member_nickname);
 			return service.member_nick_check(member_nickname);
 		}
 	
@@ -140,7 +144,7 @@ public class MemberController {
 	
 	//로그인요청
 	@ResponseBody @RequestMapping("/login") //ResponseBody : 이것 자체가 응답이 되는것
-	public String login( String id, String pw, HttpSession session) {
+	public String login( String id, String pw, HttpSession session, Model model) {
 		
 		String name = session.getServletContext().getServletContextName();
 		System.out.println(name);
@@ -155,10 +159,20 @@ public class MemberController {
 		map.put("member_email",  id);
 		map.put("member_password", pw);
 		MemberVO vo = service.member_login(map);
+		/* model.addAttribute("Myinfo", Myservice.my_select(id)); */
+		
 		//일치하는 회원정보가 있다면 회원정보를 세션에 담는다
 		session.setAttribute("login_info", vo);
+		session.removeAttribute("Kakaologin");
+		session.removeAttribute("Naverlogin");
 		return vo == null ? "false" : "true";
 	}
+	
+	//로그인 화면 요청
+		@RequestMapping("/memberLogin")
+		public String memberlogin() {
+			return "member/login";
+		}
 	
 	//인증번호메일 전송
 	public int sendMail(String toMail, HttpServletResponse response_email) throws IOException {

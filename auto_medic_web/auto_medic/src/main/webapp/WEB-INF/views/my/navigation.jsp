@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,30 +57,55 @@ background: green;
 
 </style>
 <script type="text/javascript">
-function drop(){
+/* function drop(){
 	if(confirm('정말 탈퇴하시겠습니까?')){
-        alert('완료되었습니다');
-        window.location.replace("/automedic");      
-       /*  window.location
-       .replace("/delete.my?member_email=${login_info.member_email }");    */   
+       
+       /*  window.location.replace("/automedic");     
+       href.reload("/delete.my?member_email="${login_info.member_email }); 
+       alert('탈퇴가 완료되었습니다');  
  };
+} */
+//주소가 노출되지 않게 함수로 주기
+function go_mypage(member_email){
+
+	$('[name=member_email]').val(member_email);
+	$('form').attr('action','mypage.my'); //attr:속성바꿈
+	$('form').submit();
+	
+}
+function go_tel(member_email){
+
+	$('[name=member_email]').val(member_email);
+	$('form').submit();
+	
+}
+function go_password(member_email){
+
+	$('[name=member_email]').val(member_email);
+	$('form').attr('action','password.my'); //attr:속성바꿈
+	$('form').submit();
+	
 }
 </script>
+<script type="text/javascript" src="js/no_back.js?v=<%=new java.util.Date().getTime()%>"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 </head>
-<body>
+
+<body  onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
+<form method='post' action='tel.my'>
+<input type="hidden" name="member_email">
 <div class="myinfo">  
-  <a href="mypage.my?member_email=${login_info.member_email }">프로필변경</a></div> 
+  <a onclick="go_mypage('${login_info.member_email }')">프로필변경</a></div> 
  <div class="myinfo">  
-  <a href="#">전화번호변경</a></div> 
+  <a onclick="go_tel('${login_info.member_email }')">전화번호변경</a></div> 
  <div class="myinfo">  
-  <a href="#">비밀번호변경</a></div><br/> 
+  <a onclick="go_password('${login_info.member_email }')">비밀번호변경</a></div><br/> 
  <div class="myinfo1">  
-  <a href="#">복용기록</a></div> 
+  <a href="calendar.my">복용기록</a></div> 
 <div class="myinfo2">  
-  <a onclick="drop()">회원탈퇴</a></div> 
-</ul>
-</div>
+  <a onclick="if(confirm('정말 탈퇴하시겠습니까?')){href='delete.my?member_email=${login_info.member_email }'}">회원탈퇴</a></div> 
+</form>
 </body>
 </html>

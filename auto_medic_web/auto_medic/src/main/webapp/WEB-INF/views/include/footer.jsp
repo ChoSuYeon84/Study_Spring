@@ -13,13 +13,13 @@ body{
 }
 .container{
 	margin: 0 auto;
-	width: 1200px;
-	background-color: #B2B2B2;
+	width: 1713px;
+	background-color: black;
 	color: white;
 }
 
 a {
-	color: #B2B2B2
+	color: e5f1fb;
 }
 
 ul.tabs{
@@ -35,18 +35,22 @@ ul.tabs li{
 }
 
 ul.tabs li.current{
-	background: #333333;
-	color: #B2B2B2;
+	background: #304294;
+	/* color: #2165b0; */
 }
 
 .tab-content{
 	display: none;
-	background: #333333;
+	background: #304294;
 	padding: 15px;
 }
 
 .tab-content.current{
 	display: inherit;
+}
+
+.comeon{
+	color:#ccc;
 }
 </style>
 <script type="text/javascript">
@@ -72,18 +76,17 @@ $(document).ready(function(){
 		<ul class="tabs">
 			<li class="tab-link current" data-tab="tab-1">회사정보</li>
 			<li class="tab-link" data-tab="tab-2">사이트맵</li>
-			<li class="tab-link" data-tab="tab-3">다운로드</li>
 		</ul>
 	
 		<div id="tab-1" class="tab-content current" style="overflow: hidden;">
 			<div id=copy style="width: 850px; float: left;">
 				<div>업체명 : 식후30분 (Auto-Medic)</div>
 				<div>주&nbsp;&nbsp;&nbsp;소 :  (619-28) 광주광역시 서구 경열로 3 ( 농성동 271-4 ) </div>
-				<div>연락처 : 062-362-7797</div><a href="contactus">오시는길</a>
+				<div>연락처 : 062-362-7797</div><a class='comeon' href="contactus">오시는길</a>
 				<div>Copyright 2020</div>
 			</div>
 			<div id=download style="width: 200px; float: right ;">
-				<a href='http://m.site.naver.com/0CPcf' style="text-decoration: none;">App다운로드</a>
+				<a  class='comeon' href='http://m.site.naver.com/0CPcf' style="text-decoration: none;">App다운로드</a>
 				<a href='http://m.site.naver.com/0CPcf'><img src='img/qrcode.png'/></a>
 			</div>
 		</div>
@@ -92,10 +95,6 @@ $(document).ready(function(){
 				<li>준비중입니다....</li>
 			</ul>
 		</div>
-		<div id="tab-3" class="tab-content">
-			<span>다운로드</span>
-		</div>
-
 	</div>
 </body>
 </html>

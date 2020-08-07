@@ -56,6 +56,7 @@ function userMail_chk(){
 				if(result){
 					console.log(data);
 					$('form').submit();
+					alert('해당 메일로 임시 비밀번호가 전송되었습니다!');
 				}else{
 					alert('존재하지 않는 이메일입니다!');
 					$("#userMail").val("");

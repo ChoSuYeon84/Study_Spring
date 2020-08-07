@@ -2,6 +2,8 @@ package my;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +22,43 @@ public class MyServiceImpl implements MyService {
 	}
 
 	@Override
-	public boolean my_update(MemberVO vo) {
-		// TODO Auto-generated method stub
-		return false;
+	public int my_update(MemberVO vo) {
+		
+		return dao.my_update(vo);		
+	}
+	
+	@Override
+	public boolean my_update2(MemberVO vo) {
+		
+		return  dao.my_update2(vo);	
+	}
+
+
+	@Override
+	public void my_delete(String member_email) {
+		dao.my_delete(member_email);
+		
 	}
 
 	@Override
-	public boolean my_delete(String member_email) {
-		// TODO Auto-generated method stub
-		return false;
+	public List<CalendarVO> my_calendar(String day) {
+		
+		return dao.my_calendar(day);
 	}
 
+	@Override
+	public List<CalendarVO> my_calendar2() {
+		
+		return dao.my_calendar2();
+	}
+
+
+
+	
+
+
+	
+	
+	
 
 }
