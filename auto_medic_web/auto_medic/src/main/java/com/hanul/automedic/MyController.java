@@ -28,12 +28,10 @@ public class MyController {
    @Autowired private CommonService common;
    
    //메인화면으로 가기
-   @RequestMapping("/automedic")
-   public String gohome(Model model, String member_nickname, MemberVO vo, HttpSession session) {
-	   session.setAttribute("info", vo.getMember_nickname());
-	   session.removeAttribute("login_info");
-	   return "redirect:/";
-   }
+   @ResponseBody @RequestMapping("/automedic")
+   public void gohome(Model model, String member_nickname, MemberVO vo, HttpSession session) {
+	   session.setAttribute("login_info", vo);
+   }//gohome()
    
    //상세정보화면으로 가기
    @RequestMapping("/mypage.my")
@@ -56,7 +54,7 @@ public class MyController {
 	  //고유한 값을 생성 
 	   String uuid=session.getServletContext()
 			   .getRealPath("resources")+member.getMember_profile();
-	 
+	  System.out.println("uuid : " + uuid);
 	   
 	   //파일을 첨부한 경우-없었는데 새로 첨부   
 	   if(!file.isEmpty()) {	 

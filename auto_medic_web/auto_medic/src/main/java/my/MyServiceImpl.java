@@ -52,13 +52,4 @@ public class MyServiceImpl implements MyService {
 		return dao.my_calendar2();
 	}
 
-
-
-	
-
-
-	
-	
-	
-
 }

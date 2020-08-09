@@ -38,7 +38,25 @@ function go_logout(){
 	});
 }
 
+function changelogin_info(member_nickname, member_email){
+	alert(member_nickname + "-" + member_email);
+	$.ajax({
+		type : 'post',
+		url : 'automedic',
+		data : { member_nickname :member_nickname, member_email :member_email},
+		success : function(){			
+			location.href="/automedic";
+		},error : function(req, text){
+			alert(text+' : '+req.status)
+		}
+		
+	});
+	//$("[name=header]").load(window.location.href + "[name=header]");
 
+	
+    //$('[name=header]').reload();
+    //location.href="/automedic";
+ }//changelogin_info()
 </script>
 
 <head>
@@ -47,16 +65,16 @@ function go_logout(){
 <c:if test="${empty vo.member_profile}">
       <img src='img/default_profile.jpg' class="myInfo" id="pre" name="${vo.member_profile}"/> 
 </c:if>
-<c:if test="${!empty vo.member_profile}">        
+<c:if test="${!empty vo.member_profile}">     
         <span id="pre"></span>
-       
 </c:if>
 &nbsp;
 <div id="text">
 ${vo.member_nickname }님![${login_info.member_email}] 환영합니다^^
 <input type="button" value="로그아웃"  onclick="go_logout()"></div></div>
 
-<a href="/automedic"><img src="img/logo1.PNG" style="width:25px; height: 25px;float: left;"></a>
+<a onclick="changelogin_info('${vo.member_nickname }','${login_info.member_email}')"><img src="img/logo1.PNG" style="width:25px; height: 25px;float: left;"></a>
+<!-- href="/automedic" -->
 <h3>&nbsp;상세정보</h3>
 
 <hr>
@@ -76,7 +94,7 @@ ${vo.member_nickname }님![${login_info.member_email}] 환영합니다^^
  	var imgs=['gif','jpg','jpeg','bmp','png'];
  	if(imgs.indexOf(ext)>-1){
  	//이형태 filepath, file-img는 따로 빼야 하지만 이것도 문자여서 ''붙임
- 	 var img='<img src="'+'${vo.member_profile}'.substring(1) + '"'
+ 	 var img='<img src="'+'resources/'+'${vo.member_profile}'.substring(1) + '"'
           +' id="prev" class="myInfo" >';   
       // '/'는 빠짐
       var ic='${vo.member_profile}'.substring(1);

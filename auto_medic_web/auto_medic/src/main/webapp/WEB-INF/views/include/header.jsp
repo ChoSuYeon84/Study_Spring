@@ -7,6 +7,7 @@
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
+
 //주소가 노출되지 않게 함수로 주기
 function go_navigation(member_email){
 
@@ -61,11 +62,13 @@ function go_Klogout(){
 
 
 #dm_ul {
-height:100%;
-	width: 100%;
+	height:100%;
+	width: 1900px;
 	min-width: 300px;
 	text-align: center;
 	/* background-color: blue; */
+	overflow: hidden;
+	margin-bottom: -1px;
 }
 
 
@@ -79,7 +82,7 @@ width:345px;
 	width:100%;
 }
 .logo{
-	display: inline;
+	display: block;
 }
 
 .dropmenu ul ul {
@@ -100,7 +103,7 @@ width:345px;
 .dropmenu ul li a {
 	display: block;
 	width: 150px;
-	line-height: 43px;
+	line-height: 69px;
 	color: black;
 	text-decoration: none;
 }
@@ -112,19 +115,42 @@ width:345px;
 
 #welcome_m, #welcome_n, #welcome_k {
 	height: 25px;
-	margin-top: -16px;
 	line-height: 25px;
-	padding: 17px;
 	color: white;
-	font-size: 13px;
+	padding: 25px 0px 25px 0px;
+	margin-top: -21px;
+	margin-bottom: 15px;
 }
 
-</style>
-<Style>
+#letter, #out, #go_my {
+	padding: 15px;
+	margin: 6px;
+	border-radius: 5px;
+}
+
+.myInfo-img {
+		width: 30px;
+		height: 30px;
+		-webkit-border-radius: 50px;
+		display: inline-block;
+	}
+
 </style>
 <body>
+<!-- 상단아이디표출 -->
+<!-- 로그인한 경우-->
+<c:if test="${!empty login_info && empty Naverlogin && empty Kakaologin}">
+<div style="float: right; position: relative; left: -92px; ">&nbsp;<img src='img/default_profile.jpg' class="myInfo-img" />${login_info.member_nickname }님!&nbsp;[${login_info.member_email}]</div>
+</c:if>
+<!-- 네이버 로그인한 경우 -->
+<c:if test="${!empty Naverlogin }">
+<div style="float: right; position: relative; left: -92px;">&nbsp;<img src='img/default_profile.jpg' class="myInfo-img" />${Naverlogin.naver_nickname }님!&nbsp;[${Naverlogin.naver_email}]</div>
+</c:if>
+<!-- 카카오 로그인한 경우 -->
+<c:if test="${!empty Kakaologin }">
+<div style="float: right; position: relative; left: -92px;">&nbsp;<img src='img/default_profile.jpg' class="myInfo-img" />${Kakaologin.kakao_nickname }님!&nbsp;[${Kakaologin.kakao_email}]</div>
+</c:if>
 		<div class="dropmenu" style="z-index: 2">
-
 		<div class='logo'>
 			
 		</div>
@@ -169,45 +195,39 @@ width:345px;
 				 	</c:if>
 				 	<!-- 로그인한 경우 -->
 				 	<c:if test="${!empty login_info && empty Naverlogin && empty Kakaologin}">
+				 	<form method="post" action="navigation.my" >
+        			<input type="hidden" name="member_email">
 				 	<div id="welcome_m">
-				 	    <a onclick="go_navigation('${login_info.member_email }')">
-						${login_info.member_nickname }님!&nbsp;[${login_info.member_email}]
-						<input type="button" value="쪽지함"  onclick="letter">
-						<input type="button" value="로그아웃"  onclick="go_logout()"></a></div>
-				 	</c:if>
-				 	<!-- 로그인후 정보 수정이 있을 경우 -->
-				 	<c:if test="${!empty info }">
-				 	<div id="welcome_m">
-				 		<script>alert('zzz');</script>
-				 	    <a onclick="go_navigation('${login_info.member_email }')">
-						${info}님!&nbsp;[${login_info.member_email}]
-						<input type="button" value="쪽지함"  onclick="letter">
-						<input type="button" value="로그아웃"  onclick="go_logout()"></a></div>
+						<input id="go_my" type="button" value="내정보" onclick="go_navigation('${login_info.member_email }')">
+						<input id="letter" type="button" value="쪽지함" onclick="receive">
+						<input id="out" type="button" value="로그아웃"  onclick="go_logout()"></div>
+				 	</form>
 				 	</c:if>
 				 	<!-- 네이버 로그인한 경우 -->
 				 	<c:if test="${!empty Naverlogin }">
 				 	<div id="welcome_n">
-				 		<a onclick="go_navigation('${Naverlogin.naver_email }')">
-						${Naverlogin.naver_nickname }님!&nbsp;[${Naverlogin.naver_email}]
-						<input type="button" value="로그아웃"  onclick="go_Nlogout()"></a></div>
+						<input id="go_my" type="button" value="내정보" onclick="go_navigation('${Naverlogin.naver_email }')">
+						<input id="letter" type="button" value="쪽지함"  onclick="receive">
+						<input id="out" type="button" value="로그아웃"  onclick="go_Nlogout()"></div>
 				 	</c:if>
 				 	<!-- 카카오 로그인한 경우 -->
 				 	<c:if test="${!empty Kakaologin }">
 				 	<div id="welcome_k">
-				 		<a onclick="go_navigation('${Kakaologin.kakao_email}')">
-						${Kakaologin.kakao_nickname }님!&nbsp;[${Kakaologin.kakao_email}]
-						<input type="button" value="로그아웃"  onclick="go_Klogout()"></a></div>
+						<input id="go_my" type="button" value="내정보" onclick="go_navigation('${Kakaologin.kakao_email }')">
+						<input id="letter" type="button" value="쪽지함"  onclick="receive">
+						<input id="out" type="button" value="로그아웃"  onclick="go_Klogout()"></div>
 				 	</c:if>
 				 	</li>
 			</ul>
 			</div>
 	</div>
+<script type="text/javascript">
 
-	<script type="text/javascript">
-      $(".dropmenu ul li").hover(function(){
-        $(this).find("ul").stop().fadeToggle(300);
-      });
-    </script>
+$(".dropmenu ul li").hover(function(){
+	  $(this).find("ul").stop().fadeToggle(300);
+	});
+
+</script>
 </body>
 
 

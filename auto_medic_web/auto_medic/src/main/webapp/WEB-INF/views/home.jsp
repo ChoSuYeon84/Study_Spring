@@ -105,156 +105,150 @@ $(document).ready(
 <head>
    <title>Home</title>
    <Style>
-   .input{
-   margin:10px; 
-   }
-  
-   
-   #login{
-   position: relative;
-		left:1585px;
-		top:-745px;
-   padding:0px;
-   width: 300px;
-   height: 224px;
-   		
-   
-   }
-	#content {
-		height: 730px;
-		position: relative;
-		left:0px;
-		top:10px;
-	}
-	
-	.myInfo-img {
-		width: 70px;
-		height: 70px;
-		-webkit-border-radius: 50px;
-		/* float: left; */
-		margin: 5px;
-	}
-	
-	.myInfo_userName {
-		text-decoration: none !important;
-		margin: 10px;
-		padding-top: 20px;
-		clear: both;
-	}
-	
-	.myInfo_email {
-		margin: 0 10px;
-		padding-top: 20px;
-		font-size: 12px;
-	}
-	
-	.my-info {
-		border: 1px solid #ccc;
-		overflow: hidden;
-		height: 20	0px;
-		width: 260px;
-		margin: 10px;
-		padding: 5px;
-		
-	}
-	#profile{
+.input {
+	margin: 10px;
+}
+
+#login {
 	position: relative;
-		top:-745px;
-		left: 1600px;
-	
-	}
-	.my-btnSet {
-		margin-: 13px;
-	}
-	
-	a.mybtn-empty {
-		text-align: center;
-		padding: 5px 12px;
-		border: 1px solid #ccc;
-		border-radius: 3px;
-		text-decoration: none !important;
-		color: gray;
-		margin: -2px;
-	}
-	
-	a.mybtn-fill {
-		background-color: #ccc;
-		margin-top: 5px;
-		width: 248px;
-		height: 30px;
-		padding : 3px 104px;
-		display: block;
-		border-radius: 3px;
-		
-	}
-	
-	#btn_join, #btn_findPw, #btn_social {
-		padding: 11px;
-	}
-	
-	
-.animation_canvas{
-    padding:0px;
-    overflow: hidden;
+	left: 1585px;
+	top: -745px;
+	padding: 0px;
+	width: 300px;
+	height: 224px;
+}
+
+#content {
+	height: 730px;
 	position: relative;
-	width: 1710px; height:700px; margin:0 auto;
-} 
+	left: 0px;
+	top: 10px;
+}
+
+/* .myInfo-img { */
+/* 	width: 70px; */
+/* 	height: 70px; */
+/* 	-webkit-border-radius: 50px; */
+/* 	margin: 5px; */
+/* } */
+
+.myInfo_userName {
+	text-decoration: none !important;
+	margin: 10px;
+	padding-top: 20px;
+	clear: both;
+}
+
+.myInfo_email {
+	margin: 0 10px;
+	padding-top: 20px;
+	font-size: 12px;
+}
+
+.my-info {
+	border: 1px solid #ccc;
+	overflow: hidden;
+	height: 20 0px;
+	width: 260px;
+	margin: 10px;
+	padding: 5px;
+}
+
+#profile {
+	position: relative;
+	top: -745px;
+	left: 1600px;
+}
+
+.my-btnSet {
+	margin-: 13px;
+}
+
+a.mybtn-empty {
+	text-align: center;
+	padding: 5px 12px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	text-decoration: none !important;
+	color: gray;
+	margin: -2px;
+}
+
+a.mybtn-fill {
+	background-color: #ccc;
+	margin-top: 5px;
+	width: 248px;
+	height: 30px;
+	padding: 3px 104px;
+	display: block;
+	border-radius: 3px;
+}
+
+#btn_join, #btn_findPw, #btn_social {
+	padding: 11px;
+}
+
+.animation_canvas {
+	padding: 0px;
+	overflow: hidden;
+	position: relative;
+	width: 1710px;
+	height: 700px;
+	margin: 0 auto;
+}
 
 .col-sm-9 {
-
-	width: 8550px; height:700px; position: relative;
+	width: 8550px;
+	height: 700px;
+	position: relative;
 }
-.mainimg{ 
- 
-    float: left;
-	width: 1710px; 
-	height:700px; 
-	margin:0px;
-} 
 
-	/* Slider Text Panel */
-	.slider_text_panel {
-		position: absolute;
-		top: 250px;
-		left: 1000px;
-	}
-	
-	.slider_text {
-		position: absolute;
-		width: 300px;
-		height: 150px;
-		
-	}
-	
-	/* Control Panel */
-	.control_panel {
-		position: absolute;
-		top: 650px;
-		left: 670px;
-		height: 13px;
-		overflow: hidden;
-	}
-	
-	.control_button {
-		width: 12px;
-		height: 46px;
-		position: relative;
-		float: left;
-		cursor: pointer;
-		background: url('img/point_button.png');
-	}
-	
-	.control_button:hover {
-		top: -16px;
-	}
-	
-	.control_button.active {
-		top: -31px;
-	}	
-	
-	
-	
-	</Style>
+.mainimg {
+	float: left;
+	width: 1710px;
+	height: 700px;
+	margin: 0px;
+}
+
+/* Slider Text Panel */
+.slider_text_panel {
+	position: absolute;
+	top: 250px;
+	left: 1150px;
+}
+
+.slider_text {
+	position: absolute;
+	width: 600px;
+	height: 150px;
+}
+
+/* Control Panel */
+.control_panel {
+	position: absolute;
+	top: 650px;
+	left: 800px;
+	height: 13px;
+	overflow: hidden;
+}
+
+.control_button {
+	width: 12px;
+	height: 46px;
+	position: relative;
+	float: left;
+	cursor: pointer;
+	background: url('img/point_button.png');
+}
+
+.control_button:hover {
+	top: -16px;
+}
+
+.control_button.active {
+	top: -31px;
+}
+</Style>
 </head>
 <body>
     
@@ -272,8 +266,9 @@ $(document).ready(
       </div>
        <div class="slider_text_panel">
 			<div class="slider_text">
-				<h1>0. Lorem ipsum</h1>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+				<h1>혁신적인 스마트 IOT약통</h1>
+				<h3>Auto_Medic이 잊어버리기 쉬운</h3>
+				<h3>당신의 건강을 챙겨드립니다.</h3>
 			</div>
 			<div class="slider_text">
 				<h1>1. Nulla eget</h1>
@@ -305,7 +300,7 @@ $(document).ready(
 		</div>   
     </div>  
 </div>
- <%-- <div id="profile" style="padding: 0px;">
+<%-- <div id="profile" style="padding: 0px;">
         	<!-- 로그인한 경우 -->
         	<c:if test="${!empty login_info && empty Naverlogin && empty Kakaologin }">
         	<form method="post" action="navigation.my" >
@@ -394,7 +389,7 @@ $(document).ready(
                <input type="text" id="med" placeholder="약검색" size="29">
                <input type="button" value="검색" id="search" onclick="search()" />                               
             </div>        	
-        </div>	 --%>
+        </div> --%>
 	
 </body>
 </html>

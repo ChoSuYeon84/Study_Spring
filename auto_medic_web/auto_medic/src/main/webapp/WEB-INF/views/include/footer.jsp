@@ -86,8 +86,8 @@ $(document).ready(function(){
 				<div>Copyright 2020</div>
 			</div>
 			<div id=download style="width: 200px; float: right ;">
-				<a  class='comeon' href='http://m.site.naver.com/0CPcf' style="text-decoration: none;">App다운로드</a>
-				<a href='http://m.site.naver.com/0CPcf'><img src='img/qrcode.png'/></a>
+				<a  class='comeon' href='http://m.site.naver.com/0CPcf' target="_blank" style="text-decoration: none;">App다운로드</a>
+				<a href='http://m.site.naver.com/0CPcf' target="_blank"><img src='img/qrcode.png'/></a>
 			</div>
 		</div>
 		<div id="tab-2" class="tab-content">

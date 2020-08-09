@@ -140,6 +140,7 @@ public class MemberController {
 		@ResponseBody @RequestMapping("/logout")
 		public void logout(HttpSession session) {
 			session.removeAttribute("login_info");
+			//session.removeAttribute("modify_info");
 		}
 	
 	//로그인요청

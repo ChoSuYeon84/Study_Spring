@@ -86,6 +86,7 @@ function go_password(member_email){
 	$('form').submit();
 	
 }
+
 </script>
 <script type="text/javascript" src="js/no_back.js?v=<%=new java.util.Date().getTime()%>"></script>
 <meta charset="UTF-8">
